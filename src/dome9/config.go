@@ -13,21 +13,19 @@ const (
 	defaultTimeout = 20 * time.Second
 )
 
-// Config contains all the configuration data for the API Client
+// Config contains all the configuration data for the API client
 type Config struct {
 	BaseURL    *url.URL
 	HTTPClient *http.Client
-
 	// The logger writer interface to write logging messages to. Defaults to standard out.
 	Logger *log.Logger
-
 	// Credentials for basic authentication.
 	AccessID, SecretKey string
 }
 
 // DefaultConfig returns a default configuration for the client.
 func DefaultConfig() *Config {
-	accessID, secretKey := DefaultKeys()
+	accessID, secretKey := defaultKeys()
 	return &Config{
 		BaseURL:    DefaultBaseURL(),
 		HTTPClient: DefaultHTTPClient(),
@@ -61,7 +59,7 @@ func (c *Config) SetKeys(accessID, secretKey string) {
 	c.SecretKey = secretKey
 }
 
-func DefaultKeys() (accessID string, secretKey string) {
+func defaultKeys() (accessID string, secretKey string) {
 	accessID = os.Getenv("accessID")
 	secretKey = os.Getenv("secretKey")
 	return
