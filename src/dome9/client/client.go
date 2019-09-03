@@ -4,24 +4,14 @@ import (
 	"bytes"
 	"dome9"
 	"encoding/json"
-	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
-	"net/http/httputil"
 	"net/url"
 )
-
-//var client *dome9.Config
-
 
 type Client struct {
 	Config *dome9.Config
 }
-
-//func init()  {
-//	client = dome9.DefaultConfig()
-//}
 
 // NewClient returns a new client for the specified apiKey.
 func NewClient(config *dome9.Config) (c *Client) {
@@ -29,12 +19,7 @@ func NewClient(config *dome9.Config) (c *Client) {
 		config = dome9.DefaultConfig()
 	}
 	c = &Client{Config: config}
-	//c.IpLists = &services.IpListService{client: c}
 	return
-}
-
-func (client *Client) Test(){
-	fmt.Println("Success")
 }
 
 func (client *Client) NewRequestDo(method, url string, body, v interface{}) (*http.Response, error) {
@@ -113,59 +98,4 @@ func (client *Client) do(req *http.Request, v interface{}) (*http.Response, erro
 
 func decodeJSON(res *http.Response, v interface{}) error {
 	return json.NewDecoder(res.Body).Decode(v)
-}
-
-func checkErrorInResponse(res *http.Response) error {
-	if c := res.StatusCode; c >= 200 && c <= 299 {
-		return nil
-	}
-	errorResponse := &ErrorResponse{Response: res}
-	errorMessage, err := ioutil.ReadAll(res.Body)
-	if err == nil && len(errorMessage) > 0 {
-		errorResponse.Message = string(errorMessage)
-	}
-	return errorResponse
-}
-
-type ErrorResponse struct {
-	Response *http.Response
-	Message  string
-}
-
-func (r *ErrorResponse) Error() string {
-	return fmt.Sprintf("FAILED: %v, %v, %d, %v, %v", r.Response.Request.Method, r.Response.Request.URL, r.Response.StatusCode, r.Response.Status, r.Message)
-}
-
-func (client *Client) logf(format string, args ...interface{}) {
-	if client.Config.Logger != nil {
-		client.Config.Logger.Printf(format, args...)
-	}
-}
-
-const logReqMsg = `Request "%s %s" details:
----[ REQUEST ]---------------------------------------
-%s
------------------------------------------------------`
-
-func (client *Client) logRequest(req *http.Request) {
-	if client.Config.Logger != nil && req != nil {
-		out, err := httputil.DumpRequestOut(req, true)
-		if err == nil {
-			client.logf(logReqMsg, req.Method, req.URL, string(out))
-		}
-	}
-}
-
-const logRespMsg = `Response "%s %s" details:
----[ RESPONSE ]----------------------------------------
-%s
--------------------------------------------------------`
-
-func (client *Client) logResponse(resp *http.Response) {
-	if client.Config.Logger != nil && resp != nil {
-		out, err := httputil.DumpResponse(resp, true)
-		if err == nil {
-			client.logf(logRespMsg, resp.Request.Method, resp.Request.URL, string(out))
-		}
-	}
 }

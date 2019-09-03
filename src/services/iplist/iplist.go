@@ -1,6 +1,8 @@
 package iplist
 
 import (
+	"dome9"
+	"dome9/client"
 	"fmt"
 	"net/http"
 )
@@ -17,19 +19,29 @@ type IpList struct {
 	Items       []Ip
 }
 
-func (ipLists *ServiceInitiator) Get(ipListId int) (*IpList, *http.Response, error) {
+type Service struct {
+	client *client.Client
+}
+
+func New(c *dome9.Config) *Service {
+	return &Service{
+		client: client.NewClient(c),
+	}
+}
+
+func (ipLists *Service) Get(ipListId int) (*IpList, *http.Response, error) {
 	v := new(IpList)
 	path := fmt.Sprintf("iplist/%d", ipListId)
-	resp, err := ipLists.Client.NewRequestDo("GET", path, nil, v)
+	resp, err := ipLists.client.NewRequestDo("GET", path, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
 	return v, resp, nil
 }
 
-func (ipLists *ServiceInitiator) Create(ipList *IpList) (*IpList, *http.Response, error) {
+func (ipLists *Service) Create(ipList *IpList) (*IpList, *http.Response, error) {
 	v := new(IpList)
-	resp, err := ipLists.Client.NewRequestDo("POST", "iplist/", ipList, &v)
+	resp, err := ipLists.client.NewRequestDo("POST", "iplist/", ipList, &v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -37,10 +49,10 @@ func (ipLists *ServiceInitiator) Create(ipList *IpList) (*IpList, *http.Response
 	return v, resp, nil
 }
 
-func (ipLists *ServiceInitiator) Update(ipListId string, ipList *IpList) (*http.Response, error) {
+func (ipLists *Service) Update(ipListId string, ipList *IpList) (*http.Response, error) {
 	path := fmt.Sprintf("iplist/%s", ipListId)
 	// v is nil because updating iplist returns nothing (204)
-	resp, err :=ipLists.Client.NewRequestDo("PUT", path, ipList, nil)
+	resp, err := ipLists.client.NewRequestDo("PUT", path, ipList, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -48,10 +60,10 @@ func (ipLists *ServiceInitiator) Update(ipListId string, ipList *IpList) (*http.
 	return resp, err
 }
 
-func (ipLists *ServiceInitiator) Delete(ipListId string) (*http.Response, error) {
+func (ipLists *Service) Delete(ipListId string) (*http.Response, error) {
 	path := fmt.Sprintf("iplist/%s", ipListId)
 	// v is nil because deleting iplist returns nothing (204)
-	resp, err := ipLists.Client.NewRequestDo("DELETE", path, nil, nil)
+	resp, err := ipLists.client.NewRequestDo("DELETE", path, nil, nil)
 	if err != nil {
 		return nil, err
 	}
