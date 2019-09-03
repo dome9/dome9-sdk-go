@@ -39,13 +39,22 @@ func (ipLists *Service) Get(ipListId int) (*IpList, *http.Response, error) {
 	return v, resp, nil
 }
 
+func (ipLists *Service) GetAll() (*[]IpList, *http.Response, error) {
+	v := new([]IpList)
+	path := "iplist/"
+	resp, err := ipLists.client.NewRequestDo("GET", path, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+	return v, resp, nil
+}
+
 func (ipLists *Service) Create(ipList *IpList) (*IpList, *http.Response, error) {
 	v := new(IpList)
 	resp, err := ipLists.client.NewRequestDo("POST", "iplist/", ipList, &v)
 	if err != nil {
 		return nil, nil, err
 	}
-
 	return v, resp, nil
 }
 
@@ -56,7 +65,6 @@ func (ipLists *Service) Update(ipListId string, ipList *IpList) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-
 	return resp, err
 }
 
@@ -67,6 +75,5 @@ func (ipLists *Service) Delete(ipListId string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return resp, err
 }
