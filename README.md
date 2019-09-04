@@ -1,7 +1,7 @@
 # dome9-sdk-go
 NOTE! This repositoy is currently private. Once it will be public, installing instructions and imports will be changed.
 ## Aim and Scope
-Dome9 GO SDK aims to access Dome9 Web API through HTTP calls
+Dome9 GO SDK aims to access Dome9 Web API through HTTPS calls
 from a client application purely written in Go language.
 
 For more information about Dome9 Web API [Dome9 API](https://api-v2-docs.dome9.com/).
@@ -40,11 +40,11 @@ func main() {
 	accessID := "123456789123456789" // your API ID
 	secretKey := "passpasspass"      // you API Secret
 	config := dome9.DefaultConfig()
-	config.SetKeys(accessID, secretKey)
+	config.SetCredentials(accessID, secretKey)
 
 	srv := iplist.New(config)
-
-	res, _, _ := srv.Get(77281)
+    ipListID := 77281
+	res, _, _ := srv.Get(ipListID)
 	fmt.Println(res)
 
 
