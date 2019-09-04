@@ -24,28 +24,16 @@ type Config struct {
 }
 
 // DefaultConfig returns a default configuration for the client.
+// By default it will try to read the access and te secret from the environment variables.
 func DefaultConfig() *Config {
-	accessID, secretKey := defaultKeys()
+	accessID, secretKey := setConfigFromEnvironmentVariables()
 	return &Config{
-		BaseURL:    DefaultBaseURL(),
-		HTTPClient: DefaultHTTPClient(),
-		Logger:     DefaultLogger(), // TODO default should be nil and should add a setter for logger
+		BaseURL:    getDefaultBaseURL(),
+		HTTPClient: getDefaultHTTPClient(),
+		Logger:     getDefaultLogger(), // TODO default should be nil and should add a setter for logger
 		AccessID:   accessID,
 		SecretKey:  secretKey,
 	}
-}
-
-func DefaultBaseURL() *url.URL {
-	baseURL, _ := url.Parse(defaultBaseURL)
-	return baseURL
-}
-
-func DefaultHTTPClient() *http.Client {
-	return &http.Client{Timeout: defaultTimeout}
-}
-
-func DefaultLogger() *log.Logger {
-	return log.New(os.Stdout, "D9-logger: ", log.LstdFlags|log.Lshortfile)
 }
 
 func (c *Config) SetBaseURL(rawUrl string) (err error) {
@@ -54,12 +42,25 @@ func (c *Config) SetBaseURL(rawUrl string) (err error) {
 	return
 }
 
-func (c *Config) SetKeys(accessID, secretKey string) {
+func (c *Config) SetCredentials(accessID, secretKey string) {
 	c.AccessID = accessID
 	c.SecretKey = secretKey
 }
 
-func defaultKeys() (accessID string, secretKey string) {
+func getDefaultBaseURL() *url.URL {
+	baseURL, _ := url.Parse(defaultBaseURL)
+	return baseURL
+}
+
+func getDefaultHTTPClient() *http.Client {
+	return &http.Client{Timeout: defaultTimeout}
+}
+
+func getDefaultLogger() *log.Logger {
+	return log.New(os.Stdout, "D9-logger: ", log.LstdFlags|log.Lshortfile)
+}
+
+func setConfigFromEnvironmentVariables() (accessID, secretKey string) {
 	accessID = os.Getenv("accessID")
 	secretKey = os.Getenv("secretKey")
 	return
