@@ -1,4 +1,4 @@
-package cloudAccounts
+package cloud_accounts
 
 import (
 	"dome9"
