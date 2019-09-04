@@ -1,14 +1,13 @@
 package cloud_accounts
 
 import (
-	"dome9"
-	"dome9/client"
-	"fmt"
 	"net/http"
 	"time"
 )
 
-type Credentials struct {
+const awsResourceName = "cloudaccounts"
+
+type awsCredentials struct {
 	ApiKey     string `json:"apikey"`
 	Arn        string `json:"arn"`
 	Secret     string `json:"secret"`
@@ -17,47 +16,43 @@ type Credentials struct {
 	IsReadOnly bool   `json:"isReadOnly"`
 }
 
-type Region struct {
+type region struct {
 	Region           string `json:"region"`
 	Name             string `json:"name"`
 	Hidden           bool   `json:"hidden"`
 	NewGroupBehavior string `json:"newGroupBehavior"`
 }
 
-type NetSec struct {
-	Regions []Region `json:"regions"`
+type netSec struct {
+	Regions []region `json:"regions"`
 }
 
-type AWS struct {
-	ID                     string      `json:"id"`
-	Vendor                 string      `json:"vendor"`
-	Name                   string      `json:"name"`
-	ExternalAccountNumber  string      `json:"externalAccountNumber"`
-	Error                  string      `json:"error"`
-	IsFetchingSuspended    bool        `json:"isFetchingSuspended"`
-	CreationDate           time.Time   `json:"creationDate"`
-	Credentials            Credentials `json:"credentials"`
-	IamSafe                string      `json:"iamSafe"`
-	NetSec                 NetSec      `json:"netSec"`
-	Magellan               bool        `json:"magellan"`
-	FullProtection         bool        `json:"fullProtection"`
-	AllowReadOnly          bool        `json:"allowReadOnly"`
-	OrganizationalUnitID   string      `json:"organizationalUnitId"`
-	OrganizationalUnitPath string      `json:"organizationalUnitPath"`
-	OrganizationalUnitName string      `json:"organizationalUnitName"`
-	LambdaScanner          bool        `json:"lambdaScanner"`
+type awsProperties struct {
+	ID                     string         `json:"id"`
+	Vendor                 string         `json:"vendor"`
+	Name                   string         `json:"name"`
+	ExternalAccountNumber  string         `json:"externalAccountNumber"`
+	Error                  string         `json:"error"`
+	IsFetchingSuspended    bool           `json:"isFetchingSuspended"`
+	CreationDate           time.Time      `json:"creationDate"`
+	Credentials            awsCredentials `json:"credentials"`
+	IamSafe                string         `json:"iamSafe"`
+	NetSec                 netSec         `json:"netSec"`
+	Magellan               bool           `json:"magellan"`
+	FullProtection         bool           `json:"fullProtection"`
+	AllowReadOnly          bool           `json:"allowReadOnly"`
+	OrganizationalUnitID   string         `json:"organizationalUnitId"`
+	OrganizationalUnitPath string         `json:"organizationalUnitPath"`
+	OrganizationalUnitName string         `json:"organizationalUnitName"`
+	LambdaScanner          bool           `json:"lambdaScanner"`
 }
 
-type Service struct {
-	client *client.Client
-}
-
-func New(c *dome9.Config) *Service {
-	return &Service{client: client.NewClient(c)}
+type awsOptions struct {
+	ID string
 }
 
 // Required properties for onBoarding process
-type OnBoarding struct {
+type AwsOnBoarding struct {
 	Name              string `json:"name"`
 	CustomCredentials struct {
 		Arn    string `json:"arn"`
@@ -68,33 +63,16 @@ type OnBoarding struct {
 	AllowReadOnly  bool `json:"allowReadOnly"`
 }
 
-func (aws *Service) Create(onBoarding *OnBoarding) (*AWS, *http.Response, error) {
-	v := new(AWS)
-	resp, err := aws.client.NewRequestDo("POST", "CloudAccounts/", onBoarding, &v)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return v, resp, nil
+func (service *Service) AwsCreate(onBoarding *AwsOnBoarding) (interface{}, *http.Response, error) {
+	return service.Create(awsResourceName, onBoarding, new(awsProperties))
 }
 
-func (aws *Service) Get(accountId string) (*AWS, *http.Response, error) {
-	v := new(AWS)
-	path := fmt.Sprintf("cloudaccounts/%s", accountId)
-	resp, err := aws.client.NewRequestDo("GET", path, nil, v)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return v, resp, nil
+func (service *Service) AwsGet(accountId string) (interface{}, *http.Response, error) {
+	o := &awsOptions{ID: accountId}
+	return service.Get(awsResourceName, o, new(awsProperties))
 }
 
-func (aws *Service) Delete(accountId string) (*http.Response, error) {
-	path := fmt.Sprintf("cloudaccounts/%s", accountId)
-	resp, err := aws.client.NewRequestDo("DELETE", path, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
+func (service *Service) AwsDelete(accountId string) (*http.Response, error) {
+	o := &awsOptions{ID: accountId}
+	return service.Delete(awsResourceName, o)
 }

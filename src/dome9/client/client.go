@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"dome9"
 	"encoding/json"
+	"github.com/google/go-querystring/query"
 	"io"
 	"net/http"
 	"net/url"
@@ -22,10 +23,10 @@ func NewClient(config *dome9.Config) (c *Client) {
 	return
 }
 
-func (client *Client) NewRequestDo(method, url string, body, v interface{}) (*http.Response, error) {
+func (client *Client) NewRequestDo(method, url string, options, body, v interface{}) (*http.Response, error) {
 	// E.g. "resp, err := client.NewRequestDo("POST", "iplist/", ipList, &v)"
 	// We may add query options handling in var o
-	req, err := client.newRequest(method, url, body)
+	req, err := client.newRequest(method, url, options, body)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +35,7 @@ func (client *Client) NewRequestDo(method, url string, body, v interface{}) (*ht
 }
 
 // Generating the Http request
-func (client *Client) newRequest(method, urlPath string, body interface{}) (*http.Request, error) {
+func (client *Client) newRequest(method, urlPath string, options, body interface{}) (*http.Request, error) {
 	var buf io.ReadWriter
 	if body != nil {
 		buf = new(bytes.Buffer)
@@ -54,6 +55,15 @@ func (client *Client) newRequest(method, urlPath string, body interface{}) (*htt
 	// Set the encoded path data
 	u.RawPath = client.Config.BaseURL.Path + urlPath
 	u.Path = client.Config.BaseURL.Path + unescaped
+
+	// Set the query parameters
+	if options != nil {
+		q, err := query.Values(options)
+		if err != nil {
+			return nil, err
+		}
+		u.RawQuery = q.Encode()
+	}
 
 	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
