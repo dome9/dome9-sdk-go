@@ -16,7 +16,7 @@ type Client struct {
 // NewClient returns a new client for the specified apiKey.
 func NewClient(config *dome9.Config) (c *Client) {
 	if config == nil {
-		config = dome9.DefaultConfig()
+		config, _ = dome9.NewConfig("", "", "")
 	}
 	c = &Client{Config: config}
 	return

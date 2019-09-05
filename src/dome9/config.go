@@ -11,6 +11,7 @@ import (
 const (
 	defaultBaseURL = "https://api.dome9.com/v2/"
 	defaultTimeout = 20 * time.Second
+	loggerPrefix   = "Dome9-logger: "
 )
 
 // Config contains all the configuration data for the API client
@@ -23,33 +24,28 @@ type Config struct {
 	AccessID, SecretKey string
 }
 
-// DefaultConfig returns a default configuration for the client.
-// By default it will try to read the access and te secret from the environment variables.
-func DefaultConfig() *Config {
-	accessID, secretKey := setConfigFromEnvironmentVariables()
+/*
+NewConfig returns a default configuration for the client.
+By default it will try to read the access and te secret from the environment variables.
+*/
+//TODO Add healthCheck method to NewConfig
+func NewConfig(accessID, secretKey, rawUrl string) (*Config, error) {
+	if accessID == "" || secretKey == "" {
+		accessID = os.Getenv("accessID")
+		secretKey = os.Getenv("secretKey")
+	}
+	if rawUrl == "" {
+		rawUrl = defaultBaseURL
+	}
+
+	baseURL, err := url.Parse(rawUrl)
 	return &Config{
-		BaseURL:    getDefaultBaseURL(),
+		BaseURL:    baseURL,
 		HTTPClient: getDefaultHTTPClient(),
 		Logger:     getDefaultLogger(), // TODO default should be nil and should add a setter for logger
 		AccessID:   accessID,
 		SecretKey:  secretKey,
-	}
-}
-
-func (c *Config) SetBaseURL(rawUrl string) (err error) {
-	baseURL, err := url.Parse(rawUrl)
-	c.BaseURL = baseURL
-	return
-}
-
-func (c *Config) SetCredentials(accessID, secretKey string) {
-	c.AccessID = accessID
-	c.SecretKey = secretKey
-}
-
-func getDefaultBaseURL() *url.URL {
-	baseURL, _ := url.Parse(defaultBaseURL)
-	return baseURL
+	}, err
 }
 
 func getDefaultHTTPClient() *http.Client {
@@ -57,11 +53,5 @@ func getDefaultHTTPClient() *http.Client {
 }
 
 func getDefaultLogger() *log.Logger {
-	return log.New(os.Stdout, "D9-logger: ", log.LstdFlags|log.Lshortfile)
-}
-
-func setConfigFromEnvironmentVariables() (accessID, secretKey string) {
-	accessID = os.Getenv("accessID")
-	secretKey = os.Getenv("secretKey")
-	return
+	return log.New(os.Stdout, loggerPrefix, log.LstdFlags|log.Lshortfile)
 }
