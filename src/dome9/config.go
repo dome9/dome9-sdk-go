@@ -28,6 +28,7 @@ type Config struct {
 NewConfig returns a default configuration for the client.
 By default it will try to read the access and te secret from the environment variables.
 */
+
 //TODO Add healthCheck method to NewConfig
 func NewConfig(accessID, secretKey, rawUrl string) (*Config, error) {
 	if accessID == "" || secretKey == "" {

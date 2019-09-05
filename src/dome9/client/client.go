@@ -24,8 +24,6 @@ func NewClient(config *dome9.Config) (c *Client) {
 }
 
 func (client *Client) NewRequestDo(method, url string, options, body, v interface{}) (*http.Response, error) {
-	// E.g. "resp, err := client.NewRequestDo("POST", "iplist/", ipList, &v)"
-	// We may add query options handling in var o
 	req, err := client.newRequest(method, url, options, body)
 	if err != nil {
 		return nil, err
@@ -71,10 +69,10 @@ func (client *Client) newRequest(method, urlPath string, options, body interface
 	}
 
 	req.SetBasicAuth(client.Config.AccessID, client.Config.SecretKey)
-
 	req.Header.Add("Accept", "application/json")
-	// TODO maybe add only if body isn't nil
-	req.Header.Add("Content-Type", "application/json")
+	if body != nil {
+		req.Header.Add("Content-Type", "application/json")
+	}
 
 	return req, nil
 }
