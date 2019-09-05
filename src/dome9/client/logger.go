@@ -5,15 +5,17 @@ import (
 	"net/http/httputil"
 )
 
-const logReqMsg = `Request "%s %s" details:
+const (
+	logReqMsg = `Request "%s %s" details:
 ---[ REQUEST ]---------------------------------------
 %s
 -----------------------------------------------------`
 
-const logRespMsg = `Response "%s %s" details:
+	logRespMsg = `Response "%s %s" details:
 ---[ RESPONSE ]----------------------------------------
 %s
 -------------------------------------------------------`
+)
 
 func (client *Client) WriteLog(format string, args ...interface{}) {
 	if client.Config.Logger != nil {
