@@ -7,20 +7,20 @@ import (
 	"net/url"
 	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var (
 	mux *http.ServeMux
 	client *Client
 	server *httptest.Server
-	config *dome9.Config
 )
 
 func setupMuxConfig() *dome9.Config {
 	mux = http.NewServeMux()
 	server = httptest.NewServer(mux)
-	config = dome9.DefaultConfig()
-	err := config.SetBaseURL(server.URL)
+	config, err := dome9.NewConfig("", "", server.URL)
 	if err != nil {
 		panic(err)
 	}
@@ -34,7 +34,9 @@ type dummyStruct struct {
 	ID int `json:"id"`
 }
 
+
 const getResponse = `{"id": 1234}`
+
 
 func TestClient_NewRequestDo(t *testing.T) {
 
@@ -87,7 +89,7 @@ func TestClient_NewRequestDo(t *testing.T) {
 		client.WriteLog("Server URL: %v", client.Config.BaseURL)
 		t.Run(tt.name, func(t *testing.T) {
 			mux.HandleFunc(tt.args.url, tt.muxHandler)
-			got, err := client.NewRequestDo(tt.args.method, tt.args.url, tt.args.body, tt.args.v)
+			got, err := client.NewRequestDo(tt.args.method, tt.args.url, nil, tt.args.body, tt.args.v)
 
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Client.NewRequestDo() error = %v, wantErr %v", err, tt.wantErr)
@@ -119,7 +121,13 @@ func TestNewClient(t *testing.T) {
 		{
 			name: "Successful Client creation with default config values",
 			args: struct{ config *dome9.Config }{config: nil},
-			wantC: &Client{dome9.DefaultConfig()},
+			wantC: &Client{&dome9.Config{
+				BaseURL: &url.URL{
+					Scheme: "https",
+					Host: "api.dome9.com",
+					Path: "/v2/",
+				},
+			}},
 		},
 		{
 			name: "Successful Client creation with custom config values",
@@ -135,9 +143,10 @@ func TestNewClient(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotC := NewClient(tt.args.config); !reflect.DeepEqual(gotC, tt.wantC) {
-				t.Errorf("NewClient() = %v, want %v", gotC, tt.wantC)
-			}
+			gotC := NewClient(tt.args.config);
+			assert.Equal(t, gotC.Config.BaseURL.Host, tt.wantC.Config.BaseURL.Host)
+			assert.Equal(t, gotC.Config.BaseURL.Scheme, tt.wantC.Config.BaseURL.Scheme)
+			assert.Equal(t, gotC.Config.BaseURL.Path, tt.wantC.Config.BaseURL.Path)
 		})
 	}
 }
