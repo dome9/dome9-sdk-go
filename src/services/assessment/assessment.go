@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+const path  = "assessment/bundleV2"
+
 type AssessmentBundleRequest struct {
 	ID                     int    `json:"id"`
 	Dome9CloudAccountID    string `json:"dome9CloudAccountId"`
@@ -150,7 +152,7 @@ func New(c *dome9.Config) *Service {
 
 func (service *Service) RunAssessment(assessmentBundleRequest *AssessmentBundleRequest) (interface{}, *http.Response, error) {
 	v := new(AssessmentResult)
-	resp, err := service.client.NewRequestDo("POST", "assessment/bundleV2", nil, assessmentBundleRequest, v)
+	resp, err := service.client.NewRequestDo("POST", path, nil, assessmentBundleRequest, v)
 	if err != nil {
 		return nil, nil, err
 	}
