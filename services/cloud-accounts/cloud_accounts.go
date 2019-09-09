@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	AwsResourceName   = "cloudaccounts"
-	AzureResourceName = "AzureCloudAccount"
+	AwsResourceNamePath   = "cloudaccounts/"
+	AzureResourceNamePath = "AzureCloudAccount/"
+	GcpResourceNamePath   = "GoogleCloudAccount/"
 )
 
 type AwsCredentials struct {
@@ -51,10 +52,6 @@ type AwsGetCloudAccountResponse struct {
 	OrganizationalUnitPath string         `json:"organizationalUnitPath"`
 	OrganizationalUnitName string         `json:"organizationalUnitName"`
 	LambdaScanner          bool           `json:"lambdaScanner"`
-}
-
-type AwsQueryParameters struct {
-	ID string
 }
 
 // Required properties for onBoarding process
@@ -98,8 +95,41 @@ type AzureCreateRequest struct {
 	OperationMode  string           `json:"operationMode"`
 }
 
-type AzureQueryParameters struct {
-	ID string
+type Gsuite struct {
+	GsuiteUser string `json:"gsuiteUser"`
+	DomainName string `json:"domainName"`
+}
+
+type GcpCloudAccountGet struct {
+	ID                     string    `json:"id"`
+	Name                   string    `json:"name"`
+	ProjectID              string    `json:"projectId"`
+	CreationDate           time.Time `json:"creationDate"`
+	OrganizationalUnitID   string    `json:"organizationalUnitId"`
+	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
+	OrganizationalUnitName string    `json:"organizationalUnitName"`
+	Gsuite                 *Gsuite   `json:"gsuite"`
+	Vendor                 string    `json:"vendor"`
+}
+
+type GcpServiceAccountCredentials struct {
+	Type                    string `json:"type"`
+	ProjectID               string `json:"project_id"`
+	PrivateKeyID            string `json:"private_key_id"`
+	PrivateKey              string `json:"private_key"`
+	ClientEmail             string `json:"client_email"`
+	ClientID                string `json:"client_id"`
+	AuthURI                 string `json:"auth_uri"`
+	TokenURI                string `json:"token_uri"`
+	AuthProviderX509CertURL string `json:"auth_provider_x509_cert_url"`
+	ClientX509CertURL       string `json:"client_x509_cert_url"`
+}
+
+type GcpCloudAccountPost struct {
+	Name                      string                       `json:"name"`
+	ServiceAccountCredentials GcpServiceAccountCredentials `json:"serviceAccountCredentials"`
+	GsuiteUser                string                       `json:"gsuiteUser"`
+	DomainName                string                       `json:"domainName"`
 }
 
 type Service struct {
@@ -110,9 +140,9 @@ func New(c *dome9.Config) *Service {
 	return &Service{client: client.NewClient(c)}
 }
 
-func (service *Service) Create(resourceName string, body interface{}) (interface{}, *http.Response, error) {
-	v := getResponse(resourceName)
-	resp, err := service.client.NewRequestDo("POST", resourceName, nil, body, v)
+func (service *Service) Create(resourceNamePath string, body interface{}) (interface{}, *http.Response, error) {
+	v := getResponse(resourceNamePath)
+	resp, err := service.client.NewRequestDo("POST", resourceNamePath, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -120,9 +150,9 @@ func (service *Service) Create(resourceName string, body interface{}) (interface
 	return v, resp, nil
 }
 
-func (service *Service) Get(resourceName string, options interface{}) (interface{}, *http.Response, error) {
-	v := getResponse(resourceName)
-	resp, err := service.client.NewRequestDo("GET", resourceName, options, nil, v)
+func (service *Service) Get(resourceNamePath string, id string) (interface{}, *http.Response, error) {
+	v := getResponse(resourceNamePath)
+	resp, err := service.client.NewRequestDo("GET", resourceNamePath+id, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -130,8 +160,8 @@ func (service *Service) Get(resourceName string, options interface{}) (interface
 	return v, resp, nil
 }
 
-func (service *Service) Delete(resourceName string, options interface{}) (*http.Response, error) {
-	resp, err := service.client.NewRequestDo("DELETE", resourceName, options, nil, nil)
+func (service *Service) Delete(resourceNamePath string, id string) (*http.Response, error) {
+	resp, err := service.client.NewRequestDo("DELETE", resourceNamePath+id, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -139,14 +169,17 @@ func (service *Service) Delete(resourceName string, options interface{}) (*http.
 	return resp, nil
 }
 
-func getResponse(resourceName string) interface{} {
-	switch resourceName {
+func getResponse(resourceNamePath string) interface{} {
+	switch resourceNamePath {
 
-	case AwsResourceName:
+	case AwsResourceNamePath:
 		return new(AwsGetCloudAccountResponse)
 
-	case AzureResourceName:
+	case AzureResourceNamePath:
 		return new(AzureGetCloudAccountResponse)
+
+	case GcpResourceNamePath:
+		return new(GcpCloudAccountGet)
 
 	default:
 		panic("Invalid resource name")
