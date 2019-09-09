@@ -12,32 +12,17 @@ import (
 	"github.com/Dome9/dome9-sdk-go/dome9"
 )
 
+type dummyStruct struct {
+	ID int `json:"id"`
+}
+
 var (
-	mux *http.ServeMux
+	mux    *http.ServeMux
 	client *Client
 	server *httptest.Server
 )
 
-func setupMuxConfig() *dome9.Config {
-	mux = http.NewServeMux()
-	server = httptest.NewServer(mux)
-	config, err := dome9.NewConfig("", "", server.URL)
-	if err != nil {
-		panic(err)
-	}
-	return config
-}
-
-func teardown()  {
-	server.Close()
-}
-type dummyStruct struct {
-	ID   int   `json:"id"`
-}
-
-
 const getResponse = `{"id": 1234}`
-
 
 func TestClient_NewRequestDo(t *testing.T) {
 
@@ -65,9 +50,9 @@ func TestClient_NewRequestDo(t *testing.T) {
 				v      interface{}
 			}{
 				method: "GET",
-				url: "/test",
-				body: nil,
-				v: new(dummyStruct),
+				url:    "/test",
+				body:   nil,
+				v:      new(dummyStruct),
 			},
 			muxHandler: func(w http.ResponseWriter, r *http.Request) {
 				_, err := w.Write([]byte(getResponse))
@@ -86,19 +71,19 @@ func TestClient_NewRequestDo(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		client := NewClient(setupMuxConfig())
+		client = NewClient(setupMuxConfig())
 		client.WriteLog("Server URL: %v", client.Config.BaseURL)
 		t.Run(tt.name, func(t *testing.T) {
 			mux.HandleFunc(tt.args.url, tt.muxHandler)
-			got, err := client.NewRequestDo(tt.args.method, tt.args.url, nil, tt.args.body, tt.args.v)
+			res, err := client.NewRequestDo(tt.args.method, tt.args.url, nil, tt.args.body, tt.args.v)
 
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Client.NewRequestDo() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
-			if tt.wantResp.StatusCode != got.StatusCode{
-				t.Errorf("Client.NewRequestDo() = %v, want %v", got, tt.wantResp)
+			if tt.wantResp.StatusCode != res.StatusCode {
+				t.Errorf("Client.NewRequestDo() = %v, want %v", res, tt.wantResp)
 			}
 
 			if !reflect.DeepEqual(tt.args.v, tt.wantVal) {
@@ -125,8 +110,8 @@ func TestNewClient(t *testing.T) {
 			wantC: &Client{&dome9.Config{
 				BaseURL: &url.URL{
 					Scheme: "https",
-					Host: "api.dome9.com",
-					Path: "/v2/",
+					Host:   "api.dome9.com",
+					Path:   "/v2/",
 				},
 			}},
 		},
@@ -134,20 +119,32 @@ func TestNewClient(t *testing.T) {
 			name: "Successful Client creation with custom config values",
 			args: struct{ config *dome9.Config }{config: &dome9.Config{
 				BaseURL: &url.URL{Host: "https://otherhost.com"},
-
 			}},
 			wantC: &Client{&dome9.Config{
-				BaseURL:    &url.URL{Host: "https://otherhost.com"},
+				BaseURL: &url.URL{Host: "https://otherhost.com"},
 			}},
-
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotC := NewClient(tt.args.config);
+			gotC := NewClient(tt.args.config)
 			assert.Equal(t, gotC.Config.BaseURL.Host, tt.wantC.Config.BaseURL.Host)
 			assert.Equal(t, gotC.Config.BaseURL.Scheme, tt.wantC.Config.BaseURL.Scheme)
 			assert.Equal(t, gotC.Config.BaseURL.Path, tt.wantC.Config.BaseURL.Path)
 		})
 	}
+}
+
+func setupMuxConfig() *dome9.Config {
+	mux = http.NewServeMux()
+	server = httptest.NewServer(mux)
+	config, err := dome9.NewConfig("", "", server.URL)
+	if err != nil {
+		panic(err)
+	}
+	return config
+}
+
+func teardown() {
+	server.Close()
 }
