@@ -151,7 +151,7 @@ func New(c *dome9.Config) *Service {
 	return &Service{client: client.NewClient(c)}
 }
 
-func (service *Service) RunAssessment(assessmentBundleRequest *AssessmentBundleRequest) (interface{}, *http.Response, error) {
+func (service *Service) RunAssessment(assessmentBundleRequest *AssessmentBundleRequest) (*AssessmentResult, *http.Response, error) {
 	v := new(AssessmentResult)
 	resp, err := service.client.NewRequestDo("POST", path, nil, assessmentBundleRequest, v)
 	if err != nil {
