@@ -65,7 +65,7 @@ func (ipLists *Service) Create(ipList *IpList) (*IpList, *http.Response, error) 
 func (ipLists *Service) Update(ipListId int64, ipList *IpList) (*http.Response, error) {
 	path := fmt.Sprintf("%s/%d", ipListResourcePath, ipListId)
 	// v is nil because updating iplist returns nothing (204)
-	resp, err := ipLists.client.NewRequestDo("PUT", path, ipList, nil, nil)
+	resp, err := ipLists.client.NewRequestDo("PUT", path, nil, ipList, nil)
 	if err != nil {
 		return nil, err
 	}
