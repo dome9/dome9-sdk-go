@@ -3,8 +3,8 @@ package assessment
 import (
 	"net/http"
 
-	"github.com/dome9-sdk-go/dome9"
-	"github.com/dome9-sdk-go/dome9/client"
+	"github.com/Dome9/dome9-sdk-go/dome9"
+	"github.com/Dome9/dome9-sdk-go/dome9/client"
 )
 
 const path = "assessment/bundleV2"

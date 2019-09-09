@@ -9,7 +9,7 @@ import (
 
 	"github.com/google/go-querystring/query"
 
-	"github.com/dome9-sdk-go/dome9"
+	"github.com/Dome9/dome9-sdk-go/dome9"
 )
 
 type Client struct {
