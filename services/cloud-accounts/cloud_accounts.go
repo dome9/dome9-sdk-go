@@ -100,7 +100,7 @@ type Gsuite struct {
 	DomainName string `json:"domainName"`
 }
 
-type GcpCloudAccountGet struct {
+type GcpCloudAccountGetResponse struct {
 	ID                     string    `json:"id"`
 	Name                   string    `json:"name"`
 	ProjectID              string    `json:"projectId"`
@@ -132,6 +132,10 @@ type GcpCloudAccountPost struct {
 	DomainName                string                       `json:"domainName"`
 }
 
+type QueryParameters struct {
+	ID string
+}
+
 type Service struct {
 	client *client.Client
 }
@@ -150,9 +154,9 @@ func (service *Service) Create(resourceNamePath string, body interface{}) (inter
 	return v, resp, nil
 }
 
-func (service *Service) Get(resourceNamePath string, id string) (interface{}, *http.Response, error) {
+func (service *Service) Get(resourceNamePath string, options interface{}) (interface{}, *http.Response, error) {
 	v := getResponse(resourceNamePath)
-	resp, err := service.client.NewRequestDo("GET", resourceNamePath+id, nil, nil, v)
+	resp, err := service.client.NewRequestDo("GET", resourceNamePath, options, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -179,7 +183,7 @@ func getResponse(resourceNamePath string) interface{} {
 		return new(AzureGetCloudAccountResponse)
 
 	case GcpResourceNamePath:
-		return new(GcpCloudAccountGet)
+		return new(GcpCloudAccountGetResponse)
 
 	default:
 		panic("Invalid resource name")
