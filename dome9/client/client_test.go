@@ -1,7 +1,6 @@
 package client
 
 import (
-	"dome9"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -9,6 +8,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/Dome9/dome9-sdk-go/dome9"
 )
 
 var (
@@ -31,7 +32,7 @@ func teardown()  {
 	server.Close()
 }
 type dummyStruct struct {
-	ID int `json:"id"`
+	ID   int   `json:"id"`
 }
 
 
