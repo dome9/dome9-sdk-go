@@ -3,11 +3,13 @@ package client
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/dome9-sdk-go/dome9"
-	"github.com/google/go-querystring/query"
 	"io"
 	"net/http"
 	"net/url"
+
+	"github.com/google/go-querystring/query"
+
+	"github.com/dome9-sdk-go/dome9"
 )
 
 type Client struct {

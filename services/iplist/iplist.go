@@ -2,9 +2,10 @@ package iplist
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/dome9-sdk-go/dome9"
 	"github.com/dome9-sdk-go/dome9/client"
-	"net/http"
 )
 
 const (

@@ -1,10 +1,11 @@
 package cloud_accounts
 
 import (
-	"github.com/dome9-sdk-go/dome9"
-	"github.com/dome9-sdk-go/dome9/client"
 	"net/http"
 	"time"
+
+	"github.com/dome9-sdk-go/dome9"
+	"github.com/dome9-sdk-go/dome9/client"
 )
 
 const (
