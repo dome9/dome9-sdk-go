@@ -1,8 +1,8 @@
 package cloud_accounts
 
 import (
-	"dome9"
-	"dome9/client"
+	"github.com/dome9-sdk-go/dome9"
+	"github.com/dome9-sdk-go/dome9/client"
 	"net/http"
 	"time"
 )

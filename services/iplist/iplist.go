@@ -1,9 +1,9 @@
 package iplist
 
 import (
-	"dome9"
-	"dome9/client"
 	"fmt"
+	"github.com/dome9-sdk-go/dome9"
+	"github.com/dome9-sdk-go/dome9/client"
 	"net/http"
 )
 

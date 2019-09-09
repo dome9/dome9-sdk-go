@@ -1,12 +1,12 @@
 package assessment
 
 import (
-	"dome9"
-	"dome9/client"
+	"github.com/dome9-sdk-go/dome9"
+	"github.com/dome9-sdk-go/dome9/client"
 	"net/http"
 )
 
-const path  = "assessment/bundleV2"
+const path = "assessment/bundleV2"
 
 type AssessmentBundleRequest struct {
 	ID                     int    `json:"id"`
@@ -123,10 +123,10 @@ type entitiesWithPermissionIssues struct {
 }
 
 type dataSyncStatus struct {
-	EntityType                   string                          `json:"entityType"`
-	RecentlySuccessfulSync       bool                            `json:"recentlySuccessfulSync"`
-	GeneralFetchPermissionIssues bool                            `json:"generalFetchPermissionIssues"`
-	EntitiesWithPermissionIssues [] entitiesWithPermissionIssues `json:"entitiesWithPermissionIssues"`
+	EntityType                   string                         `json:"entityType"`
+	RecentlySuccessfulSync       bool                           `json:"recentlySuccessfulSync"`
+	GeneralFetchPermissionIssues bool                           `json:"generalFetchPermissionIssues"`
+	EntitiesWithPermissionIssues []entitiesWithPermissionIssues `json:"entitiesWithPermissionIssues"`
 }
 
 type AssessmentResult struct {

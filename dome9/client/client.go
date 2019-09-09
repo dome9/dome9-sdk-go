@@ -2,8 +2,8 @@ package client
 
 import (
 	"bytes"
-	"dome9"
 	"encoding/json"
+	"github.com/dome9-sdk-go/dome9"
 	"github.com/google/go-querystring/query"
 	"io"
 	"net/http"
