@@ -32,8 +32,8 @@ By default it will try to read the access and te secret from the environment var
 // TODO Add healthCheck method to NewConfig
 func NewConfig(accessID, secretKey, rawUrl string) (*Config, error) {
 	if accessID == "" || secretKey == "" {
-		accessID = os.Getenv("accessID")
-		secretKey = os.Getenv("secretKey")
+		accessID = os.Getenv("DOME9_ACCESS_ID")
+		secretKey = os.Getenv("DOME9_SECRET_KEY")
 	}
 	if rawUrl == "" {
 		rawUrl = defaultBaseURL
