@@ -19,10 +19,10 @@ type AwsCredentials struct {
 	// we use pointers and the request is being sent with <nil>
 	ApiKey     *string `json:"apikey"`
 	Arn        *string `json:"arn"`
-	Secret     string `json:"secret"`
-	IamUser    string `json:"iamUser"`
-	Type       string `json:"type"`
-	IsReadOnly bool   `json:"isReadOnly"`
+	Secret     string  `json:"secret"`
+	IamUser    string  `json:"iamUser"`
+	Type       string  `json:"type"`
+	IsReadOnly bool    `json:"isReadOnly"`
 }
 
 type AwsRegion struct {
@@ -78,15 +78,15 @@ type AwsCreateRequest struct {
 	Name                   string         `json:"name"`
 	ExternalAccountNumber  string         `json:"externalAccountNumber"`
 	Error                  *string        `json:"error"`
-	IsFetchingSuspended    *bool          `json:"isFetchingSuspended"`
+	IsFetchingSuspended    bool           `json:"isFetchingSuspended"`
 	CreationDate           time.Time      `json:"creationDate"`
 	Credentials            AwsCredentials `json:"credentials"`
 	FullProtection         bool           `json:"fullProtection"`
 	AllowReadOnly          bool           `json:"allowReadOnly"`
-	OrganizationalUnitID   *string        `json:"organizationalUnitId"`
-	OrganizationalUnitPath *string        `json:"organizationalUnitPath"`
-	OrganizationalUnitName *string        `json:"organizationalUnitName"`
-	LambdaScanner          *bool          `json:"lambdaScanner"`
+	OrganizationalUnitID   string         `json:"organizationalUnitId"`
+	OrganizationalUnitPath string         `json:"organizationalUnitPath"`
+	OrganizationalUnitName string         `json:"organizationalUnitName"`
+	LambdaScanner          bool           `json:"lambdaScanner"`
 }
 
 type AzureCredentials struct {
