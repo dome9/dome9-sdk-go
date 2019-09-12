@@ -15,25 +15,43 @@ const (
 )
 
 type AwsCredentials struct {
-	ApiKey     string `json:"apikey"`
-	Arn        string `json:"arn"`
+	// ApiKey and Arn cannot exist together because Dome9 allows only one. To avoid passing empty strings (""),
+	// we use pointers and the request is being sent with <nil>
+	ApiKey     *string `json:"apikey"`
+	Arn        *string `json:"arn"`
 	Secret     string `json:"secret"`
 	IamUser    string `json:"iamUser"`
 	Type       string `json:"type"`
 	IsReadOnly bool   `json:"isReadOnly"`
 }
 
-type awsRegion struct {
+type AwsRegion struct {
 	Region           string `json:"awsRegion"`
 	Name             string `json:"name"`
 	Hidden           bool   `json:"hidden"`
 	NewGroupBehavior string `json:"newGroupBehavior"`
 }
 
-type awsNetSec struct {
-	Regions []awsRegion `json:"regions"`
+type AwsNetSec struct {
+	Regions []AwsRegion `json:"regions"`
 }
 
+// refer to API type: CloudAccountIamSafe
+type AwsIAMSafe struct {
+	AwsGroupArn           string `json:"awsGroupArn"`
+	AwsPolicyArn          string `json:"awsPolicyArn"`
+	Mode                  string `json:"mode"`
+	State                 string `json:"state"`
+	ExcludedIamEntities   AWSIamEntities `json:"excludedIamEntities"`
+	RestrictedIamEntities AWSIamEntities `json:"restrictedIamEntities"`
+}
+
+type AWSIamEntities struct {
+	RolesArns []string `json:"rolesArns"`
+	UsersArns []string `json:"usersArns"`
+}
+
+// refer to API type: CloudAccount
 type AwsGetCloudAccountResponse struct {
 	ID                     string         `json:"id"`
 	Vendor                 string         `json:"vendor"`
@@ -43,8 +61,8 @@ type AwsGetCloudAccountResponse struct {
 	IsFetchingSuspended    bool           `json:"isFetchingSuspended"`
 	CreationDate           time.Time      `json:"creationDate"`
 	Credentials            AwsCredentials `json:"credentials"`
-	IamSafe                string         `json:"iamSafe"`
-	NetSec                 awsNetSec      `json:"awsNetSec"`
+	IamSafe                AwsIAMSafe     `json:"iamSafe"`
+	NetSec                 AwsNetSec      `json:"awsNetSec"`
 	Magellan               bool           `json:"magellan"`
 	FullProtection         bool           `json:"fullProtection"`
 	AllowReadOnly          bool           `json:"allowReadOnly"`
@@ -54,16 +72,21 @@ type AwsGetCloudAccountResponse struct {
 	LambdaScanner          bool           `json:"lambdaScanner"`
 }
 
-// Required properties for onBoarding process
+// refer to API type: CloudAccount
 type AwsCreateRequest struct {
-	Name              string `json:"name"`
-	CustomCredentials struct {
-		Arn    string `json:"arn"`
-		Secret string `json:"secret"`
-		Type   string `json:"type"`
-	} `json:"credentials"`
-	FullProtection bool `json:"fullProtection"`
-	AllowReadOnly  bool `json:"allowReadOnly"`
+	Vendor                 string         `json:"vendor"`
+	Name                   string         `json:"name"`
+	ExternalAccountNumber  string         `json:"externalAccountNumber"`
+	Error                  *string        `json:"error"`
+	IsFetchingSuspended    *bool          `json:"isFetchingSuspended"`
+	CreationDate           time.Time      `json:"creationDate"`
+	Credentials            AwsCredentials `json:"credentials"`
+	FullProtection         bool           `json:"fullProtection"`
+	AllowReadOnly          bool           `json:"allowReadOnly"`
+	OrganizationalUnitID   *string        `json:"organizationalUnitId"`
+	OrganizationalUnitPath *string        `json:"organizationalUnitPath"`
+	OrganizationalUnitName *string        `json:"organizationalUnitName"`
+	LambdaScanner          *bool          `json:"lambdaScanner"`
 }
 
 type AzureCredentials struct {
@@ -71,6 +94,7 @@ type AzureCredentials struct {
 	ClientPassword string `json:"clientPassword"`
 }
 
+// refer to API type: AzureCloudAccount
 type AzureGetCloudAccountResponse struct {
 	ID                     string           `json:"id"`
 	Name                   string           `json:"name"`
@@ -86,7 +110,7 @@ type AzureGetCloudAccountResponse struct {
 	Vendor                 string           `json:"vendor"`
 }
 
-// Required properties for onBoarding process
+// refer to API type: AzureCloudAccount
 type AzureCreateRequest struct {
 	Name           string           `json:"name"`
 	SubscriptionID string           `json:"subscriptionId"`
@@ -95,11 +119,13 @@ type AzureCreateRequest struct {
 	OperationMode  string           `json:"operationMode"`
 }
 
+// refer to API type: GoogleAccountGsuite
 type Gsuite struct {
 	GsuiteUser string `json:"gsuiteUser"`
 	DomainName string `json:"domainName"`
 }
 
+// refer to API type: GoogleCloudAccountGet
 type GcpCloudAccountGetResponse struct {
 	ID                     string    `json:"id"`
 	Name                   string    `json:"name"`
@@ -125,7 +151,8 @@ type GcpServiceAccountCredentials struct {
 	ClientX509CertURL       string `json:"client_x509_cert_url"`
 }
 
-type GcpCloudAccountPost struct {
+// refer to API type: GoogleCloudAccountPost
+type GcpCreateRequest struct {
 	Name                      string                       `json:"name"`
 	ServiceAccountCredentials GcpServiceAccountCredentials `json:"serviceAccountCredentials"`
 	GsuiteUser                string                       `json:"gsuiteUser"`
@@ -144,9 +171,9 @@ func New(c *dome9.Config) *Service {
 	return &Service{client: client.NewClient(c)}
 }
 
-func (service *Service) Create(resourceNamePath string, body interface{}) (interface{}, *http.Response, error) {
-	v := getResponse(resourceNamePath)
-	resp, err := service.client.NewRequestDo("POST", resourceNamePath, nil, body, v)
+func (service *Service) CreateAWSCloudAccount(body interface{}) (*AwsGetCloudAccountResponse, *http.Response, error) {
+	v := new(AwsGetCloudAccountResponse)
+	resp, err := service.client.NewRequestDo("POST", AwsResourceNamePath, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -154,9 +181,49 @@ func (service *Service) Create(resourceNamePath string, body interface{}) (inter
 	return v, resp, nil
 }
 
-func (service *Service) Get(resourceNamePath string, options interface{}) (interface{}, *http.Response, error) {
-	v := getResponse(resourceNamePath)
-	resp, err := service.client.NewRequestDo("GET", resourceNamePath, options, nil, v)
+func (service *Service) CreateGCPCloudAccount(body interface{}) (*GcpCloudAccountGetResponse, *http.Response, error) {
+	v := new(GcpCloudAccountGetResponse)
+	resp, err := service.client.NewRequestDo("POST", GcpResourceNamePath, nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) CreateAzureCloudAccount(body interface{}) (*AzureGetCloudAccountResponse, *http.Response, error) {
+	v := new(AzureGetCloudAccountResponse)
+	resp, err := service.client.NewRequestDo("POST", AzureResourceNamePath, nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GetAWSCloudAccount(options interface{}) (*AwsGetCloudAccountResponse, *http.Response, error) {
+	v := new(AwsGetCloudAccountResponse)
+	resp, err := service.client.NewRequestDo("GET", AwsResourceNamePath, options, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GetGCPCloudAccount(options interface{}) (*GcpCloudAccountGetResponse, *http.Response, error) {
+	v := new(GcpCloudAccountGetResponse)
+	resp, err := service.client.NewRequestDo("GET", GcpResourceNamePath, options, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GetAzureCloudAccount(options interface{}) (*AzureGetCloudAccountResponse, *http.Response, error) {
+	v := new(AzureGetCloudAccountResponse)
+	resp, err := service.client.NewRequestDo("GET", AzureResourceNamePath, options, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -171,21 +238,4 @@ func (service *Service) Delete(resourceNamePath string, id string) (*http.Respon
 	}
 
 	return resp, nil
-}
-
-func getResponse(resourceNamePath string) interface{} {
-	switch resourceNamePath {
-
-	case AwsResourceNamePath:
-		return new(AwsGetCloudAccountResponse)
-
-	case AzureResourceNamePath:
-		return new(AzureGetCloudAccountResponse)
-
-	case GcpResourceNamePath:
-		return new(GcpCloudAccountGetResponse)
-
-	default:
-		panic("Invalid resource name")
-	}
 }
