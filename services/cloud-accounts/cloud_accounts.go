@@ -11,7 +11,7 @@ import (
 const (
 	AwsResourceNamePath   = "cloudaccounts/"
 	AzureResourceNamePath = "AzureCloudAccount/"
-	GcpResourceNamePath   = "GoogleCloudAccount/"
+	GCPResourceNamePath   = "GoogleCloudAccount/"
 )
 
 type AwsCredentials struct {
@@ -38,10 +38,10 @@ type AwsNetSec struct {
 
 // refer to API type: CloudAccountIamSafe
 type AwsIAMSafe struct {
-	AwsGroupArn           string `json:"awsGroupArn"`
-	AwsPolicyArn          string `json:"awsPolicyArn"`
-	Mode                  string `json:"mode"`
-	State                 string `json:"state"`
+	AwsGroupArn           string         `json:"awsGroupArn"`
+	AwsPolicyArn          string         `json:"awsPolicyArn"`
+	Mode                  string         `json:"mode"`
+	State                 string         `json:"state"`
 	ExcludedIamEntities   AWSIamEntities `json:"excludedIamEntities"`
 	RestrictedIamEntities AWSIamEntities `json:"restrictedIamEntities"`
 }
@@ -119,44 +119,39 @@ type AzureCreateRequest struct {
 	OperationMode  string           `json:"operationMode"`
 }
 
-// refer to API type: GoogleAccountGsuite
-type Gsuite struct {
-	GsuiteUser string `json:"gsuiteUser"`
-	DomainName string `json:"domainName"`
-}
-
 // refer to API type: GoogleCloudAccountGet
-type GcpCloudAccountGetResponse struct {
+type GCPCloudAccountGetResponse struct {
 	ID                     string    `json:"id"`
 	Name                   string    `json:"name"`
 	ProjectID              string    `json:"projectId"`
 	CreationDate           time.Time `json:"creationDate"`
-	OrganizationalUnitID   string    `json:"organizationalUnitId"`
+	OrganizationalUnitID   *string   `json:"organizationalUnitId"`
 	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
 	OrganizationalUnitName string    `json:"organizationalUnitName"`
-	Gsuite                 *Gsuite   `json:"gsuite"`
-	Vendor                 string    `json:"vendor"`
-}
-
-type GcpServiceAccountCredentials struct {
-	Type                    string `json:"type"`
-	ProjectID               string `json:"project_id"`
-	PrivateKeyID            string `json:"private_key_id"`
-	PrivateKey              string `json:"private_key"`
-	ClientEmail             string `json:"client_email"`
-	ClientID                string `json:"client_id"`
-	AuthURI                 string `json:"auth_uri"`
-	TokenURI                string `json:"token_uri"`
-	AuthProviderX509CertURL string `json:"auth_provider_x509_cert_url"`
-	ClientX509CertURL       string `json:"client_x509_cert_url"`
+	Gsuite                 *struct {
+		GsuiteUser string `json:"gsuiteUser"`
+		DomainName string `json:"domainName"`
+	} `json:"gsuite"`
+	Vendor string `json:"vendor"`
 }
 
 // refer to API type: GoogleCloudAccountPost
-type GcpCreateRequest struct {
-	Name                      string                       `json:"name"`
-	ServiceAccountCredentials GcpServiceAccountCredentials `json:"serviceAccountCredentials"`
-	GsuiteUser                string                       `json:"gsuiteUser"`
-	DomainName                string                       `json:"domainName"`
+type GCPCreateRequest struct {
+	Name                      string `json:"name"`
+	ServiceAccountCredentials struct {
+		Type                    string `json:"type"`
+		ProjectID               string `json:"project_id"`
+		PrivateKeyID            string `json:"private_key_id"`
+		PrivateKey              string `json:"private_key"`
+		ClientEmail             string `json:"client_email"`
+		ClientID                string `json:"client_id"`
+		AuthURI                 string `json:"auth_uri"`
+		TokenURI                string `json:"token_uri"`
+		AuthProviderX509CertURL string `json:"auth_provider_x509_cert_url"`
+		ClientX509CertURL       string `json:"client_x509_cert_url"`
+	} `json:"serviceAccountCredentials"`
+	GsuiteUser string `json:"gsuiteUser"`
+	DomainName string `json:"domainName"`
 }
 
 type QueryParameters struct {
@@ -181,9 +176,9 @@ func (service *Service) CreateAWSCloudAccount(body interface{}) (*AwsGetCloudAcc
 	return v, resp, nil
 }
 
-func (service *Service) CreateGCPCloudAccount(body interface{}) (*GcpCloudAccountGetResponse, *http.Response, error) {
-	v := new(GcpCloudAccountGetResponse)
-	resp, err := service.client.NewRequestDo("POST", GcpResourceNamePath, nil, body, v)
+func (service *Service) CreateGCPCloudAccount(body interface{}) (*GCPCloudAccountGetResponse, *http.Response, error) {
+	v := new(GCPCloudAccountGetResponse)
+	resp, err := service.client.NewRequestDo("POST", GCPResourceNamePath, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -211,9 +206,9 @@ func (service *Service) GetAWSCloudAccount(options interface{}) (*AwsGetCloudAcc
 	return v, resp, nil
 }
 
-func (service *Service) GetGCPCloudAccount(options interface{}) (*GcpCloudAccountGetResponse, *http.Response, error) {
-	v := new(GcpCloudAccountGetResponse)
-	resp, err := service.client.NewRequestDo("GET", GcpResourceNamePath, options, nil, v)
+func (service *Service) GetGCPCloudAccount(options interface{}) (*GCPCloudAccountGetResponse, *http.Response, error) {
+	v := new(GCPCloudAccountGetResponse)
+	resp, err := service.client.NewRequestDo("GET", GCPResourceNamePath, options, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
