@@ -94,7 +94,13 @@ type AzureCloudAccountRequest struct {
 		ClientID       string `json:"clientId"`
 		ClientPassword string `json:"clientPassword"`
 	} `json:"credentials"`
-	OperationMode string `json:"operationMode"`
+	OperationMode          string    `json:"operationMode"`
+	Error                  string    `json:"error"`
+	CreationDate           time.Time `json:"creationDate"`
+	OrganizationalUnitID   string    `json:"organizationalUnitId"`
+	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
+	OrganizationalUnitName string    `json:"organizationalUnitName"`
+	Vendor                 string    `json:"vendor"`
 }
 
 type AzureCloudAccountResponse struct {
