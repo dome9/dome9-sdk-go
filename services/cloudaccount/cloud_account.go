@@ -14,8 +14,8 @@ const (
 	D9GCPResourceName   = "GoogleCloudAccount/"
 )
 
-// AWSCreateRequest and AWSGetCloudAccountResponse refer to API type: CloudAccount
-type AWSCreateRequest struct {
+// AWSCloudAccountRequest and AWSCloudAccountResponse refer to API type: CloudAccount
+type AWSCloudAccountRequest struct {
 	Vendor                string    `json:"vendor"`
 	Name                  string    `json:"name"`
 	ExternalAccountNumber string    `json:"externalAccountNumber"`
@@ -38,7 +38,7 @@ type AWSCreateRequest struct {
 	LambdaScanner          bool   `json:"lambdaScanner"`
 }
 
-type AWSGetCloudAccountResponse struct {
+type AWSCloudAccountResponse struct {
 	ID                    string    `json:"id"`
 	Vendor                string    `json:"vendor"`
 	Name                  string    `json:"name"`
@@ -162,8 +162,8 @@ func New(c *dome9.Config) *Service {
 	return &Service{client: client.NewClient(c)}
 }
 
-func (service *Service) GetCloudAccountAWS(options interface{}) (*AWSGetCloudAccountResponse, *http.Response, error) {
-	v := new(AWSGetCloudAccountResponse)
+func (service *Service) GetCloudAccountAWS(options interface{}) (*AWSCloudAccountResponse, *http.Response, error) {
+	v := new(AWSCloudAccountResponse)
 	resp, err := service.client.NewRequestDo("GET", D9AwsResourceName, options, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -172,8 +172,8 @@ func (service *Service) GetCloudAccountAWS(options interface{}) (*AWSGetCloudAcc
 	return v, resp, nil
 }
 
-func (service *Service) CreateCloudAccountAWS(body interface{}) (*AWSGetCloudAccountResponse, *http.Response, error) {
-	v := new(AWSGetCloudAccountResponse)
+func (service *Service) CreateCloudAccountAWS(body interface{}) (*AWSCloudAccountResponse, *http.Response, error) {
+	v := new(AWSCloudAccountResponse)
 	resp, err := service.client.NewRequestDo("POST", D9AwsResourceName, nil, body, v)
 	if err != nil {
 		return nil, nil, err
