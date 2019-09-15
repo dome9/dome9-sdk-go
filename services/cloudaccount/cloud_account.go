@@ -1,4 +1,4 @@
-package cloud_accounts
+package cloudaccount
 
 import (
 	"net/http"
@@ -9,9 +9,9 @@ import (
 )
 
 const (
-	AwsResourceNamePath   = "cloudaccounts/"
-	AzureResourceNamePath = "AzureCloudAccount/"
-	GCPResourceNamePath   = "GoogleCloudAccount/"
+	D9AwsResourceName   = "cloudaccounts/"
+	D9AzureResourceName = "AzureCloudAccount/"
+	D9GCPResourceName   = "GoogleCloudAccount/"
 )
 
 type AwsCredentials struct {
@@ -120,7 +120,7 @@ type AzureCreateRequest struct {
 }
 
 // refer to API type: GoogleCloudAccountGet
-type GCPCloudAccountGetResponse struct {
+type GCPCloudAccountResponse struct {
 	ID                     string    `json:"id"`
 	Name                   string    `json:"name"`
 	ProjectID              string    `json:"projectId"`
@@ -136,7 +136,7 @@ type GCPCloudAccountGetResponse struct {
 }
 
 // refer to API type: GoogleCloudAccountPost
-type GCPCreateRequest struct {
+type GCPCloudAccountRequest struct {
 	Name                      string `json:"name"`
 	ServiceAccountCredentials struct {
 		Type                    string `json:"type"`
@@ -166,9 +166,9 @@ func New(c *dome9.Config) *Service {
 	return &Service{client: client.NewClient(c)}
 }
 
-func (service *Service) CreateAWSCloudAccount(body interface{}) (*AwsGetCloudAccountResponse, *http.Response, error) {
+func (service *Service) GetCloudAccountAWS(options interface{}) (*AwsGetCloudAccountResponse, *http.Response, error) {
 	v := new(AwsGetCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("POST", AwsResourceNamePath, nil, body, v)
+	resp, err := service.client.NewRequestDo("GET", D9AwsResourceName, options, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -176,29 +176,9 @@ func (service *Service) CreateAWSCloudAccount(body interface{}) (*AwsGetCloudAcc
 	return v, resp, nil
 }
 
-func (service *Service) CreateGCPCloudAccount(body interface{}) (*GCPCloudAccountGetResponse, *http.Response, error) {
-	v := new(GCPCloudAccountGetResponse)
-	resp, err := service.client.NewRequestDo("POST", GCPResourceNamePath, nil, body, v)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return v, resp, nil
-}
-
-func (service *Service) CreateAzureCloudAccount(body interface{}) (*AzureGetCloudAccountResponse, *http.Response, error) {
-	v := new(AzureGetCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("POST", AzureResourceNamePath, nil, body, v)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return v, resp, nil
-}
-
-func (service *Service) GetAWSCloudAccount(options interface{}) (*AwsGetCloudAccountResponse, *http.Response, error) {
+func (service *Service) CreateCloudAccountAWS(body interface{}) (*AwsGetCloudAccountResponse, *http.Response, error) {
 	v := new(AwsGetCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("GET", AwsResourceNamePath, options, nil, v)
+	resp, err := service.client.NewRequestDo("POST", D9AwsResourceName, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -206,9 +186,9 @@ func (service *Service) GetAWSCloudAccount(options interface{}) (*AwsGetCloudAcc
 	return v, resp, nil
 }
 
-func (service *Service) GetGCPCloudAccount(options interface{}) (*GCPCloudAccountGetResponse, *http.Response, error) {
-	v := new(GCPCloudAccountGetResponse)
-	resp, err := service.client.NewRequestDo("GET", GCPResourceNamePath, options, nil, v)
+func (service *Service) GetCloudAccountGCP(options interface{}) (*GCPCloudAccountResponse, *http.Response, error) {
+	v := new(GCPCloudAccountResponse)
+	resp, err := service.client.NewRequestDo("GET", D9GCPResourceName, options, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -216,9 +196,29 @@ func (service *Service) GetGCPCloudAccount(options interface{}) (*GCPCloudAccoun
 	return v, resp, nil
 }
 
-func (service *Service) GetAzureCloudAccount(options interface{}) (*AzureGetCloudAccountResponse, *http.Response, error) {
+func (service *Service) CreateCloudAccountGCP(body interface{}) (*GCPCloudAccountResponse, *http.Response, error) {
+	v := new(GCPCloudAccountResponse)
+	resp, err := service.client.NewRequestDo("POST", D9GCPResourceName, nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GetCloudAccountAzure(options interface{}) (*AzureGetCloudAccountResponse, *http.Response, error) {
 	v := new(AzureGetCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("GET", AzureResourceNamePath, options, nil, v)
+	resp, err := service.client.NewRequestDo("GET", D9AzureResourceName, options, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) CreateCloudAccountAzure(body interface{}) (*AzureGetCloudAccountResponse, *http.Response, error) {
+	v := new(AzureGetCloudAccountResponse)
+	resp, err := service.client.NewRequestDo("POST", D9AzureResourceName, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
