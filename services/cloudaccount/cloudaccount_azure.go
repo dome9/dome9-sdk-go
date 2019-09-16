@@ -20,7 +20,7 @@ type AzureCloudAccountRequest struct {
 	OrganizationalUnitID   string    `json:"organizationalUnitId"`
 	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
 	OrganizationalUnitName string    `json:"organizationalUnitName"`
-	Vendor                 string    `json:"vendor"`
+	Vendor                 *string   `json:"vendor"`
 }
 
 type AzureCloudAccountResponse struct {
