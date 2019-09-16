@@ -59,7 +59,7 @@ type AWSCloudAccountResponse struct {
 			UsersArns []string `json:"usersArns"`
 		} `json:"restrictedIamEntities"`
 	} `json:"iamSafe"`
-	NetSec struct {
+	NetSec *struct {
 		Regions []struct {
 			Region           string `json:"awsRegion"`
 			Name             string `json:"name"`
@@ -75,7 +75,6 @@ type AWSCloudAccountResponse struct {
 	OrganizationalUnitName string  `json:"organizationalUnitName"`
 	LambdaScanner          bool    `json:"lambdaScanner"`
 }
-
 
 func (service *Service) GetCloudAccountAWS(options interface{}) (*AWSCloudAccountResponse, *http.Response, error) {
 	v := new(AWSCloudAccountResponse)

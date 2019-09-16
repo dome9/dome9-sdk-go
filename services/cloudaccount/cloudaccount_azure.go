@@ -15,7 +15,7 @@ type AzureCloudAccountRequest struct {
 		ClientPassword string `json:"clientPassword"`
 	} `json:"credentials"`
 	OperationMode          string    `json:"operationMode"`
-	Error                  string    `json:"error"`
+	Error                  *string   `json:"error"`
 	CreationDate           time.Time `json:"creationDate"`
 	OrganizationalUnitID   string    `json:"organizationalUnitId"`
 	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
