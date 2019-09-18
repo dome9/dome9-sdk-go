@@ -86,7 +86,7 @@ func (service *Service) GetCloudAccountAWS(options interface{}) (*AWSCloudAccoun
 	return v, resp, nil
 }
 
-func (service *Service) CreateCloudAccountAWS(body interface{}) (*AWSCloudAccountResponse, *http.Response, error) {
+func (service *Service) CreateCloudAccountAWS(body AWSCloudAccountRequest) (*AWSCloudAccountResponse, *http.Response, error) {
 	v := new(AWSCloudAccountResponse)
 	resp, err := service.client.NewRequestDo("POST", D9AwsResourceName, nil, body, v)
 	if err != nil {
