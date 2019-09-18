@@ -1,12 +1,15 @@
-package cloudaccount
+package gcp
 
 import (
+	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/Dome9/dome9-sdk-go/services/cloudaccounts"
 )
 
 // refer to API type: GoogleCloudAccountPost
-type GCPCloudAccountRequest struct {
+type CloudAccountsRequest struct {
 	Name                      string `json:"name"`
 	ServiceAccountCredentials struct {
 		Type                    string `json:"type"`
@@ -25,7 +28,7 @@ type GCPCloudAccountRequest struct {
 }
 
 // refer to API type: GoogleCloudAccountGet
-type GCPCloudAccountResponse struct {
+type CloudAccountsResponse struct {
 	ID                     string    `json:"id"`
 	Name                   string    `json:"name"`
 	ProjectID              string    `json:"projectId"`
@@ -40,9 +43,9 @@ type GCPCloudAccountResponse struct {
 	Vendor string `json:"vendor"`
 }
 
-func (service *Service) GetCloudAccountGCP(options interface{}) (*GCPCloudAccountResponse, *http.Response, error) {
-	v := new(GCPCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("GET", D9GCPResourceName, options, nil, v)
+func (service *Service) Get(options interface{}) (*CloudAccountsResponse, *http.Response, error) {
+	v := new(CloudAccountsResponse)
+	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathGCP, options, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -50,12 +53,23 @@ func (service *Service) GetCloudAccountGCP(options interface{}) (*GCPCloudAccoun
 	return v, resp, nil
 }
 
-func (service *Service) CreateCloudAccountGCP(body GCPCloudAccountRequest) (*GCPCloudAccountResponse, *http.Response, error) {
-	v := new(GCPCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("POST", D9GCPResourceName, nil, body, v)
+func (service *Service) Create(body CloudAccountsRequest) (*CloudAccountsResponse, *http.Response, error) {
+	v := new(CloudAccountsResponse)
+	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulPathGCP, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	return v, resp, nil
+}
+
+func (service *Service) Delete(id string) (*http.Response, error) {
+	relativeAddress := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathGCP, id)
+	resp, err := service.Client.NewRequestDo("DELETE", relativeAddress, nil, nil, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }

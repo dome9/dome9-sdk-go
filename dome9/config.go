@@ -10,7 +10,7 @@ import (
 
 const (
 	defaultBaseURL = "https://api.dome9.com/v2/"
-	defaultTimeout = 40 * time.Second
+	defaultTimeout = 120 * time.Second
 	loggerPrefix   = "Dome9-logger: "
 )
 
@@ -26,7 +26,7 @@ type Config struct {
 
 /*
 NewConfig returns a default configuration for the client.
-By default it will try to read the access and te secret from the environment variables.
+By default it will try to read the access and te secret from the environment variable.
 */
 
 // TODO Add healthCheck method to NewConfig

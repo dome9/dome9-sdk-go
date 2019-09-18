@@ -1,13 +1,16 @@
-package cloudaccount
+package aws
 
 import (
+	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/Dome9/dome9-sdk-go/services/cloudaccounts"
 )
 
-// AWSCloudAccountRequest and AWSCloudAccountResponse refer to API type: CloudAccount
-type AWSCloudAccountRequest struct {
-	Vendor                string   `json:"vendor"`
+// AWSCloudAccountRequest and AWSCloudAccountResponse refer to API type: CloudAccounts
+type CloudAccountRequest struct {
+	Vendor                string    `json:"vendor"`
 	Name                  string    `json:"name"`
 	ExternalAccountNumber string    `json:"externalAccountNumber"`
 	Error                 *string   `json:"error"`
@@ -29,7 +32,7 @@ type AWSCloudAccountRequest struct {
 	LambdaScanner          bool   `json:"lambdaScanner"`
 }
 
-type AWSCloudAccountResponse struct {
+type CloudAccountResponse struct {
 	ID                    string    `json:"id"`
 	Vendor                string    `json:"vendor"`
 	Name                  string    `json:"name"`
@@ -76,9 +79,9 @@ type AWSCloudAccountResponse struct {
 	LambdaScanner          bool    `json:"lambdaScanner"`
 }
 
-func (service *Service) GetCloudAccountAWS(options interface{}) (*AWSCloudAccountResponse, *http.Response, error) {
-	v := new(AWSCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("GET", D9AwsResourceName, options, nil, v)
+func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAWS, options, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -86,12 +89,23 @@ func (service *Service) GetCloudAccountAWS(options interface{}) (*AWSCloudAccoun
 	return v, resp, nil
 }
 
-func (service *Service) CreateCloudAccountAWS(body AWSCloudAccountRequest) (*AWSCloudAccountResponse, *http.Response, error) {
-	v := new(AWSCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("POST", D9AwsResourceName, nil, body, v)
+func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulPathAWS, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	return v, resp, nil
+}
+
+func (service *Service) Delete(id string) (*http.Response, error) {
+	relativeAddress := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, id)
+	resp, err := service.Client.NewRequestDo("DELETE", relativeAddress, nil, nil, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }
