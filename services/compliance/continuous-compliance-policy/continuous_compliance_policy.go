@@ -9,23 +9,6 @@ import (
 
 const path = "Compliance/ContinuousCompliancePolicy/"
 
-type ContinuousCompliancePolicyGet struct {
-	ID                string   `json:"id"`
-	CloudAccountID    string   `json:"cloudAccountId"`
-	ExternalAccountID string   `json:"externalAccountId"`
-	CloudAccountType  string   `json:"cloudAccountType"`
-	BundleID          int      `json:"bundleId"`
-	NotificationIds   []string `json:"notificationIds"`
-}
-
-type ContinuousCompliancePolicyPut struct {
-	CloudAccountID    string   `json:"cloudAccountId"`
-	ExternalAccountID string   `json:"externalAccountId"`
-	CloudAccountType  string   `json:"cloudAccountType"`
-	BundleID          int      `json:"bundleId"`
-	NotificationIds   []string `json:"notificationIds"`
-}
-
 type Service struct {
 	client *client.Client
 }
@@ -34,18 +17,25 @@ func New(c *dome9.Config) *Service {
 	return &Service{client: client.NewClient(c)}
 }
 
-func (service *Service) Create(body *ContinuousCompliancePolicyPut) (*ContinuousCompliancePolicyGet, *http.Response, error) {
-	v := new(ContinuousCompliancePolicyGet)
-	resp, err := service.client.NewRequestDo("POST", path, nil, body, v)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return v, resp, nil
+type ContinuousCompliancePolicyRequest struct {
+	CloudAccountID    string   `json:"cloudAccountId"`
+	ExternalAccountID string   `json:"externalAccountId"`
+	CloudAccountType  string   `json:"cloudAccountType"`
+	BundleID          int      `json:"bundleId"`
+	NotificationIds   []string `json:"notificationIds"`
 }
 
-func (service *Service) GetAll() ([]ContinuousCompliancePolicyGet, *http.Response, error) {
-	var v []ContinuousCompliancePolicyGet
+type ContinuousCompliancePolicyResponse struct {
+	ID                string   `json:"id"`
+	CloudAccountID    string   `json:"cloudAccountId"`
+	ExternalAccountID string   `json:"externalAccountId"`
+	CloudAccountType  string   `json:"cloudAccountType"`
+	BundleID          int      `json:"bundleId"`
+	NotificationIds   []string `json:"notificationIds"`
+}
+
+func (service *Service) GetAll() ([]ContinuousCompliancePolicyResponse, *http.Response, error) {
+	var v []ContinuousCompliancePolicyResponse
 	resp, err := service.client.NewRequestDo("GET", path, nil, nil, &v)
 
 	if err != nil {
@@ -55,8 +45,18 @@ func (service *Service) GetAll() ([]ContinuousCompliancePolicyGet, *http.Respons
 	return v, resp, nil
 }
 
-func (service *Service) Update(id string, body *ContinuousCompliancePolicyPut) (*ContinuousCompliancePolicyGet, *http.Response, error) {
-	v := new(ContinuousCompliancePolicyGet)
+func (service *Service) Create(body *ContinuousCompliancePolicyRequest) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
+	v := new(ContinuousCompliancePolicyResponse)
+	resp, err := service.client.NewRequestDo("POST", path, nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) Update(id string, body *ContinuousCompliancePolicyRequest) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
+	v := new(ContinuousCompliancePolicyResponse)
 	resp, err := service.client.NewRequestDo("PUT", path+id, nil, body, v)
 	if err != nil {
 		return nil, nil, err
