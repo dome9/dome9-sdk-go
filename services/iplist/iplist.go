@@ -8,20 +8,16 @@ import (
 	"github.com/Dome9/dome9-sdk-go/dome9/client"
 )
 
-const (
-	ipListResourcePath = "iplist"
-)
-
-type Ip struct {
-	Ip      string
-	Comment string
-}
+const ipListResourcePath = "iplist"
 
 type IpList struct {
 	Id          int64
 	Name        string
 	Description string
-	Items       []Ip
+	Items       []struct {
+		Ip      string
+		Comment string
+	}
 }
 
 type Service struct {
