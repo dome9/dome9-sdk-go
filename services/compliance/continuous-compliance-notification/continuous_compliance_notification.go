@@ -75,7 +75,7 @@ type ContinuousComplianceNotificationRequest struct {
 	} `json:"changeDetection"`
 	// State must be set to "Enabled" or "Disabled"
 	GcpSecurityCommandCenterIntegration struct {
-		State     string `json:"state"`
+		State     string  `json:"state"`
 		ProjectID *string `json:"projectId"`
 		SourceID  *string `json:"sourceId"`
 	} `json:"gcpSecurityCommandCenterIntegration"`
@@ -135,7 +135,7 @@ type ContinuousComplianceNotificationResponse struct {
 		} `json:"webhookData"`
 	} `json:"changeDetection"`
 	GcpSecurityCommandCenterIntegration struct {
-		State     string `json:"state"`
+		State     string  `json:"state"`
 		ProjectID *string `json:"projectId"`
 		SourceID  *string `json:"sourceId"`
 	} `json:"gcpSecurityCommandCenterIntegration"`

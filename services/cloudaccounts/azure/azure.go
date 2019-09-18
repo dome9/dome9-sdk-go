@@ -1,12 +1,15 @@
-package cloudaccount
+package azure
 
 import (
+	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/Dome9/dome9-sdk-go/services/cloudaccounts"
 )
 
-// AzureCloudAccountRequest and AzureCloudAccountResponse refer to API type: AzureCloudAccount
-type AzureCloudAccountRequest struct {
+// AzureCloudAccountRequest and CloudAccountsResponse refer to API type: AzureCloudAccount
+type CloudAccountsRequest struct {
 	Name           string `json:"name"`
 	SubscriptionID string `json:"subscriptionId"`
 	TenantID       string `json:"tenantId"`
@@ -20,10 +23,10 @@ type AzureCloudAccountRequest struct {
 	OrganizationalUnitID   string    `json:"organizationalUnitId"`
 	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
 	OrganizationalUnitName string    `json:"organizationalUnitName"`
-	Vendor                 string   `json:"vendor"`
+	Vendor                 string    `json:"vendor"`
 }
 
-type AzureCloudAccountResponse struct {
+type CloudAccountsResponse struct {
 	ID             string `json:"id"`
 	Name           string `json:"name"`
 	SubscriptionID string `json:"subscriptionId"`
@@ -41,9 +44,9 @@ type AzureCloudAccountResponse struct {
 	Vendor                 string    `json:"vendor"`
 }
 
-func (service *Service) GetCloudAccountAzure(options interface{}) (*AzureCloudAccountResponse, *http.Response, error) {
-	v := new(AzureCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("GET", D9AzureResourceName, options, nil, v)
+func (service *Service) Get(options interface{}) (*CloudAccountsResponse, *http.Response, error) {
+	v := new(CloudAccountsResponse)
+	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAzure, options, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -51,12 +54,23 @@ func (service *Service) GetCloudAccountAzure(options interface{}) (*AzureCloudAc
 	return v, resp, nil
 }
 
-func (service *Service) CreateCloudAccountAzure(body AzureCloudAccountRequest) (*AzureCloudAccountResponse, *http.Response, error) {
-	v := new(AzureCloudAccountResponse)
-	resp, err := service.client.NewRequestDo("POST", D9AzureResourceName, nil, body, v)
+func (service *Service) Create(body CloudAccountsRequest) (*CloudAccountsResponse, *http.Response, error) {
+	v := new(CloudAccountsResponse)
+	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulPathAzure, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	return v, resp, nil
+}
+
+func (service *Service) Delete(id string) (*http.Response, error) {
+	relativeAddress := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, id)
+	resp, err := service.Client.NewRequestDo("DELETE", relativeAddress, nil, nil, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
 }
