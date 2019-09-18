@@ -7,7 +7,7 @@ import (
 
 // AWSCloudAccountRequest and AWSCloudAccountResponse refer to API type: CloudAccount
 type AWSCloudAccountRequest struct {
-	Vendor                *string   `json:"vendor"`
+	Vendor                string   `json:"vendor"`
 	Name                  string    `json:"name"`
 	ExternalAccountNumber string    `json:"externalAccountNumber"`
 	Error                 *string   `json:"error"`
