@@ -51,7 +51,7 @@ func (service *Service) GetCloudAccountAzure(options interface{}) (*AzureCloudAc
 	return v, resp, nil
 }
 
-func (service *Service) CreateCloudAccountAzure(body interface{}) (*AzureCloudAccountResponse, *http.Response, error) {
+func (service *Service) CreateCloudAccountAzure(body AzureCloudAccountRequest) (*AzureCloudAccountResponse, *http.Response, error) {
 	v := new(AzureCloudAccountResponse)
 	resp, err := service.client.NewRequestDo("POST", D9AzureResourceName, nil, body, v)
 	if err != nil {

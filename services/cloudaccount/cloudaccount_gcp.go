@@ -50,7 +50,7 @@ func (service *Service) GetCloudAccountGCP(options interface{}) (*GCPCloudAccoun
 	return v, resp, nil
 }
 
-func (service *Service) CreateCloudAccountGCP(body interface{}) (*GCPCloudAccountResponse, *http.Response, error) {
+func (service *Service) CreateCloudAccountGCP(body GCPCloudAccountRequest) (*GCPCloudAccountResponse, *http.Response, error) {
 	v := new(GCPCloudAccountResponse)
 	resp, err := service.client.NewRequestDo("POST", D9GCPResourceName, nil, body, v)
 	if err != nil {
