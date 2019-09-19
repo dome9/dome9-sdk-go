@@ -9,7 +9,7 @@ import (
 )
 
 // refer to API type: GoogleCloudAccountPost
-type CloudAccountsRequest struct {
+type CloudAccountRequest struct {
 	Name                      string `json:"name"`
 	ServiceAccountCredentials struct {
 		Type                    string `json:"type"`
@@ -28,7 +28,7 @@ type CloudAccountsRequest struct {
 }
 
 // refer to API type: GoogleCloudAccountGet
-type CloudAccountsResponse struct {
+type CloudAccountResponse struct {
 	ID                     string    `json:"id"`
 	Name                   string    `json:"name"`
 	ProjectID              string    `json:"projectId"`
@@ -43,8 +43,11 @@ type CloudAccountsResponse struct {
 	Vendor string `json:"vendor"`
 }
 
-func (service *Service) Get(options interface{}) (*CloudAccountsResponse, *http.Response, error) {
-	v := new(CloudAccountsResponse)
+func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
+	if options == nil {
+		return nil, nil, fmt.Errorf("options parameter must be passed")
+	}
+	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathGCP, options, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -53,8 +56,18 @@ func (service *Service) Get(options interface{}) (*CloudAccountsResponse, *http.
 	return v, resp, nil
 }
 
-func (service *Service) Create(body CloudAccountsRequest) (*CloudAccountsResponse, *http.Response, error) {
-	v := new(CloudAccountsResponse)
+func (service *Service) GetAll() (*[]CloudAccountResponse, *http.Response, error) {
+	v := new([]CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathGCP, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulPathGCP, nil, body, v)
 	if err != nil {
 		return nil, nil, err

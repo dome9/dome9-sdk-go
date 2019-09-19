@@ -1,6 +1,7 @@
 package continuous_compliance_notification
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Dome9/dome9-sdk-go/dome9"
@@ -141,10 +142,22 @@ type ContinuousComplianceNotificationResponse struct {
 	} `json:"gcpSecurityCommandCenterIntegration"`
 }
 
-func (service *Service) GetAll() ([]ContinuousComplianceNotificationResponse, *http.Response, error) {
-	var v []ContinuousComplianceNotificationResponse
-	resp, err := service.client.NewRequestDo("GET", path, nil, nil, &v)
+func (service *Service) Get(options interface{}) (*ContinuousComplianceNotificationResponse, *http.Response, error) {
+	if options == nil {
+		return nil, nil, fmt.Errorf("options parameter must be passed")
+	}
+	v := new(ContinuousComplianceNotificationResponse)
+	resp, err := service.client.NewRequestDo("GET", path, options, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
 
+	return v, resp, nil
+}
+
+func (service *Service) GetAll() (*[]ContinuousComplianceNotificationResponse, *http.Response, error) {
+	v := new([]ContinuousComplianceNotificationResponse)
+	resp, err := service.client.NewRequestDo("GET", path, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
