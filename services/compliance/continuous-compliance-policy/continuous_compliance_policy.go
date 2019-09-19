@@ -1,6 +1,7 @@
 package continuous_compliance_policy
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Dome9/dome9-sdk-go/dome9"
@@ -34,10 +35,22 @@ type ContinuousCompliancePolicyResponse struct {
 	NotificationIds   []string `json:"notificationIds"`
 }
 
-func (service *Service) GetAll() ([]ContinuousCompliancePolicyResponse, *http.Response, error) {
-	var v []ContinuousCompliancePolicyResponse
-	resp, err := service.client.NewRequestDo("GET", path, nil, nil, &v)
+func (service *Service) Get(options interface{}) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
+	if options == nil {
+		return nil, nil, fmt.Errorf("options parameter must be passed")
+	}
+	v := new(ContinuousCompliancePolicyResponse)
+	resp, err := service.client.NewRequestDo("GET", path, options, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
 
+	return v, resp, nil
+}
+
+func (service *Service) GetAll() (*[]ContinuousCompliancePolicyResponse, *http.Response, error) {
+	v := new([]ContinuousCompliancePolicyResponse)
+	resp, err := service.client.NewRequestDo("GET", path, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -8,8 +8,8 @@ import (
 	"github.com/Dome9/dome9-sdk-go/services/cloudaccounts"
 )
 
-// AzureCloudAccountRequest and CloudAccountsResponse refer to API type: AzureCloudAccount
-type CloudAccountsRequest struct {
+// AzureCloudAccountRequest and CloudAccountResponse refer to API type: AzureCloudAccount
+type CloudAccountRequest struct {
 	Name           string `json:"name"`
 	SubscriptionID string `json:"subscriptionId"`
 	TenantID       string `json:"tenantId"`
@@ -26,7 +26,7 @@ type CloudAccountsRequest struct {
 	Vendor                 string    `json:"vendor"`
 }
 
-type CloudAccountsResponse struct {
+type CloudAccountResponse struct {
 	ID             string `json:"id"`
 	Name           string `json:"name"`
 	SubscriptionID string `json:"subscriptionId"`
@@ -44,8 +44,11 @@ type CloudAccountsResponse struct {
 	Vendor                 string    `json:"vendor"`
 }
 
-func (service *Service) Get(options interface{}) (*CloudAccountsResponse, *http.Response, error) {
-	v := new(CloudAccountsResponse)
+func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
+	if options == nil {
+		return nil, nil, fmt.Errorf("options parameter must be passed")
+	}
+	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAzure, options, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -54,8 +57,18 @@ func (service *Service) Get(options interface{}) (*CloudAccountsResponse, *http.
 	return v, resp, nil
 }
 
-func (service *Service) Create(body CloudAccountsRequest) (*CloudAccountsResponse, *http.Response, error) {
-	v := new(CloudAccountsResponse)
+func (service *Service) GetAll() (*[]CloudAccountResponse, *http.Response, error) {
+	v := new([]CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAzure, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulPathAzure, nil, body, v)
 	if err != nil {
 		return nil, nil, err

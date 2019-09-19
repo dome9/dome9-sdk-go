@@ -80,8 +80,21 @@ type CloudAccountResponse struct {
 }
 
 func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
+	if options == nil {
+		return nil, nil, fmt.Errorf("options parameter must be passed")
+	}
 	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAWS, options, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GetAll() (*[]CloudAccountResponse, *http.Response, error) {
+	v := new([]CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAWS, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
