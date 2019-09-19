@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	// Pass accessID, secretKey or set environment variables
+	// Pass accessID, secretKey, rawUrl, or set environment variables
 	config, _ := dome9.NewConfig("", "", "")
 	srv := aws.New(config)
 	var req aws.CloudAccountRequest
@@ -17,10 +17,8 @@ func main() {
 	req.FullProtection = false
 	req.AllowReadOnly = false
 	req.Vendor = "aws"
-	arn := "ARN"
-	secret := "SECRET"
-	req.Credentials.Arn = &arn
-	req.Credentials.Secret = secret
+	req.Credentials.Arn = "ARN"
+	req.Credentials.Secret = "SECRET"
 	req.Credentials.Type = "RoleBased"
 
 	v, _, err := srv.Create(req)

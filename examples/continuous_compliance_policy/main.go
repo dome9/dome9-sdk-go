@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	// Pass accessID, secretKey or set environment variables
+	// Pass accessID, secretKey, rawUrl, or set environment variables
 	config, _ := dome9.NewConfig("", "", "")
 	srv := continuous_compliance_policy.New(config)
 	var req continuous_compliance_policy.ContinuousCompliancePolicyRequest

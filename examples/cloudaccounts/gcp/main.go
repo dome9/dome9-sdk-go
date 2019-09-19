@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	// Pass accessID, secretKey or set environment variables
+	// Pass accessID, secretKey, rawUrl, or set environment variables
 	config, _ := dome9.NewConfig("", "", "")
 	srv := gcp.New(config)
 	var req gcp.CloudAccountRequest
