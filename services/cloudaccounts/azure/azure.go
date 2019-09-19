@@ -18,7 +18,7 @@ type CloudAccountRequest struct {
 		ClientPassword string `json:"clientPassword"`
 	} `json:"credentials"`
 	OperationMode          string    `json:"operationMode"`
-	Error                  *string   `json:"error"`
+	Error                  string    `json:"error,omitempty"`
 	CreationDate           time.Time `json:"creationDate"`
 	OrganizationalUnitID   string    `json:"organizationalUnitId"`
 	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
@@ -32,13 +32,13 @@ type CloudAccountResponse struct {
 	SubscriptionID string `json:"subscriptionId"`
 	TenantID       string `json:"tenantId"`
 	Credentials    struct {
-		ClientID       string  `json:"clientId"`
-		ClientPassword *string `json:"clientPassword"`
+		ClientID       string `json:"clientId"`
+		ClientPassword string `json:"clientPassword,omitempty"`
 	} `json:"credentials"`
 	OperationMode          string    `json:"operationMode"`
-	Error                  *string   `json:"error"`
+	Error                  string    `json:"error,omitempty"`
 	CreationDate           time.Time `json:"creationDate"`
-	OrganizationalUnitID   *string   `json:"organizationalUnitId"`
+	OrganizationalUnitID   string    `json:"organizationalUnitId,omitempty"`
 	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
 	OrganizationalUnitName string    `json:"organizationalUnitName"`
 	Vendor                 string    `json:"vendor"`

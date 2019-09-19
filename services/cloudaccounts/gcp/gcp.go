@@ -33,13 +33,13 @@ type CloudAccountResponse struct {
 	Name                   string    `json:"name"`
 	ProjectID              string    `json:"projectId"`
 	CreationDate           time.Time `json:"creationDate"`
-	OrganizationalUnitID   *string   `json:"organizationalUnitId"`
+	OrganizationalUnitID   string    `json:"organizationalUnitId,omitempty"`
 	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
 	OrganizationalUnitName string    `json:"organizationalUnitName"`
-	Gsuite                 *struct {
+	Gsuite                 struct {
 		GsuiteUser string `json:"gsuiteUser"`
 		DomainName string `json:"domainName"`
-	} `json:"gsuite"`
+	} `json:"gsuite,omitempty"`
 	Vendor string `json:"vendor"`
 }
 

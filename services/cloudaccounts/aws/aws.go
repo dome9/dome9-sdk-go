@@ -13,16 +13,16 @@ type CloudAccountRequest struct {
 	Vendor                string    `json:"vendor"`
 	Name                  string    `json:"name"`
 	ExternalAccountNumber string    `json:"externalAccountNumber"`
-	Error                 *string   `json:"error"`
+	Error                 string    `json:"error,omitempty"`
 	IsFetchingSuspended   bool      `json:"isFetchingSuspended"`
 	CreationDate          time.Time `json:"creationDate"`
 	Credentials           struct {
-		ApiKey     *string `json:"apikey"`
-		Arn        *string `json:"arn"`
-		Secret     string  `json:"secret"`
-		IamUser    string  `json:"iamUser"`
-		Type       string  `json:"type"`
-		IsReadOnly bool    `json:"isReadOnly"`
+		ApiKey     string `json:"apikey,omitempty"`
+		Arn        string `json:"arn,omitempty"`
+		Secret     string `json:"secret"`
+		IamUser    string `json:"iamUser"`
+		Type       string `json:"type"`
+		IsReadOnly bool   `json:"isReadOnly"`
 	} `json:"credentials"`
 	FullProtection         bool   `json:"fullProtection"`
 	AllowReadOnly          bool   `json:"allowReadOnly"`
@@ -37,18 +37,18 @@ type CloudAccountResponse struct {
 	Vendor                string    `json:"vendor"`
 	Name                  string    `json:"name"`
 	ExternalAccountNumber string    `json:"externalAccountNumber"`
-	Error                 *string   `json:"error"`
+	Error                 string    `json:"error,omitempty"`
 	IsFetchingSuspended   bool      `json:"isFetchingSuspended"`
 	CreationDate          time.Time `json:"creationDate"`
 	Credentials           struct {
-		ApiKey     *string `json:"apikey"`
-		Arn        *string `json:"arn"`
-		Secret     *string `json:"secret"`
-		IamUser    *string `json:"iamUser"`
-		Type       string  `json:"type"`
-		IsReadOnly bool    `json:"isReadOnly"`
+		ApiKey     string `json:"apikey,omitempty"`
+		Arn        string `json:"arn,omitempty"`
+		Secret     string `json:"secret,omitempty"`
+		IamUser    string `json:"iamUser,omitempty"`
+		Type       string `json:"type"`
+		IsReadOnly bool   `json:"isReadOnly"`
 	} `json:"credentials"`
-	IamSafe *struct {
+	IamSafe struct {
 		AwsGroupArn         string `json:"awsGroupArn"`
 		AwsPolicyArn        string `json:"awsPolicyArn"`
 		Mode                string `json:"mode"`
@@ -61,22 +61,22 @@ type CloudAccountResponse struct {
 			RolesArns []string `json:"rolesArns"`
 			UsersArns []string `json:"usersArns"`
 		} `json:"restrictedIamEntities"`
-	} `json:"iamSafe"`
-	NetSec *struct {
+	} `json:"iamSafe,omitempty"`
+	NetSec struct {
 		Regions []struct {
 			Region           string `json:"awsRegion"`
 			Name             string `json:"name"`
 			Hidden           bool   `json:"hidden"`
 			NewGroupBehavior string `json:"newGroupBehavior"`
 		} `json:"regions"`
-	} `json:"netSec"`
-	Magellan               bool    `json:"magellan"`
-	FullProtection         bool    `json:"fullProtection"`
-	AllowReadOnly          bool    `json:"allowReadOnly"`
-	OrganizationalUnitID   *string `json:"organizationalUnitId"`
-	OrganizationalUnitPath string  `json:"organizationalUnitPath"`
-	OrganizationalUnitName string  `json:"organizationalUnitName"`
-	LambdaScanner          bool    `json:"lambdaScanner"`
+	} `json:"netSec,omitempty"`
+	Magellan               bool   `json:"magellan"`
+	FullProtection         bool   `json:"fullProtection"`
+	AllowReadOnly          bool   `json:"allowReadOnly"`
+	OrganizationalUnitID   string `json:"organizationalUnitId,omitempty"`
+	OrganizationalUnitPath string `json:"organizationalUnitPath"`
+	OrganizationalUnitName string `json:"organizationalUnitName"`
+	LambdaScanner          bool   `json:"lambdaScanner"`
 }
 
 func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
