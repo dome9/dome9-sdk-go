@@ -12,6 +12,7 @@ func main() {
 	config, _ := dome9.NewConfig("", "", "")
 	srv := iplist.New(config)
 	var req iplist.IpList
+	
 	// Set IP List parameters
 	req.Name = "test IP list"
 	req.Description = "test description"
@@ -25,12 +26,14 @@ func main() {
 	req.Items = append(req.Items, item)
 
 	v, _, err := srv.Create(&req)
-	resp, _, _ := srv.GetAll()
-	fmt.Printf("Create response type: %T\n Content %+v", v, v)
-	fmt.Printf("Get response type: %T\n Content: %+v", resp, resp)
-
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Printf("Create response type: %T\n Content %+v", v, v)
 
+	resp, _, err := srv.GetAll()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("Get response type: %T\n Content: %+v", resp, resp)
 }
