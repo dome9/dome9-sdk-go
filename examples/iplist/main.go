@@ -16,10 +16,10 @@ func main() {
 	req.Name = "test IP list"
 	req.Description = "test description"
 	item := struct {
-		Ip string
+		Ip      string
 		Comment string
 	}{
-		Ip: "6.6.6.6",
+		Ip:      "6.6.6.6",
 		Comment: "This is comment",
 	}
 	req.Items = append(req.Items, item)

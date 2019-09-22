@@ -10,26 +10,21 @@ import (
 
 // AWSCloudAccountRequest and AWSCloudAccountResponse refer to API type: CloudAccounts
 type CloudAccountRequest struct {
-	Vendor                string    `json:"vendor,omitempty"`
-	Name                  string    `json:"name"`
-	ExternalAccountNumber string    `json:"externalAccountNumber"`
-	Error                 string    `json:"error,omitempty"`
-	IsFetchingSuspended   bool      `json:"isFetchingSuspended"`
-	CreationDate          time.Time `json:"creationDate"`
-	Credentials           struct {
+	Name        string `json:"name"`
+	Credentials struct {
 		ApiKey     string `json:"apikey,omitempty"`
 		Arn        string `json:"arn,omitempty"`
-		Secret     string `json:"secret"`
-		IamUser    string `json:"iamUser"`
-		Type       string `json:"type"`
-		IsReadOnly bool   `json:"isReadOnly"`
+		Secret     string `json:"secret,omitempty"`
+		IamUser    string `json:"iamUser,omitempty"`
+		Type       string `json:"type,omitempty"`
+		IsReadOnly bool   `json:"isReadOnly,omitempty"`
 	} `json:"credentials"`
-	FullProtection         bool   `json:"fullProtection"`
-	AllowReadOnly          bool   `json:"allowReadOnly"`
-	OrganizationalUnitID   string `json:"organizationalUnitId"`
-	OrganizationalUnitPath string `json:"organizationalUnitPath"`
-	OrganizationalUnitName string `json:"organizationalUnitName"`
-	LambdaScanner          bool   `json:"lambdaScanner"`
+	FullProtection         bool   `json:"fullProtection,omitempty"`
+	AllowReadOnly          bool   `json:"allowReadOnly,omitempty"`
+	OrganizationalUnitID   string `json:"organizationalUnitId,omitempty"`
+	OrganizationalUnitPath string `json:"organizationalUnitPath,omitempty"`
+	OrganizationalUnitName string `json:"organizationalUnitName,omitempty"`
+	LambdaScanner          bool   `json:"lambdaScanner,omitempty"`
 }
 
 type CloudAccountResponse struct {
@@ -79,10 +74,28 @@ type CloudAccountResponse struct {
 	LambdaScanner          bool   `json:"lambdaScanner"`
 }
 
+type CloudAccountUpdateNameRequest struct {
+	CloudAccountID        string `json:"cloudAccountId,omitempty"`
+	ExternalAccountNumber string `json:"externalAccountNumber,omitempty"`
+	Data                  string `json:"data,omitempty"`
+}
+
+type CloudAccountUpdateRegionConfigRequest struct {
+	CloudAccountID        string `json:"cloudAccountId,omitempty"`
+	ExternalAccountNumber string `json:"externalAccountNumber,omitempty"`
+	Data                  struct {
+		Region           string `json:"region,omitempty"`
+		Name             string `json:"name,omitempty"`
+		Hidden           bool   `json:"hidden,omitempty"`
+		NewGroupBehavior string `json:"newGroupBehavior,omitempty"`
+	} `json:"data,omitempty"`
+}
+
 func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
 	if options == nil {
 		return nil, nil, fmt.Errorf("options parameter must be passed")
 	}
+
 	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAWS, options, nil, v)
 	if err != nil {
@@ -121,4 +134,24 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 	}
 
 	return resp, nil
+}
+
+func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSName), nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) UpdateRegionConfig(body CloudAccountUpdateRegionConfigRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSRegionConfig), nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
 }
