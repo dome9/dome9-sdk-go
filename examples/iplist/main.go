@@ -12,6 +12,7 @@ func main() {
 	config, _ := dome9.NewConfig("", "", "")
 	srv := iplist.New(config)
 	var req iplist.IpList
+	
 	// Set IP List parameters
 	req.Name = "test IP list"
 	req.Description = "test description"

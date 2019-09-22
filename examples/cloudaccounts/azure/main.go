@@ -14,12 +14,14 @@ func main() {
 	var req azure.CloudAccountRequest
 
 	req.Name = "test Azure cloud account"
-	req.SubscriptionID = "Azure subscription id for account"
-	req.TenantID = "Azure tenant id"
 	req.Vendor = "Azure"
-	req.Credentials.ClientID = "Azure account id"
-	req.Credentials.ClientPassword = "Password for account"
 	req.OperationMode = "Read"
+
+	// Must fill below
+	req.SubscriptionID = "AZURE SUBSCRIPTION ID FOR ACCOUNT"
+	req.TenantID = "AZURE TENANT ID"
+	req.Credentials.ClientID = "AZURE ACCOUNT ID"
+	req.Credentials.ClientPassword = "PASSWORD FOR ACCOUNT"
 
 	v, _, err := srv.Create(req)
 	if err != nil {

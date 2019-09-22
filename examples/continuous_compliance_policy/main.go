@@ -16,12 +16,12 @@ func main() {
 
 	// Set Rule bundle ID
 	desiredBundleID := 86685
-
-	// Must set below values
 	req.BundleID = desiredBundleID
-	req.CloudAccountID = "cloud account id"
-	req.ExternalAccountID = "external account id"
-	req.NotificationIds = []string{"notification id"}
+
+	// must fill below variables
+	req.CloudAccountID = "CLOUD ACCOUNT ID"
+	req.ExternalAccountID = "EXTERNAL ACCOUNT ID"
+	req.NotificationIds = []string{"NOTIFICATION ID"}
 
 	v, _, err := srv.Create(&req)
 	if err != nil {

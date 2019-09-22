@@ -23,11 +23,11 @@ func main() {
 	req.DomainName = ""
 
 	// must fill below variables
-	req.ServiceAccountCredentials.ProjectID = "project ID"
-	req.ServiceAccountCredentials.PrivateKeyID = "private key ID"
-	req.ServiceAccountCredentials.PrivateKey = "private key"
-	req.ServiceAccountCredentials.ClientEmail = "client email"
-	req.ServiceAccountCredentials.ClientID = "client ID"
+	req.ServiceAccountCredentials.ProjectID = "PROJECT ID"
+	req.ServiceAccountCredentials.PrivateKeyID = "PRIVATE KEY ID"
+	req.ServiceAccountCredentials.PrivateKey = "PRIVATE KEY"
+	req.ServiceAccountCredentials.ClientEmail = "CLIENT EMAIL"
+	req.ServiceAccountCredentials.ClientID = "CLIENT ID"
 
 
 	v, _, err := srv.Create(req)
