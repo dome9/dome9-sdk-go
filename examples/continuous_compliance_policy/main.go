@@ -12,22 +12,26 @@ func main() {
 	config, _ := dome9.NewConfig("", "", "")
 	srv := continuous_compliance_policy.New(config)
 	var req continuous_compliance_policy.ContinuousCompliancePolicyRequest
-	// Set cloud account parameters
-	req.CloudAccountID = "CLOUD_ACCOUNT_ID"
-	req.ExternalAccountID = "EXTERNAL_ACCOUNT_ID"
 	req.CloudAccountType = "Aws"
+
 	// Set Rule bundle ID
-	req.BundleID = 86685
-	// Set notification ID's
-	req.NotificationIds = []string{"NOTIFICATION_IDS"}
+	desiredBundleID := 86685
+
+	// Must set below values
+	req.BundleID = desiredBundleID
+	req.CloudAccountID = "cloud account id"
+	req.ExternalAccountID = "external account id"
+	req.NotificationIds = []string{"notification id"}
 
 	v, _, err := srv.Create(&req)
-	resp, _, _ := srv.GetAll()
-	fmt.Printf("Create response type: %T\n Content %+v", v, v)
-	fmt.Printf("Get response type: %T\n Content: %+v", resp, resp)
-
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
+	fmt.Printf("Create response type: %T\n Content %+v", v, v)
 
+	resp, _, err := srv.GetAll()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Get response type: %T\n Content: %+v", resp, resp)
 }

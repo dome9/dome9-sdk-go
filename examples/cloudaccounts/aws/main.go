@@ -14,8 +14,8 @@ func main() {
 	var req aws.CloudAccountRequest
 
 	req.Name = "test AWS cloud account"
-	req.Credentials.Arn = "user's_AWS_account_ARN"
-	req.Credentials.Secret = "user's_AWS_account_SECRET"
+	req.Credentials.Arn = "AWS Role ARN"
+	req.Credentials.Secret = "AWS role External ID"
 	req.Credentials.Type = "RoleBased"
 
 	// Create cloud account

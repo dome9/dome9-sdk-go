@@ -14,20 +14,22 @@ func main() {
 	var req azure.CloudAccountRequest
 
 	req.Name = "test Azure cloud account"
-	req.SubscriptionID = "SUBSCRIPTION_ID"
-	req.TenantID = "TENANT_ID"
+	req.SubscriptionID = "Azure subscription id for account"
+	req.TenantID = "Azure tenant id"
 	req.Vendor = "Azure"
-	req.Credentials.ClientID = "CLIENT_ID"
-	req.Credentials.ClientPassword = "CLIENT_PASSWORD"
+	req.Credentials.ClientID = "Azure account id"
+	req.Credentials.ClientPassword = "Password for account"
 	req.OperationMode = "Read"
 
 	v, _, err := srv.Create(req)
-	resp, _, _ := srv.GetAll()
-	fmt.Printf("Create response type: %T\n Content %+v\n", v, v)
-	fmt.Printf("Get response type: %T\n Content: %+v\n", resp, resp)
-
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
+	fmt.Printf("Create response type: %T\n Content %+v\n", v, v)
 
+	resp, _, err := srv.GetAll()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Get response type: %T\n Content: %+v\n", resp, resp)
 }
