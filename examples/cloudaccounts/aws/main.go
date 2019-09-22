@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/Dome9/dome9-sdk-go/dome9"
 	"github.com/Dome9/dome9-sdk-go/services/cloudaccounts/aws"
@@ -15,8 +14,8 @@ func main() {
 	var req aws.CloudAccountRequest
 
 	req.Name = "test AWS cloud account"
-	req.Credentials.Arn = os.Getenv("ARN")
-	req.Credentials.Secret = os.Getenv("SECRET")
+	req.Credentials.Arn = "user's_AWS_account_ARN"
+	req.Credentials.Secret = "user's_AWS_account_SECRET"
 	req.Credentials.Type = "RoleBased"
 
 	// Create cloud account
