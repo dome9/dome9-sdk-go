@@ -23,7 +23,6 @@ type CloudAccountRequest struct {
 	OrganizationalUnitID   string    `json:"organizationalUnitId"`
 	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
 	OrganizationalUnitName string    `json:"organizationalUnitName"`
-	Vendor                 string    `json:"vendor"`
 }
 
 type CloudAccountResponse struct {
