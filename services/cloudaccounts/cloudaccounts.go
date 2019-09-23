@@ -8,8 +8,10 @@ const (
 
 // AWS service paths
 const (
-	RESTfulServicePathAWSName         = "name"
-	RESTfulServicePathAWSRegionConfig = "region-conf"
+	RESTfulServicePathAWSName            = "name"
+	RESTfulServicePathAWSRegionConfig    = "region-conf"
+	RESTfulServicePathOrganizationalUnit = "organizationalUnit"
+	RESTfulServicePathCredentials        = "credentials"
 )
 
 type QueryParameters struct {

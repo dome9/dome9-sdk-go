@@ -91,6 +91,23 @@ type CloudAccountUpdateRegionConfigRequest struct {
 	} `json:"data,omitempty"`
 }
 
+type CloudAccountUpdateOrganizationalIdRequest struct {
+	OrganizationalUnitId string `json:"organizationalUnitId,omitempty"`
+}
+
+type CloudAccountUpdateCredentialsRequest struct {
+	CloudAccountID        string `json:"cloudAccountId,omitempty"`
+	ExternalAccountNumber string `json:"externalAccountNumber,omitempty"`
+	Data                  struct {
+		Apikey     string `json:"apikey,omitempty"`
+		Arn        string `json:"arn,omitempty"`
+		Secret     string `json:"secret,omitempty"`
+		IamUser    string `json:"iamUser,omitempty"`
+		Type       string `json:"type,omitempty"`
+		IsReadOnly bool   `json:"isReadOnly,omitempty"`
+	} `json:"data,omitempty"`
+}
+
 func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
 	if options == nil {
 		return nil, nil, fmt.Errorf("options parameter must be passed")
@@ -149,6 +166,27 @@ func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAc
 func (service *Service) UpdateRegionConfig(body CloudAccountUpdateRegionConfigRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSRegionConfig), nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+// TODO: not implemented in TF provider due to bug https://dome9-security.atlassian.net/browse/DOME-12538
+func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizationalIdRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathOrganizationalUnit), nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) UpdateCredentials(body CloudAccountUpdateCredentialsRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathCredentials), nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}

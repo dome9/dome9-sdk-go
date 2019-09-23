@@ -29,7 +29,6 @@ func main() {
 	req.ServiceAccountCredentials.ClientEmail = "CLIENT EMAIL"
 	req.ServiceAccountCredentials.ClientID = "CLIENT ID"
 
-
 	v, _, err := srv.Create(req)
 	if err != nil {
 		panic(err)

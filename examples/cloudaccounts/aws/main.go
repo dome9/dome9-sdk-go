@@ -17,8 +17,8 @@ func main() {
 	req.Credentials.Type = "RoleBased"
 
 	// must fill below variables
-	req.Credentials.Arn = "AWS ROLE ARN"
-	req.Credentials.Secret = "AWS ROLE EXTERNAL ID"
+	req.Credentials.Arn = "ARN"
+	req.Credentials.Secret = "SECRET"
 
 	// Create cloud account
 	v, _, err := srv.Create(req)
@@ -46,4 +46,57 @@ func main() {
 	}
 
 	fmt.Printf("update name response type: %T\n Content: %+v\n", updateResponse, updateResponse)
+
+	// UpdateRegionConfig
+	desiredGroupBehavior := "FullManage"
+	updateConfigResponse, _, err := srv.UpdateRegionConfig(aws.CloudAccountUpdateRegionConfigRequest{
+		CloudAccountID: v.ID,
+		Data: struct {
+			Region           string `json:"region,omitempty"`
+			Name             string `json:"name,omitempty"`
+			Hidden           bool   `json:"hidden,omitempty"`
+			NewGroupBehavior string `json:"newGroupBehavior,omitempty"`
+		}{
+			Region:           "us_east_1",
+			NewGroupBehavior: desiredGroupBehavior,
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("update region config response type: %T\n Content: %+v\n", updateConfigResponse, updateConfigResponse)
+
+	// Update credentials
+	OrganizationalUnitId := "ORGANIZATIONAL_UNIT_ID"
+	updateOrganizationalIDResponse, _, err := srv.UpdateOrganizationalID(aws.CloudAccountUpdateOrganizationalIdRequest{
+		OrganizationalUnitId: OrganizationalUnitId},
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("update Organizational ID response type: %T\n Content: %+v\n", updateOrganizationalIDResponse, updateOrganizationalIDResponse)
+
+	// Update Credentials
+	updateCredentialsResponse, _, err := srv.UpdateCredentials(aws.CloudAccountUpdateCredentialsRequest{
+		CloudAccountID: v.ID,
+		Data: struct {
+			Apikey     string `json:"apikey,omitempty"`
+			Arn        string `json:"arn,omitempty"`
+			Secret     string `json:"secret,omitempty"`
+			IamUser    string `json:"iamUser,omitempty"`
+			Type       string `json:"type,omitempty"`
+			IsReadOnly bool   `json:"isReadOnly,omitempty"`
+		}{
+			Arn:    "ARN",
+			Secret: "SECRET",
+			Type:   "RoleBased",
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Update credentials response type: %T\n Content: %+v\n", updateCredentialsResponse, updateCredentialsResponse)
 }
