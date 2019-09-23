@@ -33,4 +33,43 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("Get response type: %T\n Content: %+v\n", resp, resp)
+
+	// update cloud account name
+	desiredNewName := "test AWS update cloud account"
+	updateNameResponse, _, err := srv.UpdateName(azure.CloudAccountUpdateNameRequest{Name: desiredNewName})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("update name response type: %T\n Content: %+v\n", updateNameResponse, updateNameResponse)
+
+	// update operation mode
+	desiredMode := "Manage"
+	updateOperationMode, _, err := srv.UpdateOperationMode(azure.CloudAccountUpdateOperationModeRequest{OperationMode: desiredMode})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("update operation mode response type: %T\n Content: %+v\n", updateOperationMode, updateOperationMode)
+
+	// Update Organizational Unit Id
+	OrganizationalUnitId := "ORGANIZATIONAL_UNIT_ID"
+	updateOrganizationalIDResponse, _, err := srv.UpdateOrganizationalID(azure.CloudAccountUpdateOrganizationalIDRequest{OrganizationalUnitID: OrganizationalUnitId})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("update Organizational ID response type: %T\n Content: %+v\n", updateOrganizationalIDResponse, updateOrganizationalIDResponse)
+
+	// Update Credentials
+	updateCredentialsResponse, _, err := srv.UpdateCredentials(azure.CloudAccountUpdateCredentialsRequest{
+		ApplicationID:  "APPLICATION ID",
+		ApplicationKey: "APPLICATION KEY",
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Update credentials response type: %T\n Content: %+v\n", updateCredentialsResponse, updateCredentialsResponse)
+
 }

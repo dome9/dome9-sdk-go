@@ -37,7 +37,7 @@ func main() {
 
 	// update cloud account name
 	desiredNewName := "test AWS update cloud account"
-	updateResponse, _, err := srv.UpdateName(aws.CloudAccountUpdateNameRequest{
+	updateNameResponse, _, err := srv.UpdateName(aws.CloudAccountUpdateNameRequest{
 		CloudAccountID: v.ID,
 		Data:           desiredNewName,
 	})
@@ -45,7 +45,7 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("update name response type: %T\n Content: %+v\n", updateResponse, updateResponse)
+	fmt.Printf("update name response type: %T\n Content: %+v\n", updateNameResponse, updateNameResponse)
 
 	// Update Region Config
 	desiredGroupBehavior := "FullManage"

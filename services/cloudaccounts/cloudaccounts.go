@@ -8,10 +8,18 @@ const (
 
 // AWS service paths
 const (
-	RESTfulServicePathAWSName            = "name"
-	RESTfulServicePathAWSRegionConfig    = "region-conf"
-	RESTfulServicePathOrganizationalUnit = "organizationalUnit"
-	RESTfulServicePathCredentials        = "credentials"
+	RESTfulServicePathAWSName               = "name"
+	RESTfulServicePathAWSRegionConfig       = "region-conf"
+	RESTfulServicePathAWSOrganizationalUnit = "organizationalUnit"
+	RESTfulServicePathAWSCredentials        = "credentials"
+)
+
+// Azure service paths
+const (
+	RESTfulServicePathAzureName               = "name"
+	RESTfulServicePathAzureOperationMode      = "OperationMode"
+	RESTfulServicePathAzureOrganizationalUnit = "organizationalUnit"
+	RESTfulServicePathAzureCredentials        = "credentials"
 )
 
 type QueryParameters struct {

@@ -43,6 +43,23 @@ type CloudAccountResponse struct {
 	Vendor                 string    `json:"vendor"`
 }
 
+type CloudAccountUpdateNameRequest struct {
+	Name string `json:"name,omitempty,omitempty"`
+}
+
+type CloudAccountUpdateOrganizationalIDRequest struct {
+	OrganizationalUnitID string `json:"organizationalUnitId,omitempty"`
+}
+
+type CloudAccountUpdateCredentialsRequest struct {
+	ApplicationID  string `json:"applicationId,omitempty"`
+	ApplicationKey string `json:"applicationKey,omitempty"`
+}
+
+type CloudAccountUpdateOperationModeRequest struct {
+	OperationMode string `json:"operationMode,omitempty"`
+}
+
 func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
 	if options == nil {
 		return nil, nil, fmt.Errorf("options parameter must be passed")
@@ -85,4 +102,44 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 	}
 
 	return resp, nil
+}
+
+func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, cloudaccounts.RESTfulServicePathAzureName), nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) UpdateOperationMode(body CloudAccountUpdateOperationModeRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, cloudaccounts.RESTfulServicePathAzureOperationMode), nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, cloudaccounts.RESTfulServicePathAzureOrganizationalUnit), nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) UpdateCredentials(body CloudAccountUpdateCredentialsRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, cloudaccounts.RESTfulServicePathAzureCredentials), nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
 }
