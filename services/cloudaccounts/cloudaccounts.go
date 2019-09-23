@@ -16,7 +16,7 @@ const (
 
 // Azure service paths
 const (
-	RESTfulServicePathAzureName               = "name"
+	RESTfulServicePathAzureName               = "AccountName"
 	RESTfulServicePathAzureOperationMode      = "OperationMode"
 	RESTfulServicePathAzureOrganizationalUnit = "organizationalUnit"
 	RESTfulServicePathAzureCredentials        = "credentials"

@@ -35,8 +35,11 @@ func main() {
 	fmt.Printf("Get response type: %T\n Content: %+v\n", resp, resp)
 
 	// update cloud account name
-	desiredNewName := "test Azure update cloud account"
-	updateNameResponse, _, err := srv.UpdateName(azure.CloudAccountUpdateNameRequest{Name: desiredNewName})
+	id := "THE ACCOUNT ID IN DOME9"
+	desiredNewName := "new cloud account name"
+	updateNameResponse, _, err := srv.UpdateName(id,
+		azure.CloudAccountUpdateNameRequest{
+			Name: desiredNewName})
 	if err != nil {
 		panic(err)
 	}
@@ -44,8 +47,11 @@ func main() {
 	fmt.Printf("update name response type: %T\n Content: %+v\n", updateNameResponse, updateNameResponse)
 
 	// update operation mode
-	desiredMode := "Manage"
-	updateOperationMode, _, err := srv.UpdateOperationMode(azure.CloudAccountUpdateOperationModeRequest{OperationMode: desiredMode})
+	id = "THE ACCOUNT ID IN DOME9"
+	desiredMode := "Manage" // options: Manage, Read
+	updateOperationMode, _, err := srv.UpdateOperationMode(id,
+		azure.CloudAccountUpdateOperationModeRequest{
+			OperationMode: desiredMode})
 	if err != nil {
 		panic(err)
 	}
@@ -53,8 +59,11 @@ func main() {
 	fmt.Printf("update operation mode response type: %T\n Content: %+v\n", updateOperationMode, updateOperationMode)
 
 	// Update Organizational Unit Id
-	OrganizationalUnitId := "ORGANIZATIONAL_UNIT_ID"
-	updateOrganizationalIDResponse, _, err := srv.UpdateOrganizationalID(azure.CloudAccountUpdateOrganizationalIDRequest{OrganizationalUnitID: OrganizationalUnitId})
+	id = "THE ACCOUNT ID IN DOME9"
+	OrganizationalUnitId := "ORGANIZATIONAL UNIT ID"
+	updateOrganizationalIDResponse, _, err := srv.UpdateOrganizationalID(id,
+		azure.CloudAccountUpdateOrganizationalIDRequest{
+			OrganizationalUnitID: OrganizationalUnitId})
 	if err != nil {
 		panic(err)
 	}
@@ -62,10 +71,12 @@ func main() {
 	fmt.Printf("update Organizational ID response type: %T\n Content: %+v\n", updateOrganizationalIDResponse, updateOrganizationalIDResponse)
 
 	// Update Credentials
-	updateCredentialsResponse, _, err := srv.UpdateCredentials(azure.CloudAccountUpdateCredentialsRequest{
-		ApplicationID:  "APPLICATION ID",
-		ApplicationKey: "APPLICATION KEY",
-	})
+	id = "THE ACCOUNT ID IN DOME9"
+	updateCredentialsResponse, _, err := srv.UpdateCredentials(id,
+		azure.CloudAccountUpdateCredentialsRequest{
+			ApplicationID:  "APPLICATION ID",
+			ApplicationKey: "APPLICATION KEY",
+		})
 	if err != nil {
 		panic(err)
 	}

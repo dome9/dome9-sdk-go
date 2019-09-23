@@ -94,8 +94,8 @@ func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse,
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	relativeAddress := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, id)
-	resp, err := service.Client.NewRequestDo("DELETE", relativeAddress, nil, nil, nil)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, id)
+	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
 
 	if err != nil {
 		return nil, err
@@ -104,9 +104,10 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 	return resp, nil
 }
 
-func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAccountResponse, *http.Response, error) {
+func (service *Service) UpdateName(id string, body CloudAccountUpdateNameRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, cloudaccounts.RESTfulServicePathAzureName), nil, body, v)
+	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathAzure, id, cloudaccounts.RESTfulServicePathAzureName)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -114,9 +115,10 @@ func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAc
 	return v, resp, nil
 }
 
-func (service *Service) UpdateOperationMode(body CloudAccountUpdateOperationModeRequest) (*CloudAccountResponse, *http.Response, error) {
+func (service *Service) UpdateOperationMode(id string, body CloudAccountUpdateOperationModeRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, cloudaccounts.RESTfulServicePathAzureOperationMode), nil, body, v)
+	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathAzure, id, cloudaccounts.RESTfulServicePathAzureOperationMode)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -124,9 +126,10 @@ func (service *Service) UpdateOperationMode(body CloudAccountUpdateOperationMode
 	return v, resp, nil
 }
 
-func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
+func (service *Service) UpdateOrganizationalID(id string, body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, cloudaccounts.RESTfulServicePathAzureOrganizationalUnit), nil, body, v)
+	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathAzure, id, cloudaccounts.RESTfulServicePathAzureOrganizationalUnit)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -134,9 +137,10 @@ func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizati
 	return v, resp, nil
 }
 
-func (service *Service) UpdateCredentials(body CloudAccountUpdateCredentialsRequest) (*CloudAccountResponse, *http.Response, error) {
+func (service *Service) UpdateCredentials(id string, body CloudAccountUpdateCredentialsRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, cloudaccounts.RESTfulServicePathAzureCredentials), nil, body, v)
+	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathAzure, id, cloudaccounts.RESTfulServicePathAzureCredentials)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
