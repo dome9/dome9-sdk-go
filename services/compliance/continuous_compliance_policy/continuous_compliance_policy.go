@@ -1,7 +1,6 @@
 package continuous_compliance_policy
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/Dome9/dome9-sdk-go/dome9"
@@ -21,7 +20,7 @@ func New(c *dome9.Config) *Service {
 type ContinuousCompliancePolicyRequest struct {
 	CloudAccountID    string   `json:"cloudAccountId"`
 	ExternalAccountID string   `json:"externalAccountId"`
-	CloudAccountType  string   `json:"cloudAccountType"`
+	CloudAccountType  string   `json:"cloudAccountType,omitempty"`
 	BundleID          int      `json:"bundleId"`
 	NotificationIds   []string `json:"notificationIds"`
 }
@@ -35,12 +34,9 @@ type ContinuousCompliancePolicyResponse struct {
 	NotificationIds   []string `json:"notificationIds"`
 }
 
-func (service *Service) Get(options interface{}) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
-	if options == nil {
-		return nil, nil, fmt.Errorf("options parameter must be passed")
-	}
+func (service *Service) Get(id string) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
 	v := new(ContinuousCompliancePolicyResponse)
-	resp, err := service.client.NewRequestDo("GET", path, options, nil, v)
+	resp, err := service.client.NewRequestDo("GET", path+id, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
