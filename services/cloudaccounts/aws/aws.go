@@ -91,7 +91,7 @@ type CloudAccountUpdateRegionConfigRequest struct {
 	} `json:"data,omitempty"`
 }
 
-type CloudAccountUpdateOrganizationalIdRequest struct {
+type CloudAccountUpdateOrganizationalIDRequest struct {
 	OrganizationalUnitId string `json:"organizationalUnitId,omitempty"`
 }
 
@@ -174,7 +174,7 @@ func (service *Service) UpdateRegionConfig(body CloudAccountUpdateRegionConfigRe
 }
 
 // TODO: not implemented in TF provider due to bug https://dome9-security.atlassian.net/browse/DOME-12538
-func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizationalIdRequest) (*CloudAccountResponse, *http.Response, error) {
+func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathOrganizationalUnit), nil, body, v)
 	if err != nil {

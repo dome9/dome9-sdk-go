@@ -47,9 +47,9 @@ func main() {
 
 	fmt.Printf("update name response type: %T\n Content: %+v\n", updateResponse, updateResponse)
 
-	// UpdateRegionConfig
+	// Update Region Config
 	desiredGroupBehavior := "FullManage"
-	updateConfigResponse, _, err := srv.UpdateRegionConfig(aws.CloudAccountUpdateRegionConfigRequest{
+	updateRegionConfigResponse, _, err := srv.UpdateRegionConfig(aws.CloudAccountUpdateRegionConfigRequest{
 		CloudAccountID: v.ID,
 		Data: struct {
 			Region           string `json:"region,omitempty"`
@@ -65,11 +65,11 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("update region config response type: %T\n Content: %+v\n", updateConfigResponse, updateConfigResponse)
+	fmt.Printf("update region config response type: %T\n Content: %+v\n", updateRegionConfigResponse, updateRegionConfigResponse)
 
-	// Update credentials
+	// Update Organizational Unit Id
 	OrganizationalUnitId := "ORGANIZATIONAL_UNIT_ID"
-	updateOrganizationalIDResponse, _, err := srv.UpdateOrganizationalID(aws.CloudAccountUpdateOrganizationalIdRequest{
+	updateOrganizationalIDResponse, _, err := srv.UpdateOrganizationalID(aws.CloudAccountUpdateOrganizationalIDRequest{
 		OrganizationalUnitId: OrganizationalUnitId},
 	)
 	if err != nil {
