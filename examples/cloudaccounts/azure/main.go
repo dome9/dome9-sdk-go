@@ -14,7 +14,6 @@ func main() {
 	var req azure.CloudAccountRequest
 
 	req.Name = "test Azure cloud account"
-	req.Vendor = "Azure"
 	req.OperationMode = "Read"
 
 	// Must fill below
