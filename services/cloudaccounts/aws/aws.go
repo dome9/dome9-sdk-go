@@ -59,7 +59,7 @@ type CloudAccountResponse struct {
 	} `json:"iamSafe,omitempty"`
 	NetSec struct {
 		Regions []struct {
-			Region           string `json:"awsRegion"`
+			Region           string `json:"region"`
 			Name             string `json:"name"`
 			Hidden           bool   `json:"hidden"`
 			NewGroupBehavior string `json:"newGroupBehavior"`
