@@ -35,7 +35,7 @@ func main() {
 	fmt.Printf("Get response type: %T\n Content: %+v\n", resp, resp)
 
 	// update cloud account name
-	desiredNewName := "test AWS update cloud account"
+	desiredNewName := "test Azure update cloud account"
 	updateNameResponse, _, err := srv.UpdateName(azure.CloudAccountUpdateNameRequest{Name: desiredNewName})
 	if err != nil {
 		panic(err)
