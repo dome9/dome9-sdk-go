@@ -2,20 +2,11 @@ package assessment
 
 import (
 	"net/http"
-
-	"github.com/Dome9/dome9-sdk-go/dome9"
-	"github.com/Dome9/dome9-sdk-go/dome9/client"
 )
 
-const path = "assessment/bundleV2"
-
-type Service struct {
-	client *client.Client
-}
-
-func New(c *dome9.Config) *Service {
-	return &Service{client: client.NewClient(c)}
-}
+const (
+	path = "assessment/bundleV2"
+)
 
 type RunBundleRequest struct {
 	ID                     int    `json:"id"`
@@ -125,7 +116,7 @@ type RunBundleResponse struct {
 
 func (service *Service) RunBundle(body *RunBundleRequest) (*RunBundleResponse, *http.Response, error) {
 	v := new(RunBundleResponse)
-	resp, err := service.client.NewRequestDo("POST", path, nil, body, v)
+	resp, err := service.Client.NewRequestDo("POST", path, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}

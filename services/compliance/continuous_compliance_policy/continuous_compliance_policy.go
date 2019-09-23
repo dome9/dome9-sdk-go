@@ -2,20 +2,11 @@ package continuous_compliance_policy
 
 import (
 	"net/http"
-
-	"github.com/Dome9/dome9-sdk-go/dome9"
-	"github.com/Dome9/dome9-sdk-go/dome9/client"
 )
 
-const path = "Compliance/ContinuousCompliancePolicy/"
-
-type Service struct {
-	client *client.Client
-}
-
-func New(c *dome9.Config) *Service {
-	return &Service{client: client.NewClient(c)}
-}
+const (
+	path = "Compliance/ContinuousCompliancePolicy/"
+)
 
 type ContinuousCompliancePolicyRequest struct {
 	CloudAccountID    string   `json:"cloudAccountId"`
@@ -36,7 +27,7 @@ type ContinuousCompliancePolicyResponse struct {
 
 func (service *Service) Get(id string) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
 	v := new(ContinuousCompliancePolicyResponse)
-	resp, err := service.client.NewRequestDo("GET", path+id, nil, nil, v)
+	resp, err := service.Client.NewRequestDo("GET", path+id, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -46,7 +37,7 @@ func (service *Service) Get(id string) (*ContinuousCompliancePolicyResponse, *ht
 
 func (service *Service) GetAll() (*[]ContinuousCompliancePolicyResponse, *http.Response, error) {
 	v := new([]ContinuousCompliancePolicyResponse)
-	resp, err := service.client.NewRequestDo("GET", path, nil, nil, v)
+	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -56,7 +47,7 @@ func (service *Service) GetAll() (*[]ContinuousCompliancePolicyResponse, *http.R
 
 func (service *Service) Create(body *ContinuousCompliancePolicyRequest) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
 	v := new(ContinuousCompliancePolicyResponse)
-	resp, err := service.client.NewRequestDo("POST", path, nil, body, v)
+	resp, err := service.Client.NewRequestDo("POST", path, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -66,7 +57,7 @@ func (service *Service) Create(body *ContinuousCompliancePolicyRequest) (*Contin
 
 func (service *Service) Update(id string, body *ContinuousCompliancePolicyRequest) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
 	v := new(ContinuousCompliancePolicyResponse)
-	resp, err := service.client.NewRequestDo("PUT", path+id, nil, body, v)
+	resp, err := service.Client.NewRequestDo("PUT", path+id, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -75,7 +66,7 @@ func (service *Service) Update(id string, body *ContinuousCompliancePolicyReques
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	resp, err := service.client.NewRequestDo("DELETE", path+id, nil, nil, nil)
+	resp, err := service.Client.NewRequestDo("DELETE", path+id, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}

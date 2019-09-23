@@ -3,20 +3,11 @@ package continuous_compliance_notification
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/Dome9/dome9-sdk-go/dome9"
-	"github.com/Dome9/dome9-sdk-go/dome9/client"
 )
 
-const path = "Compliance/ContinuousComplianceNotification/"
-
-type Service struct {
-	client *client.Client
-}
-
-func New(c *dome9.Config) *Service {
-	return &Service{client: client.NewClient(c)}
-}
+const (
+	path = "Compliance/ContinuousComplianceNotification/"
+)
 
 type ContinuousComplianceNotificationRequest struct {
 	Name            string `json:"name"`
@@ -147,7 +138,7 @@ func (service *Service) Get(options interface{}) (*ContinuousComplianceNotificat
 		return nil, nil, fmt.Errorf("options parameter must be passed")
 	}
 	v := new(ContinuousComplianceNotificationResponse)
-	resp, err := service.client.NewRequestDo("GET", path, options, nil, v)
+	resp, err := service.Client.NewRequestDo("GET", path, options, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -157,7 +148,7 @@ func (service *Service) Get(options interface{}) (*ContinuousComplianceNotificat
 
 func (service *Service) GetAll() (*[]ContinuousComplianceNotificationResponse, *http.Response, error) {
 	v := new([]ContinuousComplianceNotificationResponse)
-	resp, err := service.client.NewRequestDo("GET", path, nil, nil, v)
+	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -167,7 +158,7 @@ func (service *Service) GetAll() (*[]ContinuousComplianceNotificationResponse, *
 
 func (service *Service) Create(body *ContinuousComplianceNotificationRequest) (*ContinuousComplianceNotificationResponse, *http.Response, error) {
 	v := new(ContinuousComplianceNotificationResponse)
-	resp, err := service.client.NewRequestDo("POST", path, nil, body, v)
+	resp, err := service.Client.NewRequestDo("POST", path, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -177,7 +168,7 @@ func (service *Service) Create(body *ContinuousComplianceNotificationRequest) (*
 
 func (service *Service) Update(id string, body *ContinuousComplianceNotificationRequest) (*ContinuousComplianceNotificationResponse, *http.Response, error) {
 	v := new(ContinuousComplianceNotificationResponse)
-	resp, err := service.client.NewRequestDo("PUT", path+id, nil, body, v)
+	resp, err := service.Client.NewRequestDo("PUT", path+id, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -186,7 +177,7 @@ func (service *Service) Update(id string, body *ContinuousComplianceNotification
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	resp, err := service.client.NewRequestDo("DELETE", path+id, nil, nil, nil)
+	resp, err := service.Client.NewRequestDo("DELETE", path+id, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
