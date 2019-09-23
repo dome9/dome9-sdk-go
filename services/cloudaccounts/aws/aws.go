@@ -176,7 +176,7 @@ func (service *Service) UpdateRegionConfig(body CloudAccountUpdateRegionConfigRe
 // TODO: not implemented in TF provider due to bug https://dome9-security.atlassian.net/browse/DOME-12538
 func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathOrganizationalUnit), nil, body, v)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSOrganizationalUnit), nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -186,7 +186,7 @@ func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizati
 
 func (service *Service) UpdateCredentials(body CloudAccountUpdateCredentialsRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathCredentials), nil, body, v)
+	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSCredentials), nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
