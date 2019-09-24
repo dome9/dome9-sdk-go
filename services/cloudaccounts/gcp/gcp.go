@@ -36,8 +36,8 @@ type CloudAccountResponse struct {
 	OrganizationalUnitID   string    `json:"organizationalUnitId,omitempty"`
 	OrganizationalUnitPath string    `json:"organizationalUnitPath"`
 	OrganizationalUnitName string    `json:"organizationalUnitName"`
-	Gsuite                 struct {
-		GsuiteUser string `json:"gsuiteUser"`
+	GSuite                 struct {
+		GSuiteUser string `json:"gSuiteUser"`
 		DomainName string `json:"domainName"`
 	} `json:"gsuite,omitempty"`
 	Vendor string `json:"vendor"`
