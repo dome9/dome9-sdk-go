@@ -19,7 +19,15 @@ const (
 	RESTfulServicePathAzureName               = "AccountName"
 	RESTfulServicePathAzureOperationMode      = "OperationMode"
 	RESTfulServicePathAzureOrganizationalUnit = "organizationalUnit"
-	RESTfulServicePathAzureCredentials        = "credentials"
+	RESTfulServicePathAzureCredentials        = "Credentials"
+)
+
+// GCP service paths
+const (
+	RESTfulServicePathGCPName               = "AccountName"
+	RESTfulServicePathGCPCredentialsGSuite  = "Credentials/Gsuite"
+	RESTfulServicePathGCPOrganizationalUnit = "organizationalUnit"
+	RESTfulServicePathGCPCredentials        = "Credentials"
 )
 
 type QueryParameters struct {

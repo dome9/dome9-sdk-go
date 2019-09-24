@@ -14,7 +14,7 @@ func main() {
 	var req gcp.CloudAccountRequest
 
 	// The following fields can be extracted from GCP Security Reviewer json file
-	req.Name = "test GCP cloud account"
+	req.Name = "ACCOUNT NAME"
 	req.ServiceAccountCredentials.Type = "service_account"
 	req.ServiceAccountCredentials.AuthURI = "https://accounts.google.com/o/oauth2/auth"
 	req.ServiceAccountCredentials.TokenURI = "https://oauth2.googleapis.com/token"
@@ -33,11 +33,70 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Create response type: %T\n Content %+v\n", v, v)
+	fmt.Printf("Response type: %T\n Content %+v\n", v, v)
 
 	resp, _, err := srv.GetAll()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Get response type: %T\n Content: %+v\n", resp, resp)
+	fmt.Printf("Response type: %T\n Content: %+v\n", resp, resp)
+
+	// update cloud account name
+	id := "THE ACCOUNT ID"
+	desiredNewName := "new cloud account name"
+	updateNameResponse, _, err := srv.UpdateName(id,
+		gcp.CloudAccountUpdateNameRequest{
+			Name: desiredNewName})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Response type: %T\n Content: %+v\n", updateNameResponse, updateNameResponse)
+
+	// update account gsuite
+	id = "THE ACCOUNT ID"
+	updateAccountGSuiteResponse, _, err := srv.UpdateAccountGSuite(id,
+		gcp.CloudAccountUpdateGSuite{
+			GsuiteUser: "EMAIL ADDRESS",
+			DomainName: "DOMAIN NAME",
+		})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Response type: %T\n Content: %+v\n", updateAccountGSuiteResponse, updateAccountGSuiteResponse)
+
+	// update google cloud account credentials
+	id = "THE ACCOUNT ID"
+	var updateCredentialsReq gcp.CloudAccountUpdateCredentialsRequest
+
+	updateCredentialsReq.Name = "ACCOUNT NAME"
+	updateCredentialsReq.ServiceAccountCredentials.Type = "service_account"
+	updateCredentialsReq.ServiceAccountCredentials.AuthURI = "https://accounts.google.com/o/oauth2/auth"
+	updateCredentialsReq.ServiceAccountCredentials.TokenURI = "https://oauth2.googleapis.com/token"
+	updateCredentialsReq.ServiceAccountCredentials.AuthProviderX509CertURL = "https://www.googleapis.com/oauth2/v1/certs"
+	updateCredentialsReq.ServiceAccountCredentials.ProjectID = "PROJECT ID"
+	updateCredentialsReq.ServiceAccountCredentials.PrivateKeyID = "PRIVATE KEY ID"
+	updateCredentialsReq.ServiceAccountCredentials.PrivateKey = "PRIVATE KEY"
+	updateCredentialsReq.ServiceAccountCredentials.ClientEmail = "CLIENT EMAIL"
+	updateCredentialsReq.ServiceAccountCredentials.ClientID = "CLIENT ID"
+	updateAccountCredentials, _, err := srv.UpdateCredentials(id, updateCredentialsReq)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("response type: %T\n Content: %+v\n", updateAccountCredentials, updateAccountCredentials)
+
+	// update organizational Id
+	OrganizationalUnitID := "ORGANIZATIONAL_UNIT_ID"
+	id = "THE ACCOUNT ID"
+	OrganizationalUnitIDResponse, _, err := srv.UpdateOrganizationalID(id,
+		gcp.CloudAccountUpdateOrganizationalIDRequest{
+			OrganizationalUnitID: OrganizationalUnitID})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("response type: %T\n Content: %+v\n", OrganizationalUnitIDResponse, OrganizationalUnitIDResponse)
+
 }
