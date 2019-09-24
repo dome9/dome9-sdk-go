@@ -35,7 +35,7 @@ func main() {
 	fmt.Printf("Get response type: %T\n Content: %+v\n", resp, resp)
 
 	// update cloud account name
-	id := "THE ACCOUNT ID IN DOME9"
+	id := "THE ACCOUNT ID"
 	desiredNewName := "new cloud account name"
 	updateNameResponse, _, err := srv.UpdateName(id,
 		azure.CloudAccountUpdateNameRequest{

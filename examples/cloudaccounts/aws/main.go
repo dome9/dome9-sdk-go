@@ -68,11 +68,11 @@ func main() {
 	fmt.Printf("update region config response type: %T\n Content: %+v\n", updateRegionConfigResponse, updateRegionConfigResponse)
 
 	// Update Organizational Unit Id
-	OrganizationalUnitId := "ORGANIZATIONAL_UNIT_ID"
+	OrganizationalUnitID := "ORGANIZATIONAL_UNIT_ID"
 	id := "THE ACCOUNT ID IN DOME9"
 	updateOrganizationalIDResponse, _, err := srv.UpdateOrganizationalID(id,
 		aws.CloudAccountUpdateOrganizationalIDRequest{
-			OrganizationalUnitId: OrganizationalUnitId},
+			OrganizationalUnitId: OrganizationalUnitID},
 	)
 	if err != nil {
 		panic(err)
