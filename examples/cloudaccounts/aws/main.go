@@ -69,8 +69,10 @@ func main() {
 
 	// Update Organizational Unit Id
 	OrganizationalUnitId := "ORGANIZATIONAL_UNIT_ID"
-	updateOrganizationalIDResponse, _, err := srv.UpdateOrganizationalID(aws.CloudAccountUpdateOrganizationalIDRequest{
-		OrganizationalUnitId: OrganizationalUnitId},
+	id := "THE ACCOUNT ID IN DOME9"
+	updateOrganizationalIDResponse, _, err := srv.UpdateOrganizationalID(id,
+		aws.CloudAccountUpdateOrganizationalIDRequest{
+			OrganizationalUnitId: OrganizationalUnitId},
 	)
 	if err != nil {
 		panic(err)

@@ -143,8 +143,8 @@ func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse,
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	relativeAddress := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, id)
-	resp, err := service.Client.NewRequestDo("DELETE", relativeAddress, nil, nil, nil)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, id)
+	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
 
 	if err != nil {
 		return nil, err
@@ -155,7 +155,8 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 
 func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSName), nil, body, v)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSName)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -165,7 +166,8 @@ func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAc
 
 func (service *Service) UpdateRegionConfig(body CloudAccountUpdateRegionConfigRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSRegionConfig), nil, body, v)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSRegionConfig)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -174,9 +176,10 @@ func (service *Service) UpdateRegionConfig(body CloudAccountUpdateRegionConfigRe
 }
 
 // TODO: not implemented in TF provider due to bug https://dome9-security.atlassian.net/browse/DOME-12538
-func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
+func (service *Service) UpdateOrganizationalID(id string, body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSOrganizationalUnit), nil, body, v)
+	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathAWS, id, cloudaccounts.RESTfulServicePathAWSOrganizationalUnit)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -186,7 +189,8 @@ func (service *Service) UpdateOrganizationalID(body CloudAccountUpdateOrganizati
 
 func (service *Service) UpdateCredentials(body CloudAccountUpdateCredentialsRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("PUT", fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSCredentials), nil, body, v)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSCredentials)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
