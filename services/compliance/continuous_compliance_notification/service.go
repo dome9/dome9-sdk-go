@@ -1,8 +1,8 @@
 package continuous_compliance_notification
 
 import (
-	"github.com/Dome9/dome9-sdk-go/dome9"
-	"github.com/Dome9/dome9-sdk-go/dome9/client"
+	"github.com/dome9/dome9-sdk-go/dome9"
+	"github.com/dome9/dome9-sdk-go/dome9/client"
 )
 
 type Service struct {

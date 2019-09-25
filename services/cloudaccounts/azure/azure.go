@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Dome9/dome9-sdk-go/services/cloudaccounts"
+	"github.com/dome9/dome9-sdk-go/services/cloudaccounts"
 )
 
 // AzureCloudAccountRequest and CloudAccountResponse refer to API type: AzureCloudAccount

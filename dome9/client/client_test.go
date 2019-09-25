@@ -9,7 +9,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Dome9/dome9-sdk-go/dome9"
+	"github.com/dome9/dome9-sdk-go/dome9"
 )
 
 type dummyStruct struct {

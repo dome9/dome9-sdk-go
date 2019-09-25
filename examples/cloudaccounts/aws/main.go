@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/Dome9/dome9-sdk-go/dome9"
-	"github.com/Dome9/dome9-sdk-go/services/cloudaccounts/aws"
+	"github.com/dome9/dome9-sdk-go/dome9"
+	"github.com/dome9/dome9-sdk-go/services/cloudaccounts/aws"
 )
 
 func main() {
