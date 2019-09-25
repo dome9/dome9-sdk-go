@@ -11,7 +11,7 @@ import (
 const (
 	defaultBaseURL = "https://api.dome9.com/v2/"
 	defaultTimeout = 120 * time.Second
-	loggerPrefix   = "Dome9-logger: "
+	loggerPrefix   = "dome9-logger: "
 )
 
 // Config contains all the configuration data for the API client
