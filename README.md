@@ -21,7 +21,7 @@ environment variables.
 ## Installation
 To download all packages in the repo with their dependencies, simply run
 
-`go get github.com/Dome9/Dome9-sdk-go/...`
+`go get github.com/dome9/dome9-sdk-go`
 
 ## Getting Started
 One can start using Dome9 Go SDK by initializing client and making a request. 
