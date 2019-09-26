@@ -43,7 +43,7 @@ func NewConfig(accessID, secretKey, rawUrl string) (*Config, error) {
 	return &Config{
 		BaseURL:    baseURL,
 		HTTPClient: getDefaultHTTPClient(),
-		Logger:     getDefaultLogger(), // TODO default should be nil and should add a setter for logger
+		Logger:     nil,
 		AccessID:   accessID,
 		SecretKey:  secretKey,
 	}, err
