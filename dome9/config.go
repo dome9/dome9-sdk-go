@@ -39,7 +39,7 @@ func NewConfig(accessID, secretKey, rawUrl string) (*Config, error) {
 		rawUrl = defaultBaseURL
 	}
 
-	var logger *log.Logger = nil
+	var logger *log.Logger
 	if loggerEnv := os.Getenv("DOME9_SDK_LOG"); loggerEnv == "true" {
 		logger = getDefaultLogger()
 	}
