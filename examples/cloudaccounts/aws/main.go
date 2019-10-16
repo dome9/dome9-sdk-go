@@ -11,7 +11,7 @@ func main() {
 	// Pass accessID, secretKey, rawUrl, or set environment variables
 	config, _ := dome9.NewConfig("", "", "")
 	srv := aws.New(config)
-	var req aws.CloudAccountRequest
+	var req aws.CloudAccountAWSRequest
 
 	req.Name = "test AWS cloud account"
 	req.Credentials.Type = "RoleBased"
@@ -51,12 +51,7 @@ func main() {
 	desiredGroupBehavior := "FullManage"
 	updateRegionConfigResponse, _, err := srv.UpdateRegionConfig(aws.CloudAccountUpdateRegionConfigRequest{
 		CloudAccountID: v.ID,
-		Data: struct {
-			Region           string `json:"region,omitempty"`
-			Name             string `json:"name,omitempty"`
-			Hidden           bool   `json:"hidden,omitempty"`
-			NewGroupBehavior string `json:"newGroupBehavior,omitempty"`
-		}{
+		Data: aws.CloudAccountAWSNetSecRegion{
 			Region:           "us_east_1",
 			NewGroupBehavior: desiredGroupBehavior,
 		},
@@ -83,14 +78,7 @@ func main() {
 	// Update Credentials
 	updateCredentialsResponse, _, err := srv.UpdateCredentials(aws.CloudAccountUpdateCredentialsRequest{
 		CloudAccountID: v.ID,
-		Data: struct {
-			Apikey     string `json:"apikey,omitempty"`
-			Arn        string `json:"arn,omitempty"`
-			Secret     string `json:"secret,omitempty"`
-			IamUser    string `json:"iamUser,omitempty"`
-			Type       string `json:"type,omitempty"`
-			IsReadOnly bool   `json:"isReadOnly,omitempty"`
-		}{
+		Data: aws.CloudAccountAWSCredentials{
 			Arn:    "ARN",
 			Secret: "SECRET",
 			Type:   "RoleBased",
