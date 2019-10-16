@@ -8,41 +8,41 @@ import (
 	"github.com/dome9/dome9-sdk-go/services/cloudaccounts"
 )
 
-type CloudAccountAWSRequest struct {
-	Name                   string                     `json:"name"`
-	Credentials            CloudAccountAWSCredentials `json:"credentials"`
-	FullProtection         bool                       `json:"fullProtection,omitempty"`
-	AllowReadOnly          bool                       `json:"allowReadOnly,omitempty"`
-	OrganizationalUnitID   string                     `json:"organizationalUnitId,omitempty"`
-	OrganizationalUnitPath string                     `json:"organizationalUnitPath,omitempty"`
-	OrganizationalUnitName string                     `json:"organizationalUnitName,omitempty"`
-	LambdaScanner          bool                       `json:"lambdaScanner,omitempty"`
+type CloudAccountRequest struct {
+	Name                   string                  `json:"name"`
+	Credentials            CloudAccountCredentials `json:"credentials"`
+	FullProtection         bool                    `json:"fullProtection,omitempty"`
+	AllowReadOnly          bool                    `json:"allowReadOnly,omitempty"`
+	OrganizationalUnitID   string                  `json:"organizationalUnitId,omitempty"`
+	OrganizationalUnitPath string                  `json:"organizationalUnitPath,omitempty"`
+	OrganizationalUnitName string                  `json:"organizationalUnitName,omitempty"`
+	LambdaScanner          bool                    `json:"lambdaScanner,omitempty"`
 }
 
-type CloudAccountAWSResponse struct {
-	ID                     string                     `json:"id"`
-	Vendor                 string                     `json:"vendor"`
-	Name                   string                     `json:"name"`
-	ExternalAccountNumber  string                     `json:"externalAccountNumber"`
-	Error                  string                     `json:"error,omitempty"`
-	IsFetchingSuspended    bool                       `json:"isFetchingSuspended"`
-	CreationDate           time.Time                  `json:"creationDate"`
-	Credentials            CloudAccountAWSCredentials `json:"credentials"`
-	IamSafe                CloudAccountAWSIamSafe     `json:"iamSafe,omitempty"`
-	NetSec                 CloudAccountAWSNetSec      `json:"netSec,omitempty"`
-	Magellan               bool                       `json:"magellan"`
-	FullProtection         bool                       `json:"fullProtection"`
-	AllowReadOnly          bool                       `json:"allowReadOnly"`
-	OrganizationalUnitID   string                     `json:"organizationalUnitId,omitempty"`
-	OrganizationalUnitPath string                     `json:"organizationalUnitPath"`
-	OrganizationalUnitName string                     `json:"organizationalUnitName"`
-	LambdaScanner          bool                       `json:"lambdaScanner"`
+type CloudAccountResponse struct {
+	ID                     string                  `json:"id"`
+	Vendor                 string                  `json:"vendor"`
+	Name                   string                  `json:"name"`
+	ExternalAccountNumber  string                  `json:"externalAccountNumber"`
+	Error                  string                  `json:"error,omitempty"`
+	IsFetchingSuspended    bool                    `json:"isFetchingSuspended"`
+	CreationDate           time.Time               `json:"creationDate"`
+	Credentials            CloudAccountCredentials `json:"credentials"`
+	IamSafe                CloudAccountIamSafe     `json:"iamSafe,omitempty"`
+	NetSec                 CloudAccountNetSec      `json:"netSec,omitempty"`
+	Magellan               bool                    `json:"magellan"`
+	FullProtection         bool                    `json:"fullProtection"`
+	AllowReadOnly          bool                    `json:"allowReadOnly"`
+	OrganizationalUnitID   string                  `json:"organizationalUnitId,omitempty"`
+	OrganizationalUnitPath string                  `json:"organizationalUnitPath"`
+	OrganizationalUnitName string                  `json:"organizationalUnitName"`
+	LambdaScanner          bool                    `json:"lambdaScanner"`
 }
 
 type CloudAccountUpdateRegionConfigRequest struct {
-	CloudAccountID        string                      `json:"cloudAccountId,omitempty"`
-	ExternalAccountNumber string                      `json:"externalAccountNumber,omitempty"`
-	Data                  CloudAccountAWSNetSecRegion `json:"data,omitempty"`
+	CloudAccountID        string                   `json:"cloudAccountId,omitempty"`
+	ExternalAccountNumber string                   `json:"externalAccountNumber,omitempty"`
+	Data                  CloudAccountNetSecRegion `json:"data,omitempty"`
 }
 
 type CloudAccountUpdateOrganizationalIDRequest struct {
@@ -50,9 +50,9 @@ type CloudAccountUpdateOrganizationalIDRequest struct {
 }
 
 type CloudAccountUpdateCredentialsRequest struct {
-	CloudAccountID        string                     `json:"cloudAccountId,omitempty"`
-	ExternalAccountNumber string                     `json:"externalAccountNumber,omitempty"`
-	Data                  CloudAccountAWSCredentials `json:"data,omitempty"`
+	CloudAccountID        string                  `json:"cloudAccountId,omitempty"`
+	ExternalAccountNumber string                  `json:"externalAccountNumber,omitempty"`
+	Data                  CloudAccountCredentials `json:"data,omitempty"`
 }
 
 type CloudAccountUpdateNameRequest struct {
@@ -61,7 +61,7 @@ type CloudAccountUpdateNameRequest struct {
 	Data                  string `json:"data,omitempty"`
 }
 
-type CloudAccountAWSCredentials struct {
+type CloudAccountCredentials struct {
 	ApiKey     string `json:"apikey,omitempty"`
 	Arn        string `json:"arn,omitempty"`
 	Secret     string `json:"secret,omitempty"`
@@ -70,37 +70,37 @@ type CloudAccountAWSCredentials struct {
 	IsReadOnly bool   `json:"isReadOnly,omitempty"`
 }
 
-type CloudAccountAWSNetSec struct {
-	Regions []CloudAccountAWSNetSecRegion `json:"regions,omitempty"`
+type CloudAccountNetSec struct {
+	Regions []CloudAccountNetSecRegion `json:"regions,omitempty"`
 }
 
-type CloudAccountAWSNetSecRegion struct {
+type CloudAccountNetSecRegion struct {
 	Region           string `json:"region,omitempty"`
 	Name             string `json:"name,omitempty"`
 	Hidden           bool   `json:"hidden,omitempty"`
 	NewGroupBehavior string `json:"newGroupBehavior,omitempty"`
 }
 
-type CloudAccountAWSIamSafe struct {
-	AwsGroupArn           string                     `json:"awsGroupArn,omitempty"`
-	AwsPolicyArn          string                     `json:"awsPolicyArn,omitempty"`
-	Mode                  string                     `json:"mode,omitempty"`
-	State                 string                     `json:"state,omitempty"`
-	ExcludedIamEntities   CloudAccountAWSIamEntities `json:"excludedIamEntities,omitempty"`
-	RestrictedIamEntities CloudAccountAWSIamEntities `json:"restrictedIamEntities,omitempty"`
+type CloudAccountIamSafe struct {
+	AwsGroupArn           string                  `json:"awsGroupArn,omitempty"`
+	AwsPolicyArn          string                  `json:"awsPolicyArn,omitempty"`
+	Mode                  string                  `json:"mode,omitempty"`
+	State                 string                  `json:"state,omitempty"`
+	ExcludedIamEntities   CloudAccountIamEntities `json:"excludedIamEntities,omitempty"`
+	RestrictedIamEntities CloudAccountIamEntities `json:"restrictedIamEntities,omitempty"`
 }
 
-type CloudAccountAWSIamEntities struct {
+type CloudAccountIamEntities struct {
 	RolesArns []string `json:"rolesArns,omitempty"`
 	UsersArns []string `json:"usersArns,omitempty"`
 }
 
-func (service *Service) Get(options interface{}) (*CloudAccountAWSResponse, *http.Response, error) {
+func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
 	if options == nil {
 		return nil, nil, fmt.Errorf("options parameter must be passed")
 	}
 
-	v := new(CloudAccountAWSResponse)
+	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAWS, options, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -109,8 +109,8 @@ func (service *Service) Get(options interface{}) (*CloudAccountAWSResponse, *htt
 	return v, resp, nil
 }
 
-func (service *Service) GetAll() (*[]CloudAccountAWSResponse, *http.Response, error) {
-	v := new([]CloudAccountAWSResponse)
+func (service *Service) GetAll() (*[]CloudAccountResponse, *http.Response, error) {
+	v := new([]CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAWS, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -119,8 +119,8 @@ func (service *Service) GetAll() (*[]CloudAccountAWSResponse, *http.Response, er
 	return v, resp, nil
 }
 
-func (service *Service) Create(body CloudAccountAWSRequest) (*CloudAccountAWSResponse, *http.Response, error) {
-	v := new(CloudAccountAWSResponse)
+func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulPathAWS, nil, body, v)
 	if err != nil {
 		return nil, nil, err
@@ -140,8 +140,8 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 	return resp, nil
 }
 
-func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAccountAWSResponse, *http.Response, error) {
-	v := new(CloudAccountAWSResponse)
+func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
 	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSName)
 	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
@@ -151,8 +151,8 @@ func (service *Service) UpdateName(body CloudAccountUpdateNameRequest) (*CloudAc
 	return v, resp, nil
 }
 
-func (service *Service) UpdateRegionConfig(body CloudAccountUpdateRegionConfigRequest) (*CloudAccountAWSResponse, *http.Response, error) {
-	v := new(CloudAccountAWSResponse)
+func (service *Service) UpdateRegionConfig(body CloudAccountUpdateRegionConfigRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
 	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSRegionConfig)
 	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
@@ -163,8 +163,8 @@ func (service *Service) UpdateRegionConfig(body CloudAccountUpdateRegionConfigRe
 }
 
 // TODO: not implemented in TF provider due to bug https://dome9-security.atlassian.net/browse/DOME-12538
-func (service *Service) UpdateOrganizationalID(id string, body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountAWSResponse, *http.Response, error) {
-	v := new(CloudAccountAWSResponse)
+func (service *Service) UpdateOrganizationalID(id string, body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
 	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathAWS, id, cloudaccounts.RESTfulServicePathAWSOrganizationalUnit)
 	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
@@ -174,8 +174,8 @@ func (service *Service) UpdateOrganizationalID(id string, body CloudAccountUpdat
 	return v, resp, nil
 }
 
-func (service *Service) UpdateCredentials(body CloudAccountUpdateCredentialsRequest) (*CloudAccountAWSResponse, *http.Response, error) {
-	v := new(CloudAccountAWSResponse)
+func (service *Service) UpdateCredentials(body CloudAccountUpdateCredentialsRequest) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
 	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAWS, cloudaccounts.RESTfulServicePathAWSCredentials)
 	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {

@@ -62,7 +62,7 @@ func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.R
 	if options == nil {
 		return nil, nil, fmt.Errorf("options parameter must be passed")
 	}
-	
+
 	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAzure, options, nil, v)
 	if err != nil {
