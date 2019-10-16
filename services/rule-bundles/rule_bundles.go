@@ -10,44 +10,18 @@ const (
 )
 
 type RuleBundleRequest struct {
-	Name        string `json:"name,omitempty"`
-	Description string `json:"description,omitempty"`
-	Rules       []struct {
-		Name          string `json:"name,omitempty"`
-		Severity      string `json:"severity,omitempty"`
-		Logic         string `json:"logic,omitempty"`
-		Description   string `json:"description,omitempty"`
-		Remediation   string `json:"remediation,omitempty"`
-		ComplianceTag string `json:"complianceTag,omitempty"`
-		Domain        string `json:"domain,omitempty"`
-		Priority      string `json:"priority,omitempty"`
-		ControlTitle  string `json:"controlTitle,omitempty"`
-		RuleID        string `json:"ruleId,omitempty"`
-		LogicHash     string `json:"logicHash,omitempty"`
-		IsDefault     bool   `json:"isDefault,omitempty"`
-	} `json:"rules,omitempty"`
-	ID               int    `json:"id,omitempty"`
-	HideInCompliance bool   `json:"hideInCompliance,omitempty"`
-	MinFeatureTier   string `json:"minFeatureTier,omitempty"`
-	CloudVendor      string `json:"cloudVendor,omitempty"`
-	Language         string `json:"language,omitempty"`
+	Name             string  `json:"name,omitempty"`
+	Description      string  `json:"description,omitempty"`
+	Rules            *[]Rule `json:"rules,omitempty"`
+	ID               int     `json:"id,omitempty"`
+	HideInCompliance bool    `json:"hideInCompliance,omitempty"`
+	MinFeatureTier   string  `json:"minFeatureTier,omitempty"`
+	CloudVendor      string  `json:"cloudVendor,omitempty"`
+	Language         string  `json:"language,omitempty"`
 }
 
 type RuleBundleResponse struct {
-	Rules []struct {
-		Name          string `json:"name"`
-		Severity      string `json:"severity"`
-		Logic         string `json:"logic"`
-		Description   string `json:"description"`
-		Remediation   string `json:"remediation"`
-		ComplianceTag string `json:"complianceTag"`
-		Domain        string `json:"domain"`
-		Priority      string `json:"priority"`
-		ControlTitle  string `json:"controlTitle"`
-		RuleID        string `json:"ruleId"`
-		LogicHash     string `json:"logicHash"`
-		IsDefault     bool   `json:"isDefault"`
-	} `json:"rules"`
+	Rules            []Rule    `json:"rules"`
 	AccountID        int       `json:"accountId"`
 	CreatedTime      time.Time `json:"createdTime"`
 	UpdatedTime      time.Time `json:"updatedTime"`
@@ -65,6 +39,21 @@ type RuleBundleResponse struct {
 	Version          int       `json:"version"`
 	Language         string    `json:"language"`
 	RulesCount       int       `json:"rulesCount"`
+}
+
+type Rule struct {
+	Name          string `json:"name,omitempty"`
+	Severity      string `json:"severity,omitempty"`
+	Logic         string `json:"logic,omitempty"`
+	Description   string `json:"description,omitempty"`
+	Remediation   string `json:"remediation,omitempty"`
+	ComplianceTag string `json:"complianceTag,omitempty"`
+	Domain        string `json:"domain,omitempty"`
+	Priority      string `json:"priority,omitempty"`
+	ControlTitle  string `json:"controlTitle,omitempty"`
+	RuleID        string `json:"ruleId,omitempty"`
+	LogicHash     string `json:"logicHash,omitempty"`
+	IsDefault     bool   `json:"isDefault,omitempty"`
 }
 
 func (service *Service) Get(id string) (*RuleBundleResponse, *http.Response, error) {
