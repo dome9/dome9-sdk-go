@@ -12,4 +12,3 @@ type Service struct {
 func New(c *dome9.Config) *Service {
 	return &Service{Client: client.NewClient(c)}
 }
-
