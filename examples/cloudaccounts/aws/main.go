@@ -51,12 +51,7 @@ func main() {
 	desiredGroupBehavior := "FullManage"
 	updateRegionConfigResponse, _, err := srv.UpdateRegionConfig(aws.CloudAccountUpdateRegionConfigRequest{
 		CloudAccountID: v.ID,
-		Data: struct {
-			Region           string `json:"region,omitempty"`
-			Name             string `json:"name,omitempty"`
-			Hidden           bool   `json:"hidden,omitempty"`
-			NewGroupBehavior string `json:"newGroupBehavior,omitempty"`
-		}{
+		Data: aws.CloudAccountNetSecRegion{
 			Region:           "us_east_1",
 			NewGroupBehavior: desiredGroupBehavior,
 		},
@@ -83,14 +78,7 @@ func main() {
 	// Update Credentials
 	updateCredentialsResponse, _, err := srv.UpdateCredentials(aws.CloudAccountUpdateCredentialsRequest{
 		CloudAccountID: v.ID,
-		Data: struct {
-			Apikey     string `json:"apikey,omitempty"`
-			Arn        string `json:"arn,omitempty"`
-			Secret     string `json:"secret,omitempty"`
-			IamUser    string `json:"iamUser,omitempty"`
-			Type       string `json:"type,omitempty"`
-			IsReadOnly bool   `json:"isReadOnly,omitempty"`
-		}{
+		Data: aws.CloudAccountCredentials{
 			Arn:    "ARN",
 			Secret: "SECRET",
 			Type:   "RoleBased",

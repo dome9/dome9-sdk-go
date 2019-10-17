@@ -1,4 +1,4 @@
-package rule_bundles
+package rulebundles
 
 import (
 	"net/http"
