@@ -1,4 +1,4 @@
-package rule_bundles
+package rulebundles
 
 import (
 	"github.com/dome9/dome9-sdk-go/dome9"
