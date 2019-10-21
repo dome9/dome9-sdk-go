@@ -56,8 +56,8 @@ func main() {
 	// update account gsuite
 	id = "THE ACCOUNT ID"
 	updateAccountGSuiteResponse, _, err := srv.UpdateAccountGSuite(id,
-		gcp.CloudAccountUpdateGSuite{
-			GsuiteUser: "EMAIL ADDRESS",
+		gcp.GSuite{
+			GSuiteUser: "EMAIL ADDRESS",
 			DomainName: "DOMAIN NAME",
 		})
 	if err != nil {
