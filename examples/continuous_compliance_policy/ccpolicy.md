@@ -1,3 +1,4 @@
+```go
 package main
 
 import (
@@ -23,15 +24,46 @@ func main() {
 	req.ExternalAccountID = "EXTERNAL ACCOUNT ID"
 	req.NotificationIds = []string{"NOTIFICATION ID"}
 
+    // Create CC Policy
 	v, _, err := srv.Create(&req)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Create response type: %T\n Content %+v", v, v)
 
+	fmt.Printf("Create response type: %T\n Content %+v", v, v)
+    
+    // Get all CC Policies
 	resp, _, err := srv.GetAll()
 	if err != nil {
 		panic(err)
 	}
+
 	fmt.Printf("Get response type: %T\n Content: %+v", resp, resp)
+
+    // Get specific CC Policy
+	somePolicy, _, err := srv.Get("SOME_ID")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Get response type: %T\n Content: %+v", somePolicy, somePolicy)
+
+    // Update specific CC Policy
+    v, _, err := srv.Update("SOME_ID", &req)
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Printf("Update response type: %T\n Content: %+v", v, v)
+
+    // Delete CC Policy
+    _, err := srv.Delete("SOME_ID")
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Printf("Continuous Compliance Policy deleted")
+
 }
+
+```
