@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/dome9/dome9-sdk-go/dome9"
+	"github.com/dome9/dome9-sdk-go/services/cloudaccounts"
 	"github.com/dome9/dome9-sdk-go/services/cloudaccounts/aws"
 )
 
@@ -36,7 +37,8 @@ func main() {
 	fmt.Printf("Get response type: %T\n Content: %+v\n", cloudAccounts, cloudAccounts)
 
 	// Get specific cloud accounts
-	cloudAccount, _, err := srv.Get("SOME_ID")
+	getCloudAccountQueryParams := cloudaccounts.QueryParameters{ID: "SOME_ID"}
+	cloudAccount, _, err := srv.Get(&getCloudAccountQueryParams)
 	if err != nil {
 		panic(err)
 	}
@@ -96,6 +98,15 @@ func main() {
 	}
 
 	fmt.Printf("Update credentials response type: %T\n Content: %+v\n", updateCredentialsResponse, updateCredentialsResponse)
+
+    // Delete AWS cloud account
+    _, err := srv.Delete("SOME_ID")
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Printf("AWS cloud accout deleted")
+
 }
 
 ```

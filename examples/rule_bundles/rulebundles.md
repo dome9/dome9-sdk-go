@@ -39,13 +39,15 @@ func main() {
         Language:"",
     }
 
+    // Create Rule Bundle
 	createdRuleBundle, _, err := srv.Create(&request)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Printf("Create response type: %T\n Content: %+v", createdRuleBundle, createdRuleBundle)
-
+    
+    // Get all Rule Bundles associated to an account
 	allIpLists, _, err := srv.GetAccountRuleBundles()
 	if err != nil {
 		fmt.Println(err)
@@ -53,12 +55,29 @@ func main() {
 
 	fmt.Printf("GetAll response type: %T\n Content: %+v", allIpLists, allIpLists)
 
+    // Get specific Rule Bundle
     someRuleBundle, _, err := srv.Get("SOME_ID")
     if err != nil {
         fmt.Println(err)
     }
 
 	fmt.Printf("Get response type: %T\n Content: %+v", someRuleBundle, someRuleBundle)
+    
+    // Update specific Rule Bundle
+	v, _, err := srv.Update(&request)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Update response type: %T\n Content: %+v", v, v)
+
+    // Delete Rule bundle
+    _, err := srv.Delete("SOME_ID")
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Printf("Rule bundle deleted")
 }   
 
 ```

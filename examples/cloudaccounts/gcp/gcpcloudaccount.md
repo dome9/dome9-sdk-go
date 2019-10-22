@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/dome9/dome9-sdk-go/dome9"
+	"github.com/dome9/dome9-sdk-go/services/cloudaccounts"
 	"github.com/dome9/dome9-sdk-go/services/cloudaccounts/gcp"
 )
 
@@ -44,7 +45,8 @@ func main() {
 	fmt.Printf("Response type: %T\n Content: %+v\n", resp, resp)
 	
 	// Get specific accounts
-	gcpCloudAccount, _, err := srv.GetAll()
+	getCloudAccountQueryParams := cloudaccounts.QueryParameters{ID: "SOME_ID"}
+	gcpCloudAccount, _, err := srv.Get(&getCloudAccountQueryParams)
 	if err != nil {
 		panic(err)
 	}
@@ -107,7 +109,14 @@ func main() {
 	}
 
 	fmt.Printf("response type: %T\n Content: %+v\n", OrganizationalUnitIDResponse, OrganizationalUnitIDResponse)
+    
+    // Delete GCP cloud account
+    _, err := srv.Delete("SOME_ID")
+    if err != nil {
+        panic(err)
+    }
 
+    fmt.Printf("GCP cloud accout deleted")
 }
 
 ```
