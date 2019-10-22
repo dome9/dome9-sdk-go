@@ -20,11 +20,11 @@ func main() {
 	req.ScheduledReport.EmailSendingState = "Disabled"
 	req.ChangeDetection.EmailSendingState = "Disabled"
 	req.ChangeDetection.EmailPerFindingSendingState = "Disabled"
-	req.ChangeDetection.SnsSendingState = "Disabled"
+	req.ChangeDetection.SNSSendingState = "Disabled"
 	req.ChangeDetection.ExternalTicketCreatingState = "Disabled"
-	req.ChangeDetection.AwsSecurityHubIntegrationState = "Disabled"
+	req.ChangeDetection.AWSSecurityHubIntegrationState = "Disabled"
 	req.ChangeDetection.WebhookIntegrationState = "Disabled"
-	req.GcpSecurityCommandCenterIntegration.State = "Disabled"
+	req.GCPSecurityCommandCenterIntegration.State = "Disabled"
 
     // Create CC Notification
 	v, _, err := srv.Create(&req)

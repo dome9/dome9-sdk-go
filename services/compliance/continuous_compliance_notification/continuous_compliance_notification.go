@@ -6,139 +6,102 @@ import (
 )
 
 const (
-	path = "Compliance/ContinuousComplianceNotification/"
+	path = "Compliance/ContinuousComplianceNotification"
 )
 
 type ContinuousComplianceNotificationRequest struct {
-	Name            string `json:"name"`
-	Description     string `json:"description"`
-	AlertsConsole   bool   `json:"alertsConsole"`
-	ScheduledReport struct {
-		// EmailSendingState must be set to "Enabled" or "Disabled"
-		EmailSendingState string `json:"emailSendingState"`
-		// ScheduledData has to be set to nil when EmailSendingState is Disabled
-		ScheduleData *struct {
-			CronExpression string   `json:"cronExpression"`
-			Type           string   `json:"type"`
-			Recipients     []string `json:"recipients"`
-		} `json:"scheduleData"`
-	} `json:"scheduledReport"`
-	// All the states must be set to "Enabled" or "Disabled"
-	// All the data or integration has to be set to nil when the corresponding status is Disabled
-	ChangeDetection struct {
-		EmailSendingState              string `json:"emailSendingState"`
-		EmailPerFindingSendingState    string `json:"emailPerFindingSendingState"`
-		SnsSendingState                string `json:"snsSendingState"`
-		ExternalTicketCreatingState    string `json:"externalTicketCreatingState"`
-		AwsSecurityHubIntegrationState string `json:"awsSecurityHubIntegrationState"`
-		WebhookIntegrationState        string `json:"webhookIntegrationState"`
-		EmailData                      *struct {
-			Recipients []string `json:"recipients"`
-		} `json:"emailData"`
-		EmailPerFindingData *struct {
-			Recipients               []string `json:"recipients"`
-			NotificationOutputFormat string   `json:"notificationOutputFormat"`
-		} `json:"emailPerFindingData"`
-		SnsData *struct {
-			SnsTopicArn     string `json:"snsTopicArn"`
-			SnsOutputFormat string `json:"snsOutputFormat"`
-		} `json:"snsData"`
-		TicketingSystemData *struct {
-			SystemType         string `json:"systemType"`
-			ShouldCloseTickets bool   `json:"shouldCloseTickets"`
-			Domain             string `json:"domain"`
-			User               string `json:"user"`
-			Pass               string `json:"pass"`
-			ProjectKey         string `json:"projectKey"`
-			IssueType          string `json:"issueType"`
-		} `json:"ticketingSystemData"`
-		AwsSecurityHubIntegration *struct {
-			ExternalAccountID string `json:"externalAccountId"`
-			Region            string `json:"region"`
-		} `json:"awsSecurityHubIntegration"`
-		WebhookData *struct {
-			URL        string `json:"url"`
-			HTTPMethod string `json:"httpMethod"`
-			AuthMethod string `json:"authMethod"`
-			Username   string `json:"username"`
-			Password   string `json:"password"`
-			FormatType string `json:"formatType"`
-		} `json:"webhookData"`
-	} `json:"changeDetection"`
-	// State must be set to "Enabled" or "Disabled"
-	GcpSecurityCommandCenterIntegration struct {
-		State     string  `json:"state"`
-		ProjectID *string `json:"projectId"`
-		SourceID  *string `json:"sourceId"`
-	} `json:"gcpSecurityCommandCenterIntegration"`
+	Name                                string                               `json:"name"`
+	Description                         string                               `json:"description,omitempty"`
+	AlertsConsole                       bool                                 `json:"alertsConsole,omitempty"`
+	ScheduledReport                     *ScheduledReport                     `json:"scheduledReport,omitempty"`
+	ChangeDetection                     ChangeDetection                      `json:"ChangeDetection"`
+	GCPSecurityCommandCenterIntegration *GCPSecurityCommandCenterIntegration `json:"gcpSecurityCommandCenterIntegration,omitempty"`
 }
 
 type ContinuousComplianceNotificationResponse struct {
-	ID              string `json:"id"`
-	Name            string `json:"name"`
-	Description     string `json:"description"`
-	AlertsConsole   bool   `json:"alertsConsole"`
-	ScheduledReport struct {
-		EmailSendingState string `json:"emailSendingState"`
-		ScheduleData      *struct {
-			CronExpression string   `json:"cronExpression"`
-			Type           string   `json:"type"`
-			Recipients     []string `json:"recipients"`
-		} `json:"scheduleData"`
-	} `json:"scheduledReport"`
-	ChangeDetection struct {
-		EmailSendingState              string `json:"emailSendingState"`
-		EmailPerFindingSendingState    string `json:"emailPerFindingSendingState"`
-		SnsSendingState                string `json:"snsSendingState"`
-		ExternalTicketCreatingState    string `json:"externalTicketCreatingState"`
-		AwsSecurityHubIntegrationState string `json:"awsSecurityHubIntegrationState"`
-		WebhookIntegrationState        string `json:"webhookIntegrationState"`
-		EmailData                      *struct {
-			Recipients []string `json:"recipients"`
-		} `json:"emailData"`
-		EmailPerFindingData *struct {
-			Recipients               []string `json:"recipients"`
-			NotificationOutputFormat string   `json:"notificationOutputFormat"`
-		} `json:"emailPerFindingData"`
-		SnsData *struct {
-			SnsTopicArn     string `json:"snsTopicArn"`
-			SnsOutputFormat string `json:"snsOutputFormat"`
-		} `json:"snsData"`
-		TicketingSystemData *struct {
-			SystemType         string `json:"systemType"`
-			ShouldCloseTickets bool   `json:"shouldCloseTickets"`
-			Domain             string `json:"domain"`
-			User               string `json:"user"`
-			Pass               string `json:"pass"`
-			ProjectKey         string `json:"projectKey"`
-			IssueType          string `json:"issueType"`
-		} `json:"ticketingSystemData"`
-		AwsSecurityHubIntegration *struct {
-			ExternalAccountID string `json:"externalAccountId"`
-			Region            string `json:"region"`
-		} `json:"awsSecurityHubIntegration"`
-		WebhookData *struct {
-			URL        string `json:"url"`
-			HTTPMethod string `json:"httpMethod"`
-			AuthMethod string `json:"authMethod"`
-			Username   string `json:"username"`
-			Password   string `json:"password"`
-			FormatType string `json:"formatType"`
-		} `json:"webhookData"`
-	} `json:"changeDetection"`
-	GcpSecurityCommandCenterIntegration struct {
-		State     string  `json:"state"`
-		ProjectID *string `json:"projectId"`
-		SourceID  *string `json:"sourceId"`
-	} `json:"gcpSecurityCommandCenterIntegration"`
+	ID                                  string                               `json:"id"`
+	Name                                string                               `json:"name"`
+	Description                         string                               `json:"description"`
+	AlertsConsole                       bool                                 `json:"alertsConsole"`
+	ScheduledReport                     *ScheduledReport                     `json:"scheduledReport"`
+	ChangeDetection                     ChangeDetection                      `json:"ChangeDetection"`
+	GCPSecurityCommandCenterIntegration *GCPSecurityCommandCenterIntegration `json:"gcpSecurityCommandCenterIntegration"`
 }
 
-func (service *Service) Get(options interface{}) (*ContinuousComplianceNotificationResponse, *http.Response, error) {
-	if options == nil {
-		return nil, nil, fmt.Errorf("options parameter must be passed")
-	}
+type ScheduledReport struct {
+	EmailSendingState string        `json:"emailSendingState,omitempty"`
+	ScheduleData      *ScheduleData `json:"ScheduleData,omitempty"`
+}
+
+type ScheduleData struct {
+	CronExpression string   `json:"cronExpression"`
+	Type           string   `json:"type"`
+	Recipients     []string `json:"recipients"`
+}
+
+type ChangeDetection struct {
+	EmailSendingState              string                     `json:"emailSendingState,omitempty"`
+	EmailPerFindingSendingState    string                     `json:"emailPerFindingSendingState,omitempty"`
+	SNSSendingState                string                     `json:"snsSendingState,omitempty"`
+	ExternalTicketCreatingState    string                     `json:"externalTicketCreatingState,omitempty"`
+	AWSSecurityHubIntegrationState string                     `json:"awsSecurityHubIntegrationState,omitempty"`
+	WebhookIntegrationState        string                     `json:"webhookIntegrationState,omitempty"`
+	EmailData                      *EmailData                 `json:"emailData,omitempty"`
+	EmailPerFindingData            *EmailPerFindingData       `json:"emailPerFindingData,omitempty"`
+	SNSData                        *SNSData                   `json:"snsData,omitempty"`
+	TicketingSystemData            *TicketingSystemData       `json:"ticketingSystemData,omitempty"`
+	AWSSecurityHubIntegration      *AWSSecurityHubIntegration `json:"awsSecurityHubIntegration,omitempty"`
+	WebhookData                    *WebhookData               `json:"webhookData,omitempty"`
+}
+
+type EmailData struct {
+	Recipients []string `json:"recipients"`
+}
+
+type EmailPerFindingData struct {
+	Recipients               []string `json:"recipients"`
+	NotificationOutputFormat string   `json:"notificationOutputFormat"`
+}
+
+type SNSData struct {
+	SNSTopicArn     string `json:"snsTopicArn"`
+	SNSOutputFormat string `json:"snsOutputFormat"`
+}
+
+type TicketingSystemData struct {
+	SystemType         string `json:"systemType"`
+	ShouldCloseTickets bool   `json:"shouldCloseTickets"`
+	Domain             string `json:"domain,omitempty"`
+	User               string `json:"user,omitempty"`
+	Pass               string `json:"pass"`
+	ProjectKey         string `json:"projectKey,omitempty"`
+	IssueType          string `json:"issueType,omitempty"`
+}
+
+type AWSSecurityHubIntegration struct {
+	ExternalAccountID string `json:"externalAccountId"`
+	Region            string `json:"region"`
+}
+
+type WebhookData struct {
+	URL        string `json:"url"`
+	HTTPMethod string `json:"httpMethod"`
+	AuthMethod string `json:"authMethod"`
+	Username   string `json:"username,omitempty"`
+	Password   string `json:"password,omitempty"`
+	FormatType string `json:"formatType"`
+}
+
+type GCPSecurityCommandCenterIntegration struct {
+	State     string `json:"state"`
+	ProjectID string `json:"projectId,omitempty"`
+	SourceID  string `json:"sourceId,omitempty"`
+}
+
+func (service *Service) Get(id string) (*ContinuousComplianceNotificationResponse, *http.Response, error) {
 	v := new(ContinuousComplianceNotificationResponse)
-	resp, err := service.Client.NewRequestDo("GET", path, options, nil, v)
+	relativeURL := fmt.Sprintf("%s/%s", path, id)
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -168,7 +131,8 @@ func (service *Service) Create(body *ContinuousComplianceNotificationRequest) (*
 
 func (service *Service) Update(id string, body *ContinuousComplianceNotificationRequest) (*ContinuousComplianceNotificationResponse, *http.Response, error) {
 	v := new(ContinuousComplianceNotificationResponse)
-	resp, err := service.Client.NewRequestDo("PUT", path+id, nil, body, v)
+	relativeURL := fmt.Sprintf("%s/%s", path, id)
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -177,7 +141,8 @@ func (service *Service) Update(id string, body *ContinuousComplianceNotification
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	resp, err := service.Client.NewRequestDo("DELETE", path+id, nil, nil, nil)
+	relativeURL := fmt.Sprintf("%s/%s", path, id)
+	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
