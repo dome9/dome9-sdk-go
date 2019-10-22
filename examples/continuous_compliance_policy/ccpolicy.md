@@ -1,3 +1,4 @@
+```go
 package main
 
 import (
@@ -27,11 +28,22 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	fmt.Printf("Create response type: %T\n Content %+v", v, v)
 
 	resp, _, err := srv.GetAll()
 	if err != nil {
 		panic(err)
 	}
+
 	fmt.Printf("Get response type: %T\n Content: %+v", resp, resp)
+
+	somePolicy, _, err := srv.Get("SOME_ID")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Get response type: %T\n Content: %+v", somePolicy, somePolicy)
 }
+
+```

@@ -1,3 +1,4 @@
+```go
 package main
 
 import (
@@ -32,8 +33,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("Get response type: %T\n Content: %+v\n", cloudAccounts, cloudAccounts)
+
+	// Get specific cloud accounts
+	cloudAccount, _, err := srv.Get("SOME_ID")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Get response type: %T\n Content: %+v\n", cloudAccount, cloudAccount)
 
 	// update cloud account name
 	desiredNewName := "test AWS update cloud account"
@@ -90,3 +97,5 @@ func main() {
 
 	fmt.Printf("Update credentials response type: %T\n Content: %+v\n", updateCredentialsResponse, updateCredentialsResponse)
 }
+
+```

@@ -1,3 +1,4 @@
+```go
 package main
 
 import (
@@ -26,14 +27,22 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Create response type: %T\n Content %+v\n", v, v)
-
+	fmt.Printf("Create response type: %T\n Content %+v\n", v, v) 
+	
+	// Get all cloud accounts
 	resp, _, err := srv.GetAll()
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Get response type: %T\n Content: %+v\n", resp, resp)
 
+	// Get specific account
+	azureCloudAccount, _, err := srv.Get("SOME_ID")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Get response type: %T\n Content: %+v\n", azureCloudAccount, azureCloudAccount)
+	
 	// update cloud account name
 	id := "THE ACCOUNT ID"
 	desiredNewName := "new cloud account name"
@@ -84,3 +93,5 @@ func main() {
 	fmt.Printf("Update credentials response type: %T\n Content: %+v\n", updateCredentialsResponse, updateCredentialsResponse)
 
 }
+
+```

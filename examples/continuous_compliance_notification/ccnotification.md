@@ -1,3 +1,4 @@
+```go
 package main
 
 import (
@@ -35,5 +36,16 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	fmt.Printf("Get response type: %T\n Content: %+v", resp, resp)
+
+	someNotification, _, err := srv.Get("SOME_ID")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Get response type: %T\n Content: %+v", someNotification, someNotification)
+
 }
+
+```

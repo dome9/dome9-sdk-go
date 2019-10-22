@@ -1,3 +1,4 @@
+```go
 package main
 
 import (
@@ -36,4 +37,13 @@ func main() {
 	}
 
 	fmt.Printf("GetAll response type: %T\n Content: %+v", allIpLists, allIpLists)
+	
+	someIpList, _, err := srv.Get(10001)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Printf("Get response type: %T\n Content: %+v", someIpList, someIpList)
 }
+
+```

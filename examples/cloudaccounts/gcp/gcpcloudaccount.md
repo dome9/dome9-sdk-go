@@ -1,3 +1,4 @@
+```go
 package main
 
 import (
@@ -35,12 +36,20 @@ func main() {
 	}
 	fmt.Printf("Response type: %T\n Content %+v\n", v, v)
 
+	// Get all cloud accounts
 	resp, _, err := srv.GetAll()
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Response type: %T\n Content: %+v\n", resp, resp)
-
+	
+	// Get specific accounts
+	gcpCloudAccount, _, err := srv.GetAll()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Response type: %T\n Content: %+v\n", gcpCloudAccount, gcpCloudAccount)
+	
 	// update cloud account name
 	id := "THE ACCOUNT ID"
 	desiredNewName := "new cloud account name"
@@ -100,3 +109,5 @@ func main() {
 	fmt.Printf("response type: %T\n Content: %+v\n", OrganizationalUnitIDResponse, OrganizationalUnitIDResponse)
 
 }
+
+```
