@@ -1,3 +1,4 @@
+```go
 package main
 
 import (
@@ -23,17 +24,45 @@ func main() {
 		},
 	}
 
+    // Create IP List
 	createdIpList, _, err := srv.Create(&request)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Printf("Create response type: %T\n Content: %+v", createdIpList, createdIpList)
-
+    
+    // Get all IP Lists
 	allIpLists, _, err := srv.GetAll()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	fmt.Printf("GetAll response type: %T\n Content: %+v", allIpLists, allIpLists)
+	
+    // Get specific IP List
+	someIpList, _, err := srv.Get(10001)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Printf("Get response type: %T\n Content: %+v", someIpList, someIpList)
+    
+    // Update specific IP List
+	v, err := srv.Update(10001, &request)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Update response type: %T\n Content: %+v", v, v)
+
+    // Delete IP List
+    _, err := srv.Delete(1001)
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Printf("IP List deleted")
 }
+
+```
