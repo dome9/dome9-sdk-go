@@ -13,9 +13,9 @@ type ContinuousComplianceNotificationRequest struct {
 	Name                                string                               `json:"name"`
 	Description                         string                               `json:"description,omitempty"`
 	AlertsConsole                       bool                                 `json:"alertsConsole,omitempty"`
-	ScheduledReport                     *ScheduledReport                     `json:"scheduledReport,omitempty"`
-	ChangeDetection                     ChangeDetection                      `json:"ChangeDetection"`
-	GCPSecurityCommandCenterIntegration *GCPSecurityCommandCenterIntegration `json:"gcpSecurityCommandCenterIntegration,omitempty"`
+	ScheduledReport                     *ScheduledReport                     `json:"scheduledReport"`
+	ChangeDetection                     ChangeDetection                      `json:"changeDetection"`
+	GCPSecurityCommandCenterIntegration *GCPSecurityCommandCenterIntegration `json:"gcpSecurityCommandCenterIntegration"`
 }
 
 type ContinuousComplianceNotificationResponse struct {
@@ -24,7 +24,7 @@ type ContinuousComplianceNotificationResponse struct {
 	Description                         string                               `json:"description"`
 	AlertsConsole                       bool                                 `json:"alertsConsole"`
 	ScheduledReport                     *ScheduledReport                     `json:"scheduledReport"`
-	ChangeDetection                     ChangeDetection                      `json:"ChangeDetection"`
+	ChangeDetection                     ChangeDetection                      `json:"changeDetection"`
 	GCPSecurityCommandCenterIntegration *GCPSecurityCommandCenterIntegration `json:"gcpSecurityCommandCenterIntegration"`
 }
 
