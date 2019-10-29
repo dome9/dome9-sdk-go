@@ -1,9 +1,11 @@
+```go
 package main
 
 import (
 	"fmt"
 
 	"github.com/dome9/dome9-sdk-go/dome9"
+	"github.com/dome9/dome9-sdk-go/services/cloudaccounts"
 	"github.com/dome9/dome9-sdk-go/services/cloudaccounts/gcp"
 )
 
@@ -35,12 +37,21 @@ func main() {
 	}
 	fmt.Printf("Response type: %T\n Content %+v\n", v, v)
 
+	// Get all cloud accounts
 	resp, _, err := srv.GetAll()
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Response type: %T\n Content: %+v\n", resp, resp)
-
+	
+	// Get specific accounts
+	getCloudAccountQueryParams := cloudaccounts.QueryParameters{ID: "SOME_ID"}
+	gcpCloudAccount, _, err := srv.Get(&getCloudAccountQueryParams)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Response type: %T\n Content: %+v\n", gcpCloudAccount, gcpCloudAccount)
+	
 	// update cloud account name
 	id := "THE ACCOUNT ID"
 	desiredNewName := "new cloud account name"
@@ -98,5 +109,14 @@ func main() {
 	}
 
 	fmt.Printf("response type: %T\n Content: %+v\n", OrganizationalUnitIDResponse, OrganizationalUnitIDResponse)
+    
+    // Delete GCP cloud account
+    _, err := srv.Delete("SOME_ID")
+    if err != nil {
+        panic(err)
+    }
 
+    fmt.Printf("GCP cloud accout deleted")
 }
+
+```
