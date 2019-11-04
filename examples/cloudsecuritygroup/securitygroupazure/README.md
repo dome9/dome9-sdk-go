@@ -69,7 +69,7 @@ func main() {
 	}
 
 	// create Azure SG
-	resp, _, err := srv.Create(&req)
+	resp, _, err := srv.Create(req)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -93,7 +93,7 @@ func main() {
 	fmt.Printf("Get response type: %T\n Content: %+v", someAzureSecurityGroup, someAzureSecurityGroup)
 
 	// update specific Azure SG
-	v, _, err := srv.Update("CLOUD_ACCOUNT_ID", &req)
+	v, _, err := srv.Update("CLOUD_ACCOUNT_ID", req)
 	if err != nil {
 		panic(err)
 	}

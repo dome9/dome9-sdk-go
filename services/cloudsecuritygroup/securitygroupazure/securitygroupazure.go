@@ -87,7 +87,7 @@ func (service *Service) GetAll() (*[]CloudSecurityGroupResponse, *http.Response,
 	return v, resp, nil
 }
 
-func (service *Service) Create(body *CloudSecurityGroupRequest) (*CloudSecurityGroupResponse, *http.Response, error) {
+func (service *Service) Create(body CloudSecurityGroupRequest) (*CloudSecurityGroupResponse, *http.Response, error) {
 	v := new(CloudSecurityGroupResponse)
 	resp, err := service.Client.NewRequestDo("POST", cloudsecuritygroup.RESTfulPathAzureSecurityGroup, nil, body, v)
 	if err != nil {
@@ -107,7 +107,7 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 	return resp, nil
 }
 
-func (service *Service) Update(id string, body *CloudSecurityGroupRequest) (*CloudSecurityGroupResponse, *http.Response, error) {
+func (service *Service) Update(id string, body CloudSecurityGroupRequest) (*CloudSecurityGroupResponse, *http.Response, error) {
 	v := new(CloudSecurityGroupResponse)
 	relativeURL := fmt.Sprintf("%s/%s", cloudsecuritygroup.RESTfulPathAzureSecurityGroup, id)
 	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
