@@ -19,7 +19,7 @@ func main() {
 	}
 
     // create OU
-	createdOU, _, err := srv.Create(&request)
+	createdOU, _, err := srv.Create(request)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -43,7 +43,7 @@ func main() {
 	fmt.Printf("Get response type: %T\n Content: %+v", someOU, someOU)
     
     // update specific OU
-	v, err := srv.Update("12345678-1234-1234-1234-12345678901", &request)
+	v, err := srv.Update("12345678-1234-1234-1234-12345678901", request)
 	if err != nil {
 		fmt.Println(err)
 	}
