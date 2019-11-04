@@ -51,8 +51,7 @@ func (service *Service) Get(ouId string) (*OUResponse, *http.Response, error) {
 
 func (service *Service) GetAll() (*[]OUResponse, *http.Response, error) {
 	v := new([]OUResponse)
-	path := fmt.Sprintf("%s", ouResourcePath)
-	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
+	resp, err := service.Client.NewRequestDo("GET", ouResourcePath, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}

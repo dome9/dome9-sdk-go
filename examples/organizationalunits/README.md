@@ -34,26 +34,26 @@ func main() {
 
 	fmt.Printf("GetAll response type: %T\n Content: %+v", allOUs, allOUs)
 	
-    // Get specific OU
-	someIpList, _, err := srv.Get("12345678-1234-1234-1234-12345678901")
+    // get specific OU
+	someOU, _, err := srv.Get("12345678-1234-1234-1234-12345678901")
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	fmt.Printf("Get response type: %T\n Content: %+v", someIpList, someIpList)
+	fmt.Printf("Get response type: %T\n Content: %+v", someOU, someOU)
     
     // update specific OU
 	v, err := srv.Update("12345678-1234-1234-1234-12345678901", &request)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	fmt.Printf("Update response type: %T\n Content: %+v", v, v)
 
-    // Delete IP List
+    // delete OU
     _, err = srv.Delete("12345678-1234-1234-1234-12345678901")
     if err != nil {
-        panic(err)
+        fmt.Println(err)
     }
 
     fmt.Printf("OU deleted")
