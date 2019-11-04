@@ -38,10 +38,12 @@ type UserResponse struct {
 	CalculatedPermissions CalculatedPermissions `json:"calculatedPermissions"`
 	IsMobileDevicePaired  bool                  `json:"isMobileDevicePaired"`
 }
+
 type IamEntitiesLastLeaseTime struct {
 	IamEntity     string    `json:"iamEntity"`
 	LastLeaseTime time.Time `json:"lastLeaseTime"`
 }
+
 type CloudAccounts struct {
 	CloudAccountID           string                     `json:"cloudAccountId"`
 	Name                     string                     `json:"name"`
@@ -53,9 +55,11 @@ type CloudAccounts struct {
 	CloudAccountState        string                     `json:"cloudAccountState"`
 	IamEntity                string                     `json:"iamEntity"`
 }
+
 type IamSafe struct {
 	CloudAccounts []CloudAccounts `json:"cloudAccounts"`
 }
+
 type Permissions struct {
 	Access             []string `json:"access"`
 	Manage             []string `json:"manage"`
@@ -67,6 +71,7 @@ type Permissions struct {
 	View               []string `json:"view"`
 	CrossAccountAccess []string `json:"crossAccountAccess"`
 }
+
 type CalculatedPermissions struct {
 	Access             []string `json:"access"`
 	Manage             []string `json:"manage"`
