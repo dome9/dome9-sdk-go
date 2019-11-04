@@ -104,7 +104,7 @@ func (service *Service) GetAll() (*[]UserResponse, *http.Response, error) {
 	return v, resp, nil
 }
 
-func (service *Service) Create(user *UserRequest) (*UserResponse, *http.Response, error) {
+func (service *Service) Create(user UserRequest) (*UserResponse, *http.Response, error) {
 	v := new(UserResponse)
 	resp, err := service.Client.NewRequestDo("POST", userResourcePath, nil, user, &v)
 	if err != nil {
@@ -114,7 +114,7 @@ func (service *Service) Create(user *UserRequest) (*UserResponse, *http.Response
 }
 
 // blocked by bug: https://dome9-security.atlassian.net/browse/DOME-12720
-func (service *Service) Update(userId string, user *UserRequest) (*http.Response, error) {
+func (service *Service) Update(userId string, user UserRequest) (*http.Response, error) {
 	path := fmt.Sprintf("%s/%s", userResourcePath, userId)
 	resp, err := service.Client.NewRequestDo("PUT", path, nil, user, nil)
 	if err != nil {

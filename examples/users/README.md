@@ -21,7 +21,7 @@ func main() {
 	}
 
     // create user
-	createdUser, _, err := srv.Create(&request)
+	createdUser, _, err := srv.Create(request)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -45,7 +45,7 @@ func main() {
 	fmt.Printf("Get response type: %T\n Content: %+v", someUser, someUser)
     
     // update specific user
-	v, err := srv.Update(10001, &request)
+	v, err := srv.Update("10001", request)
 	if err != nil {
 		panic(err)
 	}
