@@ -79,9 +79,9 @@ type CalculatedPermissions struct {
 	CrossAccountAccess []string `json:"crossAccountAccess"`
 }
 
-func (service *Service) Get(userId int64) (*UserResponse, *http.Response, error) {
+func (service *Service) Get(userId string) (*UserResponse, *http.Response, error) {
 	v := new(UserResponse)
-	path := fmt.Sprintf("%s/%d", userResourcePath, userId)
+	path := fmt.Sprintf("%s/%s", userResourcePath, userId)
 	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -109,8 +109,8 @@ func (service *Service) Create(user *UserRequest) (*UserResponse, *http.Response
 }
 
 // blocked by bug: https://dome9-security.atlassian.net/browse/DOME-12720
-func (service *Service) Update(userId int64, user *UserRequest) (*http.Response, error) {
-	path := fmt.Sprintf("%s/%d", userResourcePath, userId)
+func (service *Service) Update(userId string, user *UserRequest) (*http.Response, error) {
+	path := fmt.Sprintf("%s/%s", userResourcePath, userId)
 	resp, err := service.Client.NewRequestDo("PUT", path, nil, user, nil)
 	if err != nil {
 		return nil, err
@@ -118,8 +118,8 @@ func (service *Service) Update(userId int64, user *UserRequest) (*http.Response,
 	return resp, err
 }
 
-func (service *Service) Delete(userId int64) (*http.Response, error) {
-	path := fmt.Sprintf("%s/%d", userResourcePath, userId)
+func (service *Service) Delete(userId string) (*http.Response, error) {
+	path := fmt.Sprintf("%s/%s", userResourcePath, userId)
 	resp, err := service.Client.NewRequestDo("DELETE", path, nil, nil, nil)
 	if err != nil {
 		return nil, err

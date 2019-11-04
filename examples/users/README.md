@@ -37,7 +37,7 @@ func main() {
 	fmt.Printf("GetAll response type: %T\n Content: %+v", allUsers, allUsers)
 	
     // get a specific User
-	someUser, _, err := srv.Get(10001)
+	someUser, _, err := srv.Get("10001")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -53,7 +53,7 @@ func main() {
 	fmt.Printf("Update response type: %T\n Content: %+v", v, v)
 
     // delete user
-    _, err  = srv.Delete(1001)
+    _, err  = srv.Delete("1001")
     if err != nil {
         panic(err)
     }
