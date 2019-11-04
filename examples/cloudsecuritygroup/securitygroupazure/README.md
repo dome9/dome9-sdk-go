@@ -28,7 +28,7 @@ func main() {
 		Data: data1,
 	}
 
-	inboundServices := securitygroupazure.InboundServices{
+	inboundServices := securitygroupazure.BoundService{
 		Direction:             "Inbound",
 		Name:                  "Port_8080_test",
 		Description:           "",
@@ -42,7 +42,7 @@ func main() {
 		IsDefault:             false,
 	}
 
-	outboundServices := securitygroupazure.OutboundServices{
+	outboundServices := securitygroupazure.BoundService{
 		Direction:             "Outbound",
 		Name:                  "yada",
 		Description:           "bada",
@@ -64,16 +64,17 @@ func main() {
 		ResourceGroup:     "erez-rg",
 		CloudAccountID:    "CLOUD_ACCOUNT_ID",
 		Tags:              []securitygroupazure.Tags{someTags},
-		InboundServices:   []securitygroupazure.InboundServices{inboundServices},
-		OutboundServices:  []securitygroupazure.OutboundServices{outboundServices},
+		InboundServices:   []securitygroupazure.BoundService{inboundServices},
+		OutboundServices:  []securitygroupazure.BoundService{outboundServices},
 	}
 
 	// create Azure SG
 	resp, _, err := srv.Create(&req)
-	fmt.Printf("Create response type: %T\n content: %+v'n", resp, resp)
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	fmt.Printf("Create response type: %T\n content: %+v'n", resp, resp)
 
 	// get all Azure SGs
 	allAzureSecurityGroups, _, err := srv.GetAll()
