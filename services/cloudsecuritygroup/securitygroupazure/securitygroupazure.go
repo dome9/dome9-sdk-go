@@ -6,9 +6,8 @@ import (
 )
 
 const (
-	path = "AzureSecurityGroupPolicy"
+	azureSgResourcePath = "AzureSecurityGroupPolicy"
 )
-
 
 type CloudSecurityGroupRequest struct {
 	Name              string         `json:"name"`
@@ -71,7 +70,7 @@ type Error struct {
 
 func (service *Service) Get(id string) (*CloudSecurityGroupResponse, *http.Response, error) {
 	v := new(CloudSecurityGroupResponse)
-	relativeURL := fmt.Sprintf("%s/%s", path, id)
+	relativeURL := fmt.Sprintf("%s/%s", azureSgResourcePath, id)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -82,7 +81,7 @@ func (service *Service) Get(id string) (*CloudSecurityGroupResponse, *http.Respo
 
 func (service *Service) GetAll() (*[]CloudSecurityGroupResponse, *http.Response, error) {
 	v := new([]CloudSecurityGroupResponse)
-	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
+	resp, err := service.Client.NewRequestDo("GET", azureSgResourcePath, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -92,7 +91,7 @@ func (service *Service) GetAll() (*[]CloudSecurityGroupResponse, *http.Response,
 
 func (service *Service) Create(body CloudSecurityGroupRequest) (*CloudSecurityGroupResponse, *http.Response, error) {
 	v := new(CloudSecurityGroupResponse)
-	resp, err := service.Client.NewRequestDo("POST", path, nil, body, v)
+	resp, err := service.Client.NewRequestDo("POST", azureSgResourcePath, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -101,7 +100,7 @@ func (service *Service) Create(body CloudSecurityGroupRequest) (*CloudSecurityGr
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	relativeURL := fmt.Sprintf("%s/%s", path, id)
+	relativeURL := fmt.Sprintf("%s/%s", azureSgResourcePath, id)
 	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
 	if err != nil {
 		return nil, err
@@ -112,7 +111,7 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 
 func (service *Service) Update(id string, body CloudSecurityGroupRequest) (*CloudSecurityGroupResponse, *http.Response, error) {
 	v := new(CloudSecurityGroupResponse)
-	relativeURL := fmt.Sprintf("%s/%s", path, id)
+	relativeURL := fmt.Sprintf("%s/%s", azureSgResourcePath, id)
 	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err

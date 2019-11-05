@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	path = "assessment/bundleV2"
+	assessmentResourcePath = "assessment/bundleV2"
 )
 
 type RunBundleRequest struct {
@@ -138,7 +138,7 @@ type EntitiesWithPermissionIssues struct {
 
 func (service *Service) RunBundle(body *RunBundleRequest) (*RunBundleResponse, *http.Response, error) {
 	v := new(RunBundleResponse)
-	resp, err := service.Client.NewRequestDo("POST", path, nil, body, v)
+	resp, err := service.Client.NewRequestDo("POST", assessmentResourcePath, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
