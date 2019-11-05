@@ -1,12 +1,13 @@
 package rulebundles
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 )
 
 const (
-	path = "CompliancePolicy/"
+	ruleBundleResourcePath = "CompliancePolicy"
 )
 
 type RuleBundleRequest struct {
@@ -58,7 +59,8 @@ type Rule struct {
 
 func (service *Service) Get(id string) (*RuleBundleResponse, *http.Response, error) {
 	v := new(RuleBundleResponse)
-	resp, err := service.Client.NewRequestDo("GET", path+id, nil, nil, v)
+	path := fmt.Sprintf("%s/%s", ruleBundleResourcePath, id)
+	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -68,7 +70,7 @@ func (service *Service) Get(id string) (*RuleBundleResponse, *http.Response, err
 
 func (service *Service) GetAccountRuleBundles() (*[]RuleBundleResponse, *http.Response, error) {
 	v := new([]RuleBundleResponse)
-	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
+	resp, err := service.Client.NewRequestDo("GET", ruleBundleResourcePath, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -78,7 +80,7 @@ func (service *Service) GetAccountRuleBundles() (*[]RuleBundleResponse, *http.Re
 
 func (service *Service) Create(body *RuleBundleRequest) (*RuleBundleResponse, *http.Response, error) {
 	v := new(RuleBundleResponse)
-	resp, err := service.Client.NewRequestDo("POST", path, nil, body, v)
+	resp, err := service.Client.NewRequestDo("POST", ruleBundleResourcePath, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -89,7 +91,7 @@ func (service *Service) Create(body *RuleBundleRequest) (*RuleBundleResponse, *h
 func (service *Service) Update(body *RuleBundleRequest) (*RuleBundleResponse, *http.Response, error) {
 	// Rule bundle ID passed within the request body
 	v := new(RuleBundleResponse)
-	resp, err := service.Client.NewRequestDo("PUT", path, nil, body, v)
+	resp, err := service.Client.NewRequestDo("PUT", ruleBundleResourcePath, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -98,7 +100,8 @@ func (service *Service) Update(body *RuleBundleRequest) (*RuleBundleResponse, *h
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	resp, err := service.Client.NewRequestDo("DELETE", path+id, nil, nil, nil)
+	path := fmt.Sprintf("%s/%s", ruleBundleResourcePath, id)
+	resp, err := service.Client.NewRequestDo("DELETE", path, nil, nil, nil)
 	if err != nil {
 		return nil, err
 	}
