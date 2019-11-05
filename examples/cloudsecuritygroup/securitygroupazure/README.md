@@ -95,7 +95,7 @@ func main() {
 	// update specific Azure SG
 	v, _, err := srv.Update("CLOUD_ACCOUNT_ID", req)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	fmt.Printf("Update response type: %T\n Content: %+v", v, v)
@@ -103,7 +103,7 @@ func main() {
 	// delete Azure SG
 	_, err = srv.Delete("CLOUD_ACCOUNT_ID")
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	fmt.Printf("Azure Security Group deleted")
