@@ -16,7 +16,7 @@ type CloudSecurityGroupRequest struct {
 	IsProtected       bool              `json:"isProtected"`
 	SecurityGroupName string            `json:"securityGroupName"`
 	Description       string            `json:"description"`
-	RegionId          string            `json:"RegionId"`
+	RegionId          string            `json:"regionId"`
 	CloudAccountId    string            `json:"CloudAccountId"`
 	Services          ServicesRequest   `json:"services"`
 	Tags              map[string]string `json:"tags,omitempty"`
@@ -70,8 +70,8 @@ type BoundServicesResponse struct {
 }
 
 type Scope struct {
-	Type string `json:"type"`
-	Data map[string]string   `json:"data"`
+	Type string            `json:"type"`
+	Data map[string]string `json:"data"`
 }
 
 type GetSecurityGroupQueryParameters struct {
@@ -83,8 +83,20 @@ type UpdateProtectionModeQueryParameters struct {
 	ProtectionMode string
 }
 
-// Get will return list of all the security groups in specific region
-func (service *Service) Get(d9CloudAccountID, awsRegionName string) (*[]CloudSecurityGroupResponse, *http.Response, error) {
+func (service *Service) GetSecurityGroup(d9SecurityGroupID string) (*CloudSecurityGroupResponse, *http.Response, error) {
+	v := new(CloudSecurityGroupResponse)
+	relativeURL := fmt.Sprintf("%s/%s", awsSgResourcePath, d9SecurityGroupID)
+
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+// GetAllInRegion will return list of all the security groups in specific region
+func (service *Service) GetAllInRegion(d9CloudAccountID, awsRegionName string) (*[]CloudSecurityGroupResponse, *http.Response, error) {
 	if d9CloudAccountID == "" && awsRegionName == "" {
 		return nil, nil, fmt.Errorf("d9 cloud account ID and aws region name must be passed")
 	}

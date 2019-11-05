@@ -16,7 +16,7 @@ func main() {
 		Type: "CIDR",
 		Data: map[string]string{
 			"cidr": "0.0.0.0/0",
-			"note": "Allow All Traffic",
+		    "note": "Allow All Traffic",
 		},
 	}
 
@@ -64,22 +64,28 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Printf("Create response type: %T\n Content %+v", *v, *v)
 
-	fmt.Printf("Create response type: %T\n Content %+v", v, v)
+	// get AWS SG
+	awsSecurityGroup, _, err := srv.GetSecurityGroup("sg-0edd194c096c47afc")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("Get specific security group response type: %T\n Content: %+v", *awsSecurityGroup, *awsSecurityGroup)
 
 	// get all AWS SG
 	allAWSSecurityGroups, _, err := srv.GetAll()
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("GetAll response type: %T\n Content: %+v", allAWSSecurityGroups, allAWSSecurityGroups)
+	fmt.Printf("GetAll response type: %T\n Content: %+v", *allAWSSecurityGroups, *allAWSSecurityGroups)
 
 	// get a specific AWS SG
-	someAWSSecurityGroup, _, err := srv.Get("00000000-0000-0000-0000-000000000000", "us_west_1")
+	someAWSSecurityGroup, _, err := srv.GetAllInRegion("00000000-0000-0000-0000-000000000000", "us_west_1")
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("Get response type: %T\n Content: %+v", someAWSSecurityGroup, someAWSSecurityGroup)
+	fmt.Printf("Get response type: %T\n Content: %+v", *someAWSSecurityGroup, *someAWSSecurityGroup)
 
 	securityGroupResponse, _, err := srv.Update("sg-00000000000000000", securitygroupaws.CloudSecurityGroupRequest{
 		IsProtected:       true,
@@ -97,22 +103,21 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	fmt.Printf("Update AWS security group: %T\n Content: %+v\n", securityGroupResponse, securityGroupResponse)
+	fmt.Printf("Update AWS security group: %T\n Content: %+v\n", *securityGroupResponse, *securityGroupResponse)
 
 	// update protection mode
 	securityGroupResponse, _, err = srv.UpdateProtectionMode("sg-00000000000000000", "FullManage")
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("Update protection mode mode: %T\n Content: %+v\n", securityGroupResponse, securityGroupResponse)
+	fmt.Printf("Update protection mode mode: %T\n Content: %+v\n", *securityGroupResponse, *securityGroupResponse)
 
 	// update bound services
 	securityGroupResponse, _, err = srv.HandelBoundServices("sg-00000000000000000", "Inbound", inbound)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("Update bound services: %T\n Content: %+v\n", securityGroupResponse, securityGroupResponse)
+	fmt.Printf("Update bound services: %T\n Content: %+v\n", *securityGroupResponse, *securityGroupResponse)
 
 	// delete AWS SG
 	_, err = srv.Delete("sg-00000000000000000")
