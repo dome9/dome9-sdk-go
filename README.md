@@ -6,7 +6,7 @@ from a client application purely written in Go language.
 
 For more information about Dome9 Web API [Dome9 API](https://api-v2-docs.dome9.com/).
 
-## Pre-requisites
+## Prerequisites
 * The API is built using Go 1.13. Some features may not be
 available or supported unless you have installed a relevant version of Go.
 Please click [https://golang.org/dl/](https://golang.org/dl/) to download and
