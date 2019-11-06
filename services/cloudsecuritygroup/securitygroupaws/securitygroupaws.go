@@ -30,7 +30,7 @@ type CloudSecurityGroupResponse struct {
 	Description       string            `json:"description"`
 	VpcID             string            `json:"vpcId"`
 	VpcName           string            `json:"vpcName,omitempty"`
-	RegionName        string            `json:"RegionId"`
+	RegionName        string            `json:"regionId"`
 	CloudAccountId    string            `json:"cloudAccountId"`
 	CloudAccountName  string            `json:"cloudAccountName"`
 	Services          ServicesResponse  `json:"services"`
