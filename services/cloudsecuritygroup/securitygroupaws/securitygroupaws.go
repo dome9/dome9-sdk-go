@@ -17,7 +17,7 @@ type CloudSecurityGroupRequest struct {
 	SecurityGroupName string            `json:"securityGroupName"`
 	Description       string            `json:"description"`
 	RegionId          string            `json:"regionId"`
-	CloudAccountId    string            `json:"CloudAccountId"`
+	CloudAccountId    string            `json:"cloudAccountId"`
 	Services          ServicesRequest   `json:"services"`
 	Tags              map[string]string `json:"tags,omitempty"`
 }
@@ -31,7 +31,7 @@ type CloudSecurityGroupResponse struct {
 	VpcID             string            `json:"vpcId"`
 	VpcName           string            `json:"vpcName,omitempty"`
 	RegionName        string            `json:"RegionId"`
-	CloudAccountId    string            `json:"CloudAccountId"`
+	CloudAccountId    string            `json:"cloudAccountId"`
 	CloudAccountName  string            `json:"cloudAccountName"`
 	Services          ServicesResponse  `json:"services"`
 	Tags              map[string]string `json:"tags"`

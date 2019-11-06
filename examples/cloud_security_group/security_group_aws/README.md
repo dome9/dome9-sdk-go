@@ -80,13 +80,14 @@ func main() {
 	}
 	fmt.Printf("GetAll response type: %T\n Content: %+v", *allAWSSecurityGroups, *allAWSSecurityGroups)
 
-	// get a specific AWS SG
+	// get a all AWS SG in region
 	someAWSSecurityGroup, _, err := srv.GetAllInRegion("00000000-0000-0000-0000-000000000000", "us_west_1")
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Printf("Get response type: %T\n Content: %+v", *someAWSSecurityGroup, *someAWSSecurityGroup)
 
+    // update AWS SG
 	securityGroupResponse, _, err := srv.Update("sg-00000000000000000", securitygroupaws.CloudSecurityGroupRequest{
 		IsProtected:       true,
 		SecurityGroupName: "NAME",
@@ -112,7 +113,7 @@ func main() {
 	}
 	fmt.Printf("Update protection mode mode: %T\n Content: %+v\n", *securityGroupResponse, *securityGroupResponse)
 
-	// update bound services
+	// create and attach or update bound service
 	securityGroupResponse, _, err = srv.HandelBoundServices("sg-00000000000000000", "Inbound", inbound)
 	if err != nil {
 		fmt.Println(err)
