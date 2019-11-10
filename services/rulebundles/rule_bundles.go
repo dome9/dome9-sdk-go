@@ -3,7 +3,6 @@ package rulebundles
 import (
 	"fmt"
 	"net/http"
-	"time"
 )
 
 const (
@@ -22,24 +21,24 @@ type RuleBundleRequest struct {
 }
 
 type RuleBundleResponse struct {
-	Rules            []Rule    `json:"rules"`
-	AccountID        int       `json:"accountId"`
-	CreatedTime      time.Time `json:"createdTime"`
-	UpdatedTime      time.Time `json:"updatedTime"`
-	ID               int       `json:"id"`
-	Name             string    `json:"name"`
-	Description      string    `json:"description"`
-	IsTemplate       bool      `json:"isTemplate"`
-	HideInCompliance bool      `json:"hideInCompliance"`
-	MinFeatureTier   string    `json:"minFeatureTier"`
-	Section          int       `json:"section"`
-	TooltipText      string    `json:"tooltipText"`
-	ShowBundle       bool      `json:"showBundle"`
-	SystemBundle     bool      `json:"systemBundle"`
-	CloudVendor      string    `json:"cloudVendor"`
-	Version          int       `json:"version"`
-	Language         string    `json:"language"`
-	RulesCount       int       `json:"rulesCount"`
+	Rules            []Rule `json:"rules"`
+	AccountID        int    `json:"accountId"`
+	CreatedTime      string `json:"createdTime"`
+	UpdatedTime      string `json:"updatedTime"`
+	ID               int    `json:"id"`
+	Name             string `json:"name"`
+	Description      string `json:"description"`
+	IsTemplate       bool   `json:"isTemplate"`
+	HideInCompliance bool   `json:"hideInCompliance"`
+	MinFeatureTier   string `json:"minFeatureTier"`
+	Section          int    `json:"section"`
+	TooltipText      string `json:"tooltipText"`
+	ShowBundle       bool   `json:"showBundle"`
+	SystemBundle     bool   `json:"systemBundle"`
+	CloudVendor      string `json:"cloudVendor"`
+	Version          int    `json:"version"`
+	Language         string `json:"language"`
+	RulesCount       int    `json:"rulesCount"`
 }
 
 type Rule struct {
