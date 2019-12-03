@@ -9,32 +9,35 @@ const (
 	awsSgResourcePath           = "CloudSecurityGroup"
 	awsSgResourceProtectionMode = "protection-mode"
 	awsSgResourceServices       = "services"
+	awsSgResourceTags           = "tags"
 )
 
 // There is a bug when we pass nil inbound or outbound, ticket link: https://dome9-security.atlassian.net/browse/DOME-12727
 type CloudSecurityGroupRequest struct {
-	IsProtected       bool              `json:"isProtected"`
-	SecurityGroupName string            `json:"securityGroupName"`
-	Description       string            `json:"description"`
-	RegionId          string            `json:"regionId"`
-	CloudAccountId    string            `json:"cloudAccountId"`
-	Services          ServicesRequest   `json:"services"`
-	Tags              map[string]string `json:"tags,omitempty"`
+	SecurityGroupName string                 `json:"securityGroupName"`
+	CloudAccountID    string                 `json:"cloudAccountId"`
+	Description       string                 `json:"description,omitempty"`
+	RegionID          string                 `json:"regionId,omitempty"`
+	IsProtected       bool                   `json:"isProtected,omitempty"`
+	VpcId             string                 `json:"VpcId,omitempty"`
+	VpcName           string                 `json:"VpcName,omitempty"`
+	Services          ServicesRequest        `json:"services,omitempty"`
+	Tags              map[string]interface{} `json:"tags,omitempty"`
 }
 
 type CloudSecurityGroupResponse struct {
-	SecurityGroupID   int               `json:"securityGroupId"`
-	ExternalID        string            `json:"externalId"`
-	IsProtected       bool              `json:"isProtected"`
+	ID                int               `json:"securityGroupId"`
 	SecurityGroupName string            `json:"securityGroupName"`
 	Description       string            `json:"description"`
+	RegionID          string            `json:"regionId"`
+	IsProtected       bool              `json:"isProtected"`
+	CloudAccountID    string            `json:"cloudAccountId"`
+	ExternalID        string            `json:"externalId"`
 	VpcID             string            `json:"vpcId"`
-	VpcName           string            `json:"vpcName,omitempty"`
-	RegionName        string            `json:"regionId"`
-	CloudAccountId    string            `json:"cloudAccountId"`
+	VpcName           *string           `json:"vpcName"`
 	CloudAccountName  string            `json:"cloudAccountName"`
-	Services          ServicesResponse  `json:"services"`
-	Tags              map[string]string `json:"tags"`
+	Services          ServicesResponse  `json:"services,omitempty"`
+	Tags              map[string]string `json:"tags,omitempty"`
 }
 
 type ServicesRequest struct {
@@ -49,15 +52,15 @@ type ServicesResponse struct {
 
 type BoundServicesRequest struct {
 	Name         string  `json:"name"`
-	Description  string  `json:"description"`
-	ProtocolType string  `json:"protocolType"`
-	Port         string  `json:"port"`
-	OpenForAll   bool    `json:"openForAll"`
-	Scope        []Scope `json:"scope"`
+	Description  string  `json:"description,omitempty"`
+	ProtocolType string  `json:"protocolType,omitempty"`
+	Port         string  `json:"port,omitempty"`
+	OpenForAll   bool    `json:"openForAll,omitempty"`
+	Scope        []Scope `json:"scope,omitempty"`
 }
 
 type BoundServicesResponse struct {
-	Id           string  `json:"id"`
+	ID           string  `json:"id"`
 	Name         string  `json:"name"`
 	Description  string  `json:"description"`
 	ProtocolType string  `json:"protocolType"`
@@ -70,17 +73,17 @@ type BoundServicesResponse struct {
 }
 
 type Scope struct {
-	Type string            `json:"type"`
-	Data map[string]string `json:"data"`
+	Type string                 `json:"type"`
+	Data map[string]interface{} `json:"data"`
 }
 
 type GetSecurityGroupQueryParameters struct {
-	CloudAccountId string
-	RegionId       string
+	CloudAccountID string
+	RegionID       string
 }
 
 type UpdateProtectionModeQueryParameters struct {
-	ProtectionMode string
+	ProtectionMode string `json:"protectionMode"`
 }
 
 func (service *Service) GetSecurityGroup(d9SecurityGroupID string) (*CloudSecurityGroupResponse, *http.Response, error) {
@@ -98,12 +101,12 @@ func (service *Service) GetSecurityGroup(d9SecurityGroupID string) (*CloudSecuri
 // GetAllInRegion will return list of all the security groups in specific region
 func (service *Service) GetAllInRegion(d9CloudAccountID, awsRegionName string) (*[]CloudSecurityGroupResponse, *http.Response, error) {
 	if d9CloudAccountID == "" && awsRegionName == "" {
-		return nil, nil, fmt.Errorf("d9 cloud account ID and aws region name must be passed")
+		return nil, nil, fmt.Errorf("d9 cloud account id and aws region name must be passed")
 	}
 
 	options := GetSecurityGroupQueryParameters{
-		CloudAccountId: d9CloudAccountID,
-		RegionId:       awsRegionName,
+		CloudAccountID: d9CloudAccountID,
+		RegionID:       awsRegionName,
 	}
 
 	v := new([]CloudSecurityGroupResponse)
@@ -119,6 +122,17 @@ func (service *Service) GetAllInRegion(d9CloudAccountID, awsRegionName string) (
 func (service *Service) GetAll() (*[]CloudSecurityGroupResponse, *http.Response, error) {
 	v := new([]CloudSecurityGroupResponse)
 	resp, err := service.Client.NewRequestDo("GET", awsSgResourcePath, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) Get(id string) (*CloudSecurityGroupResponse, *http.Response, error) {
+	v := new(CloudSecurityGroupResponse)
+	relativeURL := fmt.Sprintf("%s/%s", awsSgResourcePath, id)
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
