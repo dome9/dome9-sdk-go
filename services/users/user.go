@@ -18,30 +18,25 @@ type UserRequest struct {
 }
 
 type UserResponse struct {
-	ID                    int                   `json:"id"`
-	Name                  string                `json:"name"`
-	IsSuspended           bool                  `json:"isSuspended"`
-	IsOwner               bool                  `json:"isOwner"`
-	IsSuperUser           bool                  `json:"isSuperUser"`
-	IsAuditor             bool                  `json:"isAuditor"`
-	HasAPIKey             bool                  `json:"hasApiKey"`
-	HasAPIKeyV1           bool                  `json:"hasApiKeyV1"`
-	HasAPIKeyV2           bool                  `json:"hasApiKeyV2"`
-	IsMfaEnabled          bool                  `json:"isMfaEnabled"`
-	SsoEnabled            bool                  `json:"ssoEnabled"`
-	RoleIds               []int                 `json:"roleIds"`
-	IamSafe               IamSafe               `json:"iamSafe"`
-	CanSwitchRole         bool                  `json:"canSwitchRole"`
-	IsLocked              bool                  `json:"isLocked"`
-	LastLogin             time.Time             `json:"lastLogin"`
-	Permissions           Permissions           `json:"permissions"`
-	CalculatedPermissions CalculatedPermissions `json:"calculatedPermissions"`
-	IsMobileDevicePaired  bool                  `json:"isMobileDevicePaired"`
-}
-
-type IamEntitiesLastLeaseTime struct {
-	IamEntity     string    `json:"iamEntity"`
-	LastLeaseTime time.Time `json:"lastLeaseTime"`
+	ID                    int         `json:"id"`
+	Name                  string      `json:"name"`
+	IsSuspended           bool        `json:"isSuspended"`
+	IsOwner               bool        `json:"isOwner"`
+	IsSuperUser           bool        `json:"isSuperUser"`
+	IsAuditor             bool        `json:"isAuditor"`
+	HasAPIKey             bool        `json:"hasApiKey"`
+	HasAPIKeyV1           bool        `json:"hasApiKeyV1"`
+	HasAPIKeyV2           bool        `json:"hasApiKeyV2"`
+	IsMfaEnabled          bool        `json:"isMfaEnabled"`
+	SsoEnabled            bool        `json:"ssoEnabled"`
+	RoleIds               []int       `json:"roleIds"`
+	IamSafe               IamSafe     `json:"iamSafe"`
+	CanSwitchRole         bool        `json:"canSwitchRole"`
+	IsLocked              bool        `json:"isLocked"`
+	LastLogin             time.Time   `json:"lastLogin"`
+	Permissions           Permissions `json:"permissions"`
+	CalculatedPermissions Permissions `json:"calculatedPermissions"`
+	IsMobileDevicePaired  bool        `json:"isMobileDevicePaired"`
 }
 
 type CloudAccounts struct {
@@ -54,6 +49,11 @@ type CloudAccounts struct {
 	IamEntitiesLastLeaseTime []IamEntitiesLastLeaseTime `json:"iamEntitiesLastLeaseTime"`
 	CloudAccountState        string                     `json:"cloudAccountState"`
 	IamEntity                string                     `json:"iamEntity"`
+}
+
+type IamEntitiesLastLeaseTime struct {
+	IamEntity     string    `json:"iamEntity"`
+	LastLeaseTime time.Time `json:"lastLeaseTime"`
 }
 
 type IamSafe struct {
@@ -69,18 +69,7 @@ type Permissions struct {
 	AlertActions       []string `json:"alertActions"`
 	Create             []string `json:"create"`
 	View               []string `json:"view"`
-	CrossAccountAccess []string `json:"crossAccountAccess"`
-}
-
-type CalculatedPermissions struct {
-	Access             []string `json:"access"`
-	Manage             []string `json:"manage"`
-	Rulesets           []string `json:"rulesets"`
-	Notifications      []string `json:"notifications"`
-	Policies           []string `json:"policies"`
-	AlertActions       []string `json:"alertActions"`
-	Create             []string `json:"create"`
-	View               []string `json:"view"`
+	OnBoarding         []string `json:"onBoarding"`
 	CrossAccountAccess []string `json:"crossAccountAccess"`
 }
 
