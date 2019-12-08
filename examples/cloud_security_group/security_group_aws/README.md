@@ -67,7 +67,7 @@ func main() {
 	fmt.Printf("Create response type: %T\n Content %+v", *v, *v)
 
 	// get AWS SG
-	awsSecurityGroup, _, err := srv.GetSecurityGroup("sg-0edd194c096c47afc")
+	awsSecurityGroup, _, err := srv.Get("sg-0edd194c096c47afc")
 	if err != nil {
 		fmt.Println(err)
 	}
