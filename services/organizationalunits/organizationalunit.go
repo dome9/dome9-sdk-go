@@ -12,7 +12,7 @@ const (
 
 type OURequest struct {
 	Name     string `json:"name"`
-	ParentID string `json:"parentId"`
+	ParentID string `json:"parentId,omitempty"`
 }
 
 type OUResponse struct {
@@ -58,7 +58,7 @@ func (service *Service) GetAll() (*[]OUResponse, *http.Response, error) {
 	return v, resp, nil
 }
 
-func (service *Service) Create(ou OURequest) (*OUResponse, *http.Response, error) {
+func (service *Service) Create(ou *OURequest) (*OUResponse, *http.Response, error) {
 	v := new(OUResponse)
 	resp, err := service.Client.NewRequestDo("POST", ouResourcePath, nil, ou, &v)
 	if err != nil {
@@ -67,7 +67,7 @@ func (service *Service) Create(ou OURequest) (*OUResponse, *http.Response, error
 	return v, resp, nil
 }
 
-func (service *Service) Update(ouId string, ou OURequest) (*http.Response, error) {
+func (service *Service) Update(ouId string, ou *OURequest) (*http.Response, error) {
 	path := fmt.Sprintf("%s/%s", ouResourcePath, ouId)
 	resp, err := service.Client.NewRequestDo("PUT", path, nil, ou, nil)
 	if err != nil {
