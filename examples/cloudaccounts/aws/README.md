@@ -14,8 +14,8 @@ func main() {
 	config, _ := dome9.NewConfig("", "", "")
 	srv := aws.New(config)
 	var req aws.CloudAccountRequest
-    
-    reqIamSafe := aws.AttachIamSafeRequest{
+
+	reqIamSafe := aws.AttachIamSafeRequest{
 		CloudAccountID: "00000000-0000-0000-0000-000000000000",
 		Data: aws.Data{
 			AwsGroupArn:  "GROUP-ARN",
@@ -35,7 +35,7 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("Create response type: %T\n Content %+v\n", v, v)
-    
+
 	// Get all cloud accounts
 	cloudAccounts, _, err := srv.GetAll()
 	if err != nil {
@@ -60,7 +60,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("update name response type: %T\n Content: %+v\n", updateNameResponse, updateNameResponse)
 
 	// Update Region Config
@@ -75,7 +74,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("update region config response type: %T\n Content: %+v\n", updateRegionConfigResponse, updateRegionConfigResponse)
 
 	// Update Organizational Unit Id
@@ -88,7 +86,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("update Organizational ID response type: %T\n Content: %+v\n", updateOrganizationalIDResponse, updateOrganizationalIDResponse)
 
 	// Update Credentials
@@ -103,18 +100,16 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("Update credentials response type: %T\n Content: %+v\n", updateCredentialsResponse, updateCredentialsResponse)
 
-    // Delete AWS cloud account
-    _, err = srv.Delete("SOME_ID")
-    if err != nil {
-        panic(err)
-    }
+	// Delete AWS cloud account
+	_, err = srv.Delete("SOME_ID")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AWS cloud accout deleted")
 
-    fmt.Printf("AWS cloud accout deleted")
-    
-    // attach iam safe to cloud account
+	// attach iam safe to cloud account
 	v, _, err = srv.AttachIAMSafeToCloudAccount(reqIamSafe)
 	if err != nil {
 		fmt.Println(err)
@@ -122,12 +117,11 @@ func main() {
 	fmt.Printf("Attach response type: %T\n Content %+v", *v, *v)
 
 	// un attach IAM safe
-	_, err = srv.UnAttachIAMSafeToCloudAccount("f4717a02-0f8f-4f13-95c3-637674b94af5")
+	_, err = srv.DeAttachIAMSafeToCloudAccount("f4717a02-0f8f-4f13-95c3-637674b94af5")
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Printf("Un attach IAM safe")
-
 }
 
 ```
