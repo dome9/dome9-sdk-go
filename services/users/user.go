@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	userResourcePath = "user"
+	userResourcePath      = "user"
+	userResourceOwnerPath = "account/owner"
 )
 
 type UserRequest struct {
@@ -18,8 +19,9 @@ type UserRequest struct {
 }
 
 type UserResponse struct {
-	ID                    int         `json:"id"`
-	Name                  string      `json:"name"`
+	ID int `json:"id,omitempty"`
+	// The name response is users email
+	Email                 string      `json:"name"`
 	IsSuspended           bool        `json:"isSuspended"`
 	IsOwner               bool        `json:"isOwner"`
 	IsSuperUser           bool        `json:"isSuperUser"`
@@ -27,7 +29,7 @@ type UserResponse struct {
 	HasAPIKey             bool        `json:"hasApiKey"`
 	HasAPIKeyV1           bool        `json:"hasApiKeyV1"`
 	HasAPIKeyV2           bool        `json:"hasApiKeyV2"`
-	IsMfaEnabled          bool        `json:"isMfaEnabled"`
+	IsMfaEnabled          bool        `json:"isMfaEnabled,omitempty"`
 	SsoEnabled            bool        `json:"ssoEnabled"`
 	RoleIds               []int       `json:"roleIds"`
 	IamSafe               IamSafe     `json:"iamSafe"`
@@ -37,6 +39,11 @@ type UserResponse struct {
 	Permissions           Permissions `json:"permissions"`
 	CalculatedPermissions Permissions `json:"calculatedPermissions"`
 	IsMobileDevicePaired  bool        `json:"isMobileDevicePaired"`
+}
+
+type UserUpdate struct {
+	RoleIds     []int       `json:"roleIds"`
+	Permissions Permissions `json:"permissions"`
 }
 
 type CloudAccounts struct {
@@ -69,8 +76,11 @@ type Permissions struct {
 	AlertActions       []string `json:"alertActions"`
 	Create             []string `json:"create"`
 	View               []string `json:"view"`
-	OnBoarding         []string `json:"onBoarding"`
 	CrossAccountAccess []string `json:"crossAccountAccess"`
+}
+
+type SetOwnerQueryParameters struct {
+	UserID string `json:"userId"`
 }
 
 func (service *Service) Get(userId string) (*UserResponse, *http.Response, error) {
@@ -103,9 +113,20 @@ func (service *Service) Create(user UserRequest) (*UserResponse, *http.Response,
 }
 
 // blocked by bug: https://dome9-security.atlassian.net/browse/DOME-12720
-func (service *Service) Update(userId string, user UserRequest) (*http.Response, error) {
+func (service *Service) Update(userId string, user *UserUpdate) (*http.Response, error) {
 	path := fmt.Sprintf("%s/%s", userResourcePath, userId)
 	resp, err := service.Client.NewRequestDo("PUT", path, nil, user, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, err
+}
+
+func (service *Service) SetUserAsOwner(userId string) (*http.Response, error) {
+	body := SetOwnerQueryParameters{
+		UserID: userId,
+	}
+	resp, err := service.Client.NewRequestDo("PUT", userResourceOwnerPath, nil, body, nil)
 	if err != nil {
 		return nil, err
 	}
