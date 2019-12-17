@@ -15,10 +15,17 @@ func main() {
 	srv := aws.New(config)
 	var req aws.CloudAccountRequest
 
-	req.Name = "test AWS cloud account"
-	req.Credentials.Type = "RoleBased"
+	reqIamSafe := aws.AttachIamSafeRequest{
+		CloudAccountID: "00000000-0000-0000-0000-000000000000",
+		Data: aws.Data{
+			AwsGroupArn:  "GROUP-ARN",
+			AwsPolicyArn: "POLICY-ARN",
+		},
+	}
 
 	// must fill below variables
+	req.Name = "test AWS cloud account"
+	req.Credentials.Type = "RoleBased"
 	req.Credentials.Arn = "ARN"
 	req.Credentials.Secret = "SECRET"
 
@@ -53,7 +60,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("update name response type: %T\n Content: %+v\n", updateNameResponse, updateNameResponse)
 
 	// Update Region Config
@@ -68,7 +74,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("update region config response type: %T\n Content: %+v\n", updateRegionConfigResponse, updateRegionConfigResponse)
 
 	// Update Organizational Unit Id
@@ -81,7 +86,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("update Organizational ID response type: %T\n Content: %+v\n", updateOrganizationalIDResponse, updateOrganizationalIDResponse)
 
 	// Update Credentials
@@ -96,17 +100,28 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("Update credentials response type: %T\n Content: %+v\n", updateCredentialsResponse, updateCredentialsResponse)
 
-    // Delete AWS cloud account
-    _, err := srv.Delete("SOME_ID")
-    if err != nil {
-        panic(err)
-    }
+	// Delete AWS cloud account
+	_, err = srv.Delete("SOME_ID")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("AWS cloud accout deleted")
 
-    fmt.Printf("AWS cloud accout deleted")
+	// attach iam safe to cloud account
+	v, _, err = srv.AttachIAMSafeToCloudAccount(reqIamSafe)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("Attach response type: %T\n Content %+v", *v, *v)
 
+	// un attach IAM safe
+	_, err = srv.DetachIAMSafeToCloudAccount("f4717a02-0f8f-4f13-95c3-637674b94af5")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("Un attach IAM safe")
 }
 
 ```
