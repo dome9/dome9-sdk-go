@@ -14,11 +14,18 @@ func main() {
 	config, _ := dome9.NewConfig("", "", "")
 	srv := aws.New(config)
 	var req aws.CloudAccountRequest
-
-	req.Name = "test AWS cloud account"
-	req.Credentials.Type = "RoleBased"
+    
+    reqIamSafe := aws.AttachIamSafeRequest{
+		CloudAccountID: "00000000-0000-0000-0000-000000000000",
+		Data: aws.Data{
+			AwsGroupArn:  "GROUP-ARN",
+			AwsPolicyArn: "POLICY-ARN",
+		},
+	}
 
 	// must fill below variables
+	req.Name = "test AWS cloud account"
+	req.Credentials.Type = "RoleBased"
 	req.Credentials.Arn = "ARN"
 	req.Credentials.Secret = "SECRET"
 
@@ -28,7 +35,7 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("Create response type: %T\n Content %+v\n", v, v)
-
+    
 	// Get all cloud accounts
 	cloudAccounts, _, err := srv.GetAll()
 	if err != nil {
@@ -100,12 +107,26 @@ func main() {
 	fmt.Printf("Update credentials response type: %T\n Content: %+v\n", updateCredentialsResponse, updateCredentialsResponse)
 
     // Delete AWS cloud account
-    _, err := srv.Delete("SOME_ID")
+    _, err = srv.Delete("SOME_ID")
     if err != nil {
         panic(err)
     }
 
     fmt.Printf("AWS cloud accout deleted")
+    
+    // attach iam safe to cloud account
+	v, _, err = srv.AttachIAMSafeToCloudAccount(reqIamSafe)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("Attach response type: %T\n Content %+v", *v, *v)
+
+	// un attach IAM safe
+	_, err = srv.UnAttachIAMSafeToCloudAccount("f4717a02-0f8f-4f13-95c3-637674b94af5")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("Un attach IAM safe")
 
 }
 
