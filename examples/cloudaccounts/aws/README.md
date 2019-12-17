@@ -117,7 +117,7 @@ func main() {
 	fmt.Printf("Attach response type: %T\n Content %+v", *v, *v)
 
 	// un attach IAM safe
-	_, err = srv.DeAttachIAMSafeToCloudAccount("f4717a02-0f8f-4f13-95c3-637674b94af5")
+	_, err = srv.DetachIAMSafeToCloudAccount("f4717a02-0f8f-4f13-95c3-637674b94af5")
 	if err != nil {
 		fmt.Println(err)
 	}

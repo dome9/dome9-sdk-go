@@ -161,7 +161,7 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 	return resp, nil
 }
 
-func (service *Service) DeAttachIAMSafeToCloudAccount(id string) (*http.Response, error) {
+func (service *Service) DetachIAMSafeToCloudAccountIAMSafeToCloudAccount(id string) (*http.Response, error) {
 	path := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulServicePathAWSCloudAccounts, id, cloudaccounts.RESTfulServicePathAWSIAMSafe)
 	resp, err := service.Client.NewRequestDo("DELETE", path, nil, nil, nil)
 	if err != nil {
