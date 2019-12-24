@@ -61,19 +61,24 @@ func main() {
     
     // IAM safe entities
     usersIDs := []string{"000000", "111111"}
-	IamSafeEntities, _, err := srv.AttachIAMSafeEntities("00000000-0000-0000-0000-000000000000", "AWS_ARN", usersIDs)
+	IamSafeEntities, _, err := srv.ProtectWithElevationAWSIAMEntityCreate("00000000-0000-0000-0000-000000000000", "ENTITY_NAME", "ENTITY_TYPE", usersIDs)
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Printf("IAM safe entities: %T\n Content: %+v\n", *IamSafeEntities, *IamSafeEntities)
     
     desiredUsersIDsToAttach := []string{"111111", "222222"}
-	IamSafeEntities, _, err = srv.AttachIAMSafeUpdateEntities("00000000-0000-0000-0000-000000000000", "AWS_ARN", desiredUsersIDsToAttach)
+	IamSafeEntities, _, err = srv.ProtectWithElevationAWSIAMEntityUpdate("00000000-0000-0000-0000-000000000000", "ENTITY_NAME", "ENTITY_TYPE", desiredUsersIDsToAttach)
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Printf("IAM safe entities: %T\n Content: %+v\n", *IamSafeEntities, *IamSafeEntities)
-
+    
+    _, err = srv.UnprotectWithElevationAWSIAMEntity("00000000-0000-0000-0000-000000000000", "ENTITY_NAME", "ENTITY_TYPE")
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Printf("Unprotect IAM safe entities: %T\n Content: %+v\n", *IamSafeEntities, *IamSafeEntities)
 }
 
 ```

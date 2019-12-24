@@ -52,7 +52,7 @@ type UserResponse struct {
 	IsMobileDevicePaired  bool        `json:"isMobileDevicePaired"`
 }
 
-type ProtectIAMSafeEntitiesResponse struct {
+type IAMSafeEntitiesResponse struct {
 	CloudAccountID        string   `json:"cloudAccountId"`
 	CloudAccountName      string   `json:"cloudAccountName"`
 	ExternalAccountNumber string   `json:"externalAccountNumber"`
@@ -102,7 +102,7 @@ type SetOwnerQueryParameters struct {
 	UserID string `json:"userId"`
 }
 
-type IAMEntitiesBody struct {
+type IAMSafeEntitiesBody struct {
 	IAMEntities []string `json:"iamEntities"`
 }
 
@@ -195,27 +195,27 @@ func (service *Service) Delete(userID string) (*http.Response, error) {
 	iam safe entities
 */
 
-func (service *Service) ProtectWithElevationAWSIAMEntityCreate(d9CloudAccountID, entityName, entityType string, d9UsersID []string) (*ProtectIAMSafeEntitiesResponse, *http.Response, error) {
-	var srv = aws.New(service.Client.Config)
-	var v ProtectIAMSafeEntitiesResponse
+func (service *Service) ProtectWithElevationIAMSafeEntityCreate(d9CloudAccountID, entityName, entityType string, d9UsersIDToProtect []string) (*[]IAMSafeEntitiesResponse, *http.Response, error) {
+	var awsCloudAccountService = aws.New(service.Client.Config)
+	v := make([]IAMSafeEntitiesResponse, len(d9UsersIDToProtect))
 	var resp *http.Response
 	var err error
 
-	if len(d9UsersID) == 0 {
+	if len(d9UsersIDToProtect) == 0 {
 		return nil, nil, errors.New("you must specify at least one user in protect with elevation mode")
 	}
 
-	iamEntityArn, err := srv.GetProtectAWSIAMEntityStatusByName(d9CloudAccountID, entityName, entityType)
+	iamEntityArn, err := awsCloudAccountService.GetProtectIAMSafeEntityStatusByName(d9CloudAccountID, entityName, entityType)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	body := IAMEntitiesBody{
+	body := IAMSafeEntitiesBody{
 		IAMEntities: []string{iamEntityArn.Arn},
 	}
-	for _, userID := range d9UsersID {
+	for i, userID := range d9UsersIDToProtect {
 		relativeURL := fmt.Sprintf("%s/%s/%s/%s/%s/%s", userResourcePath, userID, userIAMSAfe, userAccounts, d9CloudAccountID, userIAMEntities)
-		resp, err = service.Client.NewRequestDo("POST", relativeURL, nil, body, &v)
+		resp, err = service.Client.NewRequestDo("POST", relativeURL, nil, body, &v[i])
 		if err != nil {
 			return nil, nil, err
 		}
@@ -224,11 +224,11 @@ func (service *Service) ProtectWithElevationAWSIAMEntityCreate(d9CloudAccountID,
 	return &v, resp, nil
 }
 
-func (service *Service) ProtectWithElevationAWSIAMEntityUpdate(d9CloudAccountID, entityType, entityName string, d9UsersIDToProtect []string) (*ProtectIAMSafeEntitiesResponse, *http.Response, error) {
+func (service *Service) ProtectWithElevationIAMSafeEntityUpdate(d9CloudAccountID, entityType, entityName string, d9UsersIDToProtect []string) (*[]IAMSafeEntitiesResponse, *http.Response, error) {
 	var err error
 	var resp *http.Response
-	var srv = aws.New(service.Client.Config)
-	var v = new(ProtectIAMSafeEntitiesResponse)
+	var awsCloudAccountService = aws.New(service.Client.Config)
+	v := make([]IAMSafeEntitiesResponse, len(d9UsersIDToProtect))
 
 	onlyOnce.Do(func() {
 		err = service.refreshUserEmailIDMap()
@@ -237,7 +237,7 @@ func (service *Service) ProtectWithElevationAWSIAMEntityUpdate(d9CloudAccountID,
 		return nil, nil, err
 	}
 
-	iamEntityArn, err := srv.GetProtectAWSIAMEntityStatusByName(d9CloudAccountID, entityName, entityType)
+	iamEntityArn, err := awsCloudAccountService.GetProtectIAMSafeEntityStatusByName(d9CloudAccountID, entityName, entityType)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -246,60 +246,45 @@ func (service *Service) ProtectWithElevationAWSIAMEntityUpdate(d9CloudAccountID,
 	// if the value is true then call update api func with aws iam user role arn (to protect) otherwise call with empty sting (to unprotect).
 	protectedUnprotectedMap := generateProtectUnprotectMap(currProtectedDome9UsersID, d9UsersIDToProtect)
 
-	unprotectIAMEntitiesBody := IAMEntitiesBody{
+	unprotectIAMEntitiesBody := IAMSafeEntitiesBody{
 		IAMEntities: []string{},
 	}
-	protectIAMEntitiesBody := IAMEntitiesBody{
+	protectIAMEntitiesBody := IAMSafeEntitiesBody{
 		IAMEntities: []string{iamEntityArn.Arn},
 	}
 
+	i := 0
 	for userID, toProtect := range protectedUnprotectedMap {
 		relativeURL := fmt.Sprintf("%s/%s/%s/%s/%s/%s", userResourcePath, userID, userIAMSAfe, userAccounts, d9CloudAccountID, userIAMEntities)
 		if toProtect {
-			resp, err = service.Client.NewRequestDo("PUT", relativeURL, nil, protectIAMEntitiesBody, v)
+			resp, err = service.Client.NewRequestDo("PUT", relativeURL, nil, protectIAMEntitiesBody, &v[i])
 		} else {
-			resp, err = service.Client.NewRequestDo("PUT", relativeURL, nil, unprotectIAMEntitiesBody, v)
+			resp, err = service.Client.NewRequestDo("PUT", relativeURL, nil, unprotectIAMEntitiesBody, &v[i])
 		}
 
 		if err != nil {
 			return nil, nil, err
 		}
+		i++
 	}
 
-	return v, resp, nil
+	return &v, resp, nil
 }
 
-func (service *Service) UnprotectWithElevationAWSIAMEntity(d9CloudAccountID, entityName, entityType string) (*http.Response, error) {
-	srv := aws.New(service.Client.Config)
+func (service *Service) UnprotectWithElevationIAMSafeEntity(d9CloudAccountID, entityName, entityType string) (*http.Response, error) {
+	awsCloudAccountService := aws.New(service.Client.Config)
 	req := aws.RestrictedIamEntitiesRequest{
 		EntityName: entityName,
 		EntityType: entityType,
 	}
 
-	_, _, err := srv.ProtectAWSIAMEntity(d9CloudAccountID, req)
+	_, _, err := awsCloudAccountService.ProtectIAMSafeEntity(d9CloudAccountID, req)
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = srv.UnprotectAWSIAMEntity(d9CloudAccountID, entityName, entityType)
+	_, err = awsCloudAccountService.UnprotectWithElevationIAMSafeEntity(d9CloudAccountID, entityName, entityType)
 	return nil, err
-}
-
-func (service *Service) getProtectedWithElevationDome9Users(d9CloudAccountID, awsIAMUserRoleArn string) (*[]string, error) {
-	srv := aws.New(service.Client.Config)
-	restrictedIamEntities, _, err := srv.GetAllProtectAWSIAMEntityStatus(d9CloudAccountID)
-	if err != nil {
-		return nil, err
-	}
-
-	for _, arn := range restrictedIamEntities.UsersArn {
-		if arn.Arn == awsIAMUserRoleArn {
-			return &arn.AttachedDome9Users, nil
-		}
-	}
-
-	errMsg := fmt.Sprintf("there is no user with the arn %s", awsIAMUserRoleArn)
-	return nil, errors.New(errMsg)
 }
 
 func getUsersIDsAccordingToEmails(emailsForProtectedD9Users []string) []string {

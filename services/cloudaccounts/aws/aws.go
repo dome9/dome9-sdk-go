@@ -27,7 +27,7 @@ type AttachIamSafeRequest struct {
 }
 
 type RestrictedIamEntitiesRequest struct {
-	EntityName string `json:"entityName"` // aws iam user name or aws role role
+	EntityName string `json:"entityName"` // aws iam user name or aws role
 	EntityType string `json:"entityType"` // must be one of the following Role or User
 }
 
@@ -52,11 +52,11 @@ type CloudAccountResponse struct {
 }
 
 type ProtectIAMEntitiesResponse struct {
-	RolesArn []Arn `json:"rolesArns"`
-	UsersArn []Arn `json:"usersArns"`
+	RolesArn []IAMSafeEntityResponse `json:"rolesArns"`
+	UsersArn []IAMSafeEntityResponse `json:"usersArns"`
 }
 
-type Arn struct {
+type IAMSafeEntityResponse struct {
 	State              string   `json:"state"`
 	AttachedDome9Users []string `json:"attachedDome9Users"`
 	IsUsedByDome9      bool     `json:"isUsedByDome9"`
@@ -248,7 +248,7 @@ func (service *Service) DetachIAMSafeToCloudAccount(id string) (*http.Response, 
 	iam protect (restrict) entity
 */
 
-func (service *Service) ProtectAWSIAMEntity(d9CloudAccountID string, body RestrictedIamEntitiesRequest) (*string, *http.Response, error) {
+func (service *Service) ProtectIAMSafeEntity(d9CloudAccountID string, body RestrictedIamEntitiesRequest) (*string, *http.Response, error) {
 	// iam entity can be aws iam user or aws role, according the type of the field EntityType inside the body
 	var arn string
 	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathAWS, d9CloudAccountID, cloudaccounts.RESTfulPathRestrictedIamEntities)
@@ -261,7 +261,7 @@ func (service *Service) ProtectAWSIAMEntity(d9CloudAccountID string, body Restri
 	return &arn, resp, nil
 }
 
-func (service *Service) GetAllProtectAWSIAMEntityStatus(d9CloudAccountID string) (*ProtectIAMEntitiesResponse, *http.Response, error) {
+func (service *Service) GetAllProtectIAMSafeEntityStatus(d9CloudAccountID string) (*ProtectIAMEntitiesResponse, *http.Response, error) {
 	v := new(ProtectIAMEntitiesResponse)
 	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathAWS, d9CloudAccountID, cloudaccounts.RESTfulPathIAM)
 
@@ -273,10 +273,10 @@ func (service *Service) GetAllProtectAWSIAMEntityStatus(d9CloudAccountID string)
 	return v, resp, nil
 }
 
-func (service *Service) GetProtectAWSIAMEntityStatusByName(d9CloudAccountID, entityName, entityType string) (*Arn, error) {
-	var iamEntities []Arn
+func (service *Service) GetProtectIAMSafeEntityStatusByName(d9CloudAccountID, entityName, entityType string) (*IAMSafeEntityResponse, error) {
+	var iamEntities []IAMSafeEntityResponse
 
-	protectAWSIAMEntitiesStatus, _, err := service.GetAllProtectAWSIAMEntityStatus(d9CloudAccountID)
+	protectAWSIAMEntitiesStatus, _, err := service.GetAllProtectIAMSafeEntityStatus(d9CloudAccountID)
 	if err != nil {
 		return nil, err
 	}
@@ -297,7 +297,7 @@ func (service *Service) GetProtectAWSIAMEntityStatusByName(d9CloudAccountID, ent
 	return nil, errors.New(errMsg)
 }
 
-func (service *Service) UnprotectAWSIAMEntity(d9CloudAccountID, entityName, entityType string) (*http.Response, error) {
+func (service *Service) UnprotectWithElevationIAMSafeEntity(d9CloudAccountID, entityName, entityType string) (*http.Response, error) {
 	relativeURL := fmt.Sprintf("%s/%s/%s/%s", cloudaccounts.RESTfulPathAWS, d9CloudAccountID, cloudaccounts.RESTfulPathRestrictedIamEntities, entityType)
 	unprotectAWSIAMEntityOptions := UnprotectAWSIAMEntityOptions{
 		EntityName: entityName,
