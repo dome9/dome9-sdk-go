@@ -61,20 +61,20 @@ func main() {
     
     // IAM safe entities
     usersIDs := []string{"000000", "111111"}
-	IamSafeEntities, _, err := srv.ProtectWithElevationAWSIAMEntityCreate("00000000-0000-0000-0000-000000000000", "ENTITY_NAME", "ENTITY_TYPE", usersIDs)
+	IamSafeEntities, _, err := srv.ProtectWithElevationIAMSafeEntity("00000000-0000-0000-0000-000000000000", "ENTITY_NAME", "ENTITY_TYPE", usersIDs)
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Printf("IAM safe entities: %T\n Content: %+v\n", *IamSafeEntities, *IamSafeEntities)
     
     desiredUsersIDsToAttach := []string{"111111", "222222"}
-	IamSafeEntities, _, err = srv.ProtectWithElevationAWSIAMEntityUpdate("00000000-0000-0000-0000-000000000000", "ENTITY_NAME", "ENTITY_TYPE", desiredUsersIDsToAttach)
+	IamSafeEntities, _, err = srv.ProtectWithElevationIAMSafeEntityUpdate("00000000-0000-0000-0000-000000000000", "ENTITY_NAME", "ENTITY_TYPE", desiredUsersIDsToAttach)
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Printf("IAM safe entities: %T\n Content: %+v\n", *IamSafeEntities, *IamSafeEntities)
     
-    _, err = srv.UnprotectWithElevationAWSIAMEntity("00000000-0000-0000-0000-000000000000", "ENTITY_NAME", "ENTITY_TYPE")
+    _, err = srv.UnprotectWithElevationIAMSafeEntity("00000000-0000-0000-0000-000000000000", "ENTITY_NAME", "ENTITY_TYPE")
     if err != nil {
         fmt.Println(err)
     }

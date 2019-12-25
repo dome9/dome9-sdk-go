@@ -129,19 +129,19 @@ func main() {
 		EntityType: "User",
 	}
 	
-	attachRestrictedIamEntitiesResp , _, err = srv.ProtectAWSIAMEntity("000000-0000-0000-0000-00000000000000", restrictedIamEntitiesRequest)
+	attachRestrictedIamEntitiesResp , _, err = srv.ProtectIAMSafeEntity("000000-0000-0000-0000-00000000000000", restrictedIamEntitiesRequest)
 	if err != nil {
 		fmt.Println(err)
 	}
     fmt.Printf("Attach restricted IAM entities. Role arn %s", *attachRestrictedIamEntitiesResp)
     
-    _, err = srv.UnprotectAWSIAMEntity("000000-0000-0000-0000-00000000000000", "AWS_IAM_USER_NAME", "User")
+    _, err = srv.UnprotectIAMSafeEntity("000000-0000-0000-0000-00000000000000", "AWS_IAM_USER_NAME", "User")
 	if err != nil {
 		fmt.Println(err)
 	}
     fmt.Printf("Detach restricted IAM entities")
 
-    restrictedUserIamEntities, err := srv.GetProtectAWSIAMEntityStatusByName("000000-0000-0000-0000-00000000000000", "USER_NAME", "User")
+    restrictedUserIamEntities, err := srv.GetProtectIAMSafeEntityStatusByName("000000-0000-0000-0000-00000000000000", "USER_NAME", "User")
 	if err != nil {
 		fmt.Println(err)
 	}

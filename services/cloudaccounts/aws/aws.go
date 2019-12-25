@@ -297,7 +297,7 @@ func (service *Service) GetProtectIAMSafeEntityStatusByName(d9CloudAccountID, en
 	return nil, errors.New(errMsg)
 }
 
-func (service *Service) UnprotectWithElevationIAMSafeEntity(d9CloudAccountID, entityName, entityType string) (*http.Response, error) {
+func (service *Service) UnprotectIAMSafeEntity(d9CloudAccountID, entityName, entityType string) (*http.Response, error) {
 	relativeURL := fmt.Sprintf("%s/%s/%s/%s", cloudaccounts.RESTfulPathAWS, d9CloudAccountID, cloudaccounts.RESTfulPathRestrictedIamEntities, entityType)
 	unprotectAWSIAMEntityOptions := UnprotectAWSIAMEntityOptions{
 		EntityName: entityName,

@@ -14,7 +14,7 @@ func main() {
 
 	scope := securitygroupaws.Scope{
 		Type: "CIDR",
-		Data: map[string]string{
+		Data: map[string]interface{}{
 			"cidr": "0.0.0.0/0",
 		    "note": "Allow All Traffic",
 		},
@@ -43,8 +43,8 @@ func main() {
 		IsProtected:       true,
 		SecurityGroupName: "Name",
 		Description:       "DESCRIPTION",
-		RegionId:          "us_west_1",
-		CloudAccountId:    "00000000-0000-0000-0000-000000000000",
+		RegionID:          "us_west_1",
+		CloudAccountID:    "00000000-0000-0000-0000-000000000000",
 		Services: securitygroupaws.ServicesRequest{
 			Inbound: []securitygroupaws.BoundServicesRequest{
 				inbound,
@@ -53,7 +53,7 @@ func main() {
 				outbound,
 			},
 		},
-		Tags: map[string]string{
+		Tags: map[string]interface{}{
 			"key1": "value1",
 			"key2": "value2",
 		},
@@ -92,8 +92,8 @@ func main() {
 		IsProtected:       true,
 		SecurityGroupName: "NAME",
 		Description:       "DESCRIPTION",
-		RegionId:          "us_west_1",
-		CloudAccountId:    "00000000-0000-0000-0000-000000000000",
+		RegionID:          "us_west_1",
+		CloudAccountID:    "00000000-0000-0000-0000-000000000000",
 		Services: securitygroupaws.ServicesRequest{
 			Inbound: []securitygroupaws.BoundServicesRequest{
 			},

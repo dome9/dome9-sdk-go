@@ -195,19 +195,18 @@ func (service *Service) Delete(userID string) (*http.Response, error) {
 	iam safe entities
 */
 
-func (service *Service) ProtectWithElevationIAMSafeEntityCreate(d9CloudAccountID, entityName, entityType string, d9UsersIDToProtect []string) (*[]IAMSafeEntitiesResponse, *http.Response, error) {
+func (service *Service) ProtectWithElevationIAMSafeEntity(d9CloudAccountID, entityName, entityType string, d9UsersIDToProtect []string) (*[]IAMSafeEntitiesResponse, error) {
 	var awsCloudAccountService = aws.New(service.Client.Config)
 	v := make([]IAMSafeEntitiesResponse, len(d9UsersIDToProtect))
-	var resp *http.Response
 	var err error
 
 	if len(d9UsersIDToProtect) == 0 {
-		return nil, nil, errors.New("you must specify at least one user in protect with elevation mode")
+		return nil, errors.New("you must specify at least one user in protect with elevation mode")
 	}
 
 	iamEntityArn, err := awsCloudAccountService.GetProtectIAMSafeEntityStatusByName(d9CloudAccountID, entityName, entityType)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	body := IAMSafeEntitiesBody{
@@ -215,18 +214,17 @@ func (service *Service) ProtectWithElevationIAMSafeEntityCreate(d9CloudAccountID
 	}
 	for i, userID := range d9UsersIDToProtect {
 		relativeURL := fmt.Sprintf("%s/%s/%s/%s/%s/%s", userResourcePath, userID, userIAMSAfe, userAccounts, d9CloudAccountID, userIAMEntities)
-		resp, err = service.Client.NewRequestDo("POST", relativeURL, nil, body, &v[i])
+		_, err = service.Client.NewRequestDo("POST", relativeURL, nil, body, &v[i])
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 	}
 
-	return &v, resp, nil
+	return &v, nil
 }
 
-func (service *Service) ProtectWithElevationIAMSafeEntityUpdate(d9CloudAccountID, entityType, entityName string, d9UsersIDToProtect []string) (*[]IAMSafeEntitiesResponse, *http.Response, error) {
+func (service *Service) ProtectWithElevationIAMSafeEntityUpdate(d9CloudAccountID, entityType, entityName string, d9UsersIDToProtect []string) (*[]IAMSafeEntitiesResponse, error) {
 	var err error
-	var resp *http.Response
 	var awsCloudAccountService = aws.New(service.Client.Config)
 	v := make([]IAMSafeEntitiesResponse, len(d9UsersIDToProtect))
 
@@ -234,12 +232,12 @@ func (service *Service) ProtectWithElevationIAMSafeEntityUpdate(d9CloudAccountID
 		err = service.refreshUserEmailIDMap()
 	})
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	iamEntityArn, err := awsCloudAccountService.GetProtectIAMSafeEntityStatusByName(d9CloudAccountID, entityName, entityType)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	currProtectedDome9UsersID := getUsersIDsAccordingToEmails(iamEntityArn.AttachedDome9Users)
 	// create map where the key is the user id and the value is true or false, where true indicates to protect the user and false to unprotect.
@@ -257,18 +255,18 @@ func (service *Service) ProtectWithElevationIAMSafeEntityUpdate(d9CloudAccountID
 	for userID, toProtect := range protectedUnprotectedMap {
 		relativeURL := fmt.Sprintf("%s/%s/%s/%s/%s/%s", userResourcePath, userID, userIAMSAfe, userAccounts, d9CloudAccountID, userIAMEntities)
 		if toProtect {
-			resp, err = service.Client.NewRequestDo("PUT", relativeURL, nil, protectIAMEntitiesBody, &v[i])
+			_, err = service.Client.NewRequestDo("PUT", relativeURL, nil, protectIAMEntitiesBody, &v[i])
 		} else {
-			resp, err = service.Client.NewRequestDo("PUT", relativeURL, nil, unprotectIAMEntitiesBody, &v[i])
+			_, err = service.Client.NewRequestDo("PUT", relativeURL, nil, unprotectIAMEntitiesBody, &v[i])
 		}
 
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 		i++
 	}
 
-	return &v, resp, nil
+	return &v, nil
 }
 
 func (service *Service) UnprotectWithElevationIAMSafeEntity(d9CloudAccountID, entityName, entityType string) (*http.Response, error) {
@@ -283,7 +281,7 @@ func (service *Service) UnprotectWithElevationIAMSafeEntity(d9CloudAccountID, en
 		return nil, err
 	}
 
-	_, err = awsCloudAccountService.UnprotectWithElevationIAMSafeEntity(d9CloudAccountID, entityName, entityType)
+	_, err = awsCloudAccountService.UnprotectIAMSafeEntity(d9CloudAccountID, entityName, entityType)
 	return nil, err
 }
 
