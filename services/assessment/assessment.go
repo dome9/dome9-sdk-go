@@ -10,8 +10,6 @@ const (
 
 type RunBundleRequest struct {
 	ID                     int    `json:"id"`
-	Dome9CloudAccountID    string `json:"dome9CloudAccountId"`
-	ExternalCloudAccountID string `json:"externalCloudAccountId"`
 	CloudAccountID         string `json:"cloudAccountId"`
 }
 
