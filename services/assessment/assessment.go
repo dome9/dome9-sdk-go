@@ -9,8 +9,8 @@ const (
 )
 
 type RunBundleRequest struct {
-	ID                     int    `json:"id"`
-	CloudAccountID         string `json:"cloudAccountId"`
+	ID             int    `json:"id"`
+	CloudAccountID string `json:"cloudAccountId"`
 }
 
 type RunBundleResponse struct {
