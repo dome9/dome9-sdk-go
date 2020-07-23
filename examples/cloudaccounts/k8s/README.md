@@ -55,7 +55,7 @@ func main() {
 
 	fmt.Printf("response type: %T\n Content: %+v\n", OrganizationalUnitIDResponse, OrganizationalUnitIDResponse)
     
-    // Delete GCP cloud account
+    // Delete k8s cloud account
     _, err = srv.Delete("SOME_ID")
     if err != nil {
         panic(err)

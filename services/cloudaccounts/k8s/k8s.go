@@ -8,7 +8,7 @@ import (
 )
 
 type CloudAccountRequest struct {
-	Name                   string                  `json:"name"`
+	Name                   string                  `json:"name,omitempty"`
 	OrganizationalUnitID   string                  `json:"organizationalUnitId,omitempty"`
 }
 
@@ -32,7 +32,6 @@ type CloudAccountUpdateOrganizationalIDRequest struct {
 }
 
 func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse, *http.Response, error) {
-	// body: CloudAccountRequest
 	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulPathK8S, nil, body, v)
 	if err != nil {
@@ -43,7 +42,10 @@ func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse,
 }
 
 func (service *Service) Get(id string) (*CloudAccountResponse, *http.Response, error) {
-	// path: ID
+	if id == "" {
+		return nil, nil, fmt.Errorf("id parameter is empty")
+	}
+
 	v := new(CloudAccountResponse)
 	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathK8S, id)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
@@ -55,7 +57,10 @@ func (service *Service) Get(id string) (*CloudAccountResponse, *http.Response, e
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	// path: ID
+	if id == "" {
+		return nil, fmt.Errorf("id parameter is empty")
+	}
+
 	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathK8S, id)
 	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
 	if err != nil {
@@ -66,8 +71,10 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 }
 
 func (service *Service) UpdateName(id string, newNameParam CloudAccountUpdateNameRequest) (*CloudAccountResponse, *http.Response, error) {
-	// path: ID
-	// queryParam: newName
+	if id == "" {
+		return nil, nil, fmt.Errorf("id parameter is empty")
+	}
+
 	v := new(CloudAccountResponse)
 	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathK8S, id, cloudaccounts.RESTfulServicePathK8SName)
 	resp, err := service.Client.NewRequestDo("PUT", relativeURL, newNameParam, nil, v)
@@ -79,8 +86,10 @@ func (service *Service) UpdateName(id string, newNameParam CloudAccountUpdateNam
 }
 
 func (service *Service) UpdateOrganizationalID(id string, body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
-	// path: ID
-	// body: new organizational ID
+	if id == "" {
+		return nil, nil, fmt.Errorf("id parameter is empty")
+	}
+
 	v := new(CloudAccountResponse)
 	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathK8S, id, cloudaccounts.RESTfulServicePathK8SOrganizationalUnit)
 	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
