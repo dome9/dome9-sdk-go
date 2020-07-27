@@ -18,7 +18,7 @@ func main() {
 	createAccountReqBody.Name = "CLUSTER NAME" //mandatory field
 	//createAccountReqBody.OrganizationalUnitID = '11111111-2222-3333-4444-555555555555' // optional field, if not set the root OU will be set as default 
 
-    // Create a k8s cloud account 
+	// Create a k8s cloud account 
 	v, _, err := srv.Create(createAccountReqBody)
 	if err != nil {
 		panic(err)
@@ -51,14 +51,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("response type: %T\n Content: %+v\n", OrganizationalUnitIDResponse, OrganizationalUnitIDResponse)
-    
-    // Delete k8s cloud account
-    _, err = srv.Delete(clusterId)
-    if err != nil {
-        panic(err)
-    }
-    fmt.Printf("K8S cloud accout deleted")
+	fmt.Printf("response type: %T\n Content: %+v\n", OrganizationalUnitIDResponse, OrganizationalUnitIDResponse) 
+
+	// Delete k8s cloud account
+	_, err = srv.Delete(clusterId)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("K8S cloud accout deleted")
 }
 
 ```
