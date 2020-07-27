@@ -15,52 +15,49 @@ func main() {
 	srv := k8s.New(config)
 	var createAccountReqBody k8s.CloudAccountRequest
 	
-	createAccountReqBody.Name = "ACCOUNT NAME" //mandatory field
+	createAccountReqBody.Name = "CLUSTER NAME" //mandatory field
 	//createAccountReqBody.OrganizationalUnitID = '11111111-2222-3333-4444-555555555555' // optional field, if not set the root OU will be set as default 
 
+    // Create a k8s cloud account 
 	v, _, err := srv.Create(createAccountReqBody)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Response type: %T\n Content %+v\n", v, v)
 
+    clusterId := v.ID //The created cluster ID
+
 	// Get specific k8s cloud account
-	k8sCloudAccount, _, err := srv.Get("ACCOUNT UUID")
+	k8sCloudAccount, _, err := srv.Get(clusterId)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Response type: %T\n Content: %+v\n", k8sCloudAccount, k8sCloudAccount)
 	
-	// update k8s cloud account name
-	id := "THE ACCOUNT ID"
-	desiredNewName := "new k8s cloud account name"
-	updateNameResponse, _, err := srv.UpdateName(id,
-		k8s.CloudAccountUpdateNameRequest{
-			Name: desiredNewName})
+	// Update k8s cloud account name
+	desiredNewName := "new k8s cluster name"
+	updateNameResponse, _, err := srv.UpdateName(clusterId,
+		k8s.CloudAccountUpdateNameRequest{ Name: desiredNewName })
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("Response type: %T\n Content: %+v\n", updateNameResponse, updateNameResponse)
 
-	// update organizational Id
+	// Update organizational Id
 	OrganizationalUnitID := "ORGANIZATIONAL_UNIT_UUID"
-	id = "THE ACCOUNT ID"
-	OrganizationalUnitIDResponse, _, err := srv.UpdateOrganizationalID(id,
+	OrganizationalUnitIDResponse, _, err := srv.UpdateOrganizationalID(clusterId,
 		k8s.CloudAccountUpdateOrganizationalIDRequest{
 			OrganizationalUnitId: OrganizationalUnitID})
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Printf("response type: %T\n Content: %+v\n", OrganizationalUnitIDResponse, OrganizationalUnitIDResponse)
     
     // Delete k8s cloud account
-    _, err = srv.Delete("SOME_ID")
+    _, err = srv.Delete(clusterId)
     if err != nil {
         panic(err)
     }
-
     fmt.Printf("K8S cloud accout deleted")
 }
 
