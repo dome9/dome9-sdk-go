@@ -47,8 +47,8 @@ func (service *Service) GetAll() (*[]ContinuousCompliancePolicyResponse, *http.R
 	return v, resp, nil
 }
 
-func (service *Service) Create(body *ContinuousCompliancePolicyRequest) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
-	v := new(ContinuousCompliancePolicyResponse)
+func (service *Service) Create(body *[]ContinuousCompliancePolicyRequest) (*[]ContinuousCompliancePolicyResponse, *http.Response, error) {
+	v := new([]ContinuousCompliancePolicyResponse)
 	resp, err := service.Client.NewRequestDo("POST", continuousComplianceResourcePath, nil, body, v)
 	if err != nil {
 		return nil, nil, err
@@ -57,10 +57,9 @@ func (service *Service) Create(body *ContinuousCompliancePolicyRequest) (*Contin
 	return v, resp, nil
 }
 
-func (service *Service) Update(id string, body *ContinuousCompliancePolicyRequest) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
-	v := new(ContinuousCompliancePolicyResponse)
-	path := fmt.Sprintf("%s/%s", continuousComplianceResourcePath, id)
-	resp, err := service.Client.NewRequestDo("PUT", path, nil, body, v)
+func (service *Service) Update(body *[]ContinuousCompliancePolicyRequest) (*[]ContinuousCompliancePolicyResponse, *http.Response, error) {
+	v := new([]ContinuousCompliancePolicyResponse)
+	resp, err := service.Client.NewRequestDo("PUT", continuousComplianceResourcePath, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}
