@@ -6,24 +6,24 @@ import (
 )
 
 const (
-	continuousComplianceResourcePath = "Compliance/ContinuousCompliancePolicy"
+	continuousComplianceResourcePath = "ContinuousCompliancePolicyV2"
 )
 
 type ContinuousCompliancePolicyRequest struct {
-	CloudAccountID    string   `json:"cloudAccountId"`
-	ExternalAccountID string   `json:"externalAccountId"`
-	CloudAccountType  string   `json:"cloudAccountType,omitempty"`
-	BundleID          int      `json:"bundleId"`
+	TargetId 		  string   `json:"targetId"`
+	TargetType 		  string   `json:"targetType,omitempty"`
+	RulesetId         int      `json:"rulesetId"`
 	NotificationIds   []string `json:"notificationIds"`
 }
 
 type ContinuousCompliancePolicyResponse struct {
 	ID                string   `json:"id"`
-	CloudAccountID    string   `json:"cloudAccountId"`
-	ExternalAccountID string   `json:"externalAccountId"`
-	CloudAccountType  string   `json:"cloudAccountType"`
-	BundleID          int      `json:"bundleId"`
+	TargetType 		  string   `json:"targetType"`
+	TargetInternalId  string   `json:"targetInternalId"`
+	TargetExternalId  string   `json:"targetExternalId"`
+	RulesetId         int      `json:"rulesetId"`
 	NotificationIds   []string `json:"notificationIds"`
+	ErrorMessage      string   `json:"errorMessage"`
 }
 
 func (service *Service) Get(id string) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
