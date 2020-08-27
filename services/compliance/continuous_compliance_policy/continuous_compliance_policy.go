@@ -10,20 +10,20 @@ const (
 )
 
 type ContinuousCompliancePolicyRequest struct {
-	TargetId 		  string   `json:"targetId"`
-	TargetType 		  string   `json:"targetType,omitempty"`
-	RulesetId         int      `json:"rulesetId"`
-	NotificationIds   []string `json:"notificationIds"`
+	TargetId        string   `json:"targetId"`
+	TargetType      string   `json:"targetType,omitempty"`
+	RulesetId       int      `json:"rulesetId"`
+	NotificationIds []string `json:"notificationIds"`
 }
 
 type ContinuousCompliancePolicyResponse struct {
-	ID                string   `json:"id"`
-	TargetType 		  string   `json:"targetType"`
-	TargetInternalId  string   `json:"targetInternalId"`
-	TargetExternalId  string   `json:"targetExternalId"`
-	RulesetId         int      `json:"rulesetId"`
-	NotificationIds   []string `json:"notificationIds"`
-	ErrorMessage      string   `json:"errorMessage"`
+	ID               string   `json:"id"`
+	TargetType       string   `json:"targetType"`
+	TargetInternalId string   `json:"targetInternalId"`
+	TargetExternalId string   `json:"targetExternalId"`
+	RulesetId        int      `json:"rulesetId"`
+	NotificationIds  []string `json:"notificationIds"`
+	ErrorMessage     string   `json:"errorMessage"`
 }
 
 func (service *Service) Get(id string) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
