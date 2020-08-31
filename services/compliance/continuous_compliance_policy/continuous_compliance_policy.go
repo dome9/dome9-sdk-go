@@ -47,24 +47,30 @@ func (service *Service) GetAll() (*[]ContinuousCompliancePolicyResponse, *http.R
 	return v, resp, nil
 }
 
-func (service *Service) Create(body *[]ContinuousCompliancePolicyRequest) (*[]ContinuousCompliancePolicyResponse, *http.Response, error) {
+func (service *Service) Create(body *ContinuousCompliancePolicyRequest) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
 	v := new([]ContinuousCompliancePolicyResponse)
-	resp, err := service.Client.NewRequestDo("POST", continuousComplianceResourcePath, nil, body, v)
+	resp, err := service.Client.NewRequestDo("POST", continuousComplianceResourcePath, nil, []*ContinuousCompliancePolicyRequest { body }, v)
 	if err != nil {
 		return nil, nil, err
 	}
-
-	return v, resp, nil
+	policy := new(ContinuousCompliancePolicyResponse)
+	if len(*v) > 0{
+		policy = &(*v)[0]
+	}
+	return policy, resp, nil
 }
 
-func (service *Service) Update(body *[]ContinuousCompliancePolicyRequest) (*[]ContinuousCompliancePolicyResponse, *http.Response, error) {
+func (service *Service) Update(body *ContinuousCompliancePolicyRequest) (*ContinuousCompliancePolicyResponse, *http.Response, error) {
 	v := new([]ContinuousCompliancePolicyResponse)
-	resp, err := service.Client.NewRequestDo("PUT", continuousComplianceResourcePath, nil, body, v)
+	resp, err := service.Client.NewRequestDo("PUT", continuousComplianceResourcePath, nil, []*ContinuousCompliancePolicyRequest { body }, v)
 	if err != nil {
 		return nil, nil, err
 	}
-
-	return v, resp, nil
+	policy := new(ContinuousCompliancePolicyResponse)
+	if len(*v) > 0{
+		policy = &(*v)[0]
+	}
+	return policy, resp, nil
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {

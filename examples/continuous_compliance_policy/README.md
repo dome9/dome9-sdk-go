@@ -22,10 +22,9 @@ func main() {
 	// must fill below variables
 	req.TargetId = "CLOUD ACCOUNT ID/ Organizational Unit"
 	req.NotificationIds = []string{"NOTIFICATION ID"}
-	reqArr := []continuous_compliance_policy.ContinuousCompliancePolicyRequest { req }
 
     // Create CC Policy
-	v, _, err := srv.Create(&reqArr)
+	v, _, err := srv.Create(&req)
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +48,7 @@ func main() {
 	fmt.Printf("Get response type: %T\n Content: %+v", somePolicy, somePolicy)
 
     // Update specific CC Policy
-    v, _, err = srv.Update( &reqArr)
+    v, _, err = srv.Update( &req)
     if err != nil {
         panic(err)
     }
