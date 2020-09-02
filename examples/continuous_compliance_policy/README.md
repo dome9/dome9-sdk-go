@@ -13,15 +13,14 @@ func main() {
 	config, _ := dome9.NewConfig("", "", "")
 	srv := continuous_compliance_policy.New(config)
 	var req continuous_compliance_policy.ContinuousCompliancePolicyRequest
-	req.CloudAccountType = "Aws"
+	req.TargetType = "Aws"
 
 	// Set Rule bundle ID
-	desiredBundleID := 86685
-	req.BundleID = desiredBundleID
+	desiredBundleID := -13
+	req.RulesetId = desiredBundleID
 
 	// must fill below variables
-	req.CloudAccountID = "CLOUD ACCOUNT ID"
-	req.ExternalAccountID = "EXTERNAL ACCOUNT ID"
+	req.TargetId = "CLOUD ACCOUNT ID/ Organizational Unit"
 	req.NotificationIds = []string{"NOTIFICATION ID"}
 
     // Create CC Policy
@@ -49,7 +48,7 @@ func main() {
 	fmt.Printf("Get response type: %T\n Content: %+v", somePolicy, somePolicy)
 
     // Update specific CC Policy
-    v, _, err := srv.Update("SOME_ID", &req)
+    v, _, err = srv.Update( &req)
     if err != nil {
         panic(err)
     }
@@ -57,7 +56,7 @@ func main() {
     fmt.Printf("Update response type: %T\n Content: %+v", v, v)
 
     // Delete CC Policy
-    _, err := srv.Delete("SOME_ID")
+    _, err = srv.Delete("SOME_ID")
     if err != nil {
         panic(err)
     }
