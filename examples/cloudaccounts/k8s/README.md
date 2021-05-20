@@ -53,6 +53,46 @@ func main() {
 	}
 	fmt.Printf("response type: %T\n Content: %+v\n", OrganizationalUnitIDResponse, OrganizationalUnitIDResponse) 
 
+	// Enable Runtime Protection
+	_, err = srv.EnableRuntimeProtection(k8s.RuntimeProtectionEnableRequest{
+		CloudAccountId: clusterId,
+		Enabled: true,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Runtime Protection Enabled\n")
+
+	// Enable Admission Control
+	_, err = srv.EnableAdmissionControl(k8s.AdmissionControlEnableRequest{
+		CloudAccountId: clusterId,
+		Enabled: true,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Admission Control Enabled\n")
+
+	// Set FailOpen for Admission Control
+	_, err = srv.SetFailOpenForAdmissionControl(k8s.AdmissionControlFailOpenRequest{
+		CloudAccountId: clusterId,
+		FailOpen: true,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Fail-Open set for Admission Control\n")
+
+	// Enable Image Assurance
+	_, err = srv.EnableImageAssurance(k8s.ImageAssuranceEnableRequest{
+		CloudAccountId: clusterId,
+		Enabled: true,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Image Assurance Enabled\n")
+	
 	// Delete k8s cloud account
 	_, err = srv.Delete(clusterId)
 	if err != nil {
