@@ -43,12 +43,12 @@ const (
 	RESTfulServicePathK8SOrganizationalUnit = "organizationalUnit"
 	RESTfulPathK8sEnable                    = "enable"
 	//runtime-protection
-	RESTfulPathK8SRuntimeProtection = "runtime-protection"
+	RESTfulPathK8SRuntimeProtection 		= "runtime-protection"
 	//admission-control
-	RESTfulPathK8SAdmissionControl         = "admission-control"
-	RESTfulPathK8sAdmissionControlFailOpen = "failopen"
+	RESTfulPathK8SAdmissionControl         	= "admission-control"
+	RESTfulPathK8sAdmissionControlFailOpen 	= "failopen"
 	//image-assurance
-	RESTfulPathK8SImageAssurance = "vulnerabilityAssessment"
+	RESTfulPathK8SImageAssurance 			= "vulnerabilityAssessment"
 )
 
 type QueryParameters struct {
