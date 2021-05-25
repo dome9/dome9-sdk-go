@@ -25,7 +25,7 @@ func main() {
 	}
 	fmt.Printf("Response type: %T\n Content %+v\n", v, v)
 
-    clusterId := v.ID //The created cluster ID
+	clusterId := v.ID //The created cluster ID
 
 	// Get specific k8s cloud account
 	k8sCloudAccount, _, err := srv.Get(clusterId)
