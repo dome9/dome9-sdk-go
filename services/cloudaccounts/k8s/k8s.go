@@ -23,8 +23,6 @@ type CloudAccountResponse struct {
 	ClusterVersion           string    `json:"clusterVersion"`
 	RuntimeProtectionEnabled bool      `json:"runtimeProtection"`
 	AdmissionControlEnabled  bool      `json:"admissionControl"`
-	AdmissionControlFailOpen bool      `json:"admissionControlFailOpen"`
-	FlowLogsEnabled          bool      `json:"magellan"`
 	ImageAssuranceEnabled    bool      `json:"vulnerabilityAssessment"`
 }
 
@@ -44,11 +42,6 @@ type RuntimeProtectionEnableRequest struct {
 type AdmissionControlEnableRequest struct {
 	CloudAccountId string `json:"k8sAccountId"`
 	Enabled        bool   `json:"enabled"`
-}
-
-type AdmissionControlFailOpenRequest struct {
-	CloudAccountId string `json:"k8sAccountId"`
-	FailOpen       bool   `json:"failOpen"`
 }
 
 type ImageAssuranceEnableRequest struct {
@@ -129,16 +122,6 @@ func (service *Service) EnableRuntimeProtection(body RuntimeProtectionEnableRequ
 
 func (service *Service) EnableAdmissionControl(body AdmissionControlEnableRequest) (*http.Response, error) {
 	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathK8S, cloudaccounts.RESTfulPathK8SAdmissionControl, cloudaccounts.RESTfulPathK8sEnable)
-	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, body, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
-}
-
-func (service *Service) SetFailOpenForAdmissionControl(body AdmissionControlFailOpenRequest) (*http.Response, error) {
-	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathK8S, cloudaccounts.RESTfulPathK8SAdmissionControl, cloudaccounts.RESTfulPathK8sAdmissionControlFailOpen)
 	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, body, nil)
 	if err != nil {
 		return nil, err
