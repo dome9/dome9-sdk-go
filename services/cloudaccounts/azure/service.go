@@ -8,7 +8,7 @@ import (
 func New(c *dome9.Config) *Service {
 	return &Service{Client: client.NewClient(c)}
 }
- 
+
 type Service struct {
 	Client *client.Client
 }
