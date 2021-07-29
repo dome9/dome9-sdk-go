@@ -31,6 +31,9 @@ type CloudAccountResponse struct {
 	OrganizationalUnitPath string             `json:"organizationalUnitPath"`
 	OrganizationalUnitName string             `json:"organizationalUnitName"`
 	Vendor                 string             `json:"vendor"`
+	EntityType             string             `json:"entityType"`
+	EntitySubType          string             `json:"entitySubType"`
+	Error                  string             `json:"error,omitempty"`
 }
 
 type OrganizationalUnitId struct {
