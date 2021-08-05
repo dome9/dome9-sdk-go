@@ -19,6 +19,7 @@ type CloudAccountRequest struct {
 	OrganizationalUnitPath string                  `json:"organizationalUnitPath,omitempty"`
 	OrganizationalUnitName string                  `json:"organizationalUnitName,omitempty"`
 	LambdaScanner          bool                    `json:"lambdaScanner,omitempty"`
+	Vendor                 string                  `json:"vendor,omitempty"`
 }
 
 type AttachIamSafeRequest struct {
