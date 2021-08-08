@@ -1,10 +1,10 @@
 package cloudaccounts
 
 const (
-	RESTfulPathAWS     = "cloudaccounts"
-	RESTfulPathAzure   = "AzureCloudAccount"
-	RESTfulPathGCP     = "GoogleCloudAccount"
-	RESTfulPathK8S     = "KubernetesAccount"
+	RESTfulPathAWS   = "cloudaccounts"
+	RESTfulPathAzure = "AzureCloudAccount"
+	RESTfulPathGCP   = "GoogleCloudAccount"
+	RESTfulPathK8S   = "KubernetesAccount"
 )
 
 // AWS service paths
