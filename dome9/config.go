@@ -9,7 +9,8 @@ import (
 )
 
 const (
-	defaultBaseURL = "https://api.dome9.com/v2/"
+	//defaultBaseURL = "https://api.dome9.com/v2/"
+	defaultBaseURL = "https://api.falconetix.com/v2/"
 	defaultTimeout = 240 * time.Second
 	loggerPrefix   = "dome9-logger: "
 )
