@@ -160,8 +160,8 @@ func (service *Service) GetAll() (*[]CloudAccountResponse, *http.Response, error
 func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
 	ven := body.Vendor
-	if ven != "aws" && ven != "awsgov" && ven != "awschina" {
-		return nil, nil, errors.New("vendor must be aws/awsgov/awschina")
+	if ven != "aws" && ven != "awsgov" {
+		return nil, nil, errors.New("vendor must be aws/awsgov")
 	}
 	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulPathAWS, nil, body, v)
 	if err != nil {
