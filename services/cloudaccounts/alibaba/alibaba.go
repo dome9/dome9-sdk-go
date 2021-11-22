@@ -65,7 +65,8 @@ func (service *Service) Get(id string) (*CloudAccountResponse, *http.Response, e
 	}
 
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAlibaba + "/" + id, nil, nil, v)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAlibaba, id)
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
