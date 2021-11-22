@@ -1,9 +1,9 @@
 package cloudaccounts
 
 const (
-	RESTfulPathAWS   = "cloudaccounts"
-	RESTfulPathAzure = "AzureCloudAccount"
-	RESTfulPathGCP   = "GoogleCloudAccount"
+	RESTfulPathAWS     = "cloudaccounts"
+	RESTfulPathAzure   = "AzureCloudAccount"
+	RESTfulPathGCP     = "GoogleCloudAccount"
 	RESTfulPathK8S     = "KubernetesAccount"
 	RESTfulPathAlibaba = "AlibabaCloudAccount"
 )
