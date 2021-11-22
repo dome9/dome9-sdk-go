@@ -59,13 +59,13 @@ func (service *Service) GetAll() (*[]CloudAccountResponse, *http.Response, error
 	return v, resp, nil
 }
 
-func (service *Service) Get(options interface{}) (*CloudAccountResponse, *http.Response, error) {
-	if options == nil {
-		return nil, nil, fmt.Errorf("options parameter must be passed")
+func (service *Service) Get(id string) (*CloudAccountResponse, *http.Response, error) {
+	if id == "" {
+		return nil, nil, fmt.Errorf("id parameter must be passed")
 	}
 
 	v := new(CloudAccountResponse)
-	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAlibaba, options, nil, v)
+	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulPathAlibaba + "/" + id, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
