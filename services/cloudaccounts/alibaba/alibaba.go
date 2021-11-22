@@ -9,7 +9,6 @@ import (
 
 type CloudAccountRequest struct {
 	Name                   string                  `json:"name,omitempty"`
-	SubscriptionID         string                  `json:"subscriptionId,omitempty"`
 	AccountId              string                  `json:"accountId,omitempty"`
 	Credentials            CloudAccountCredentials `json:"credentials,omitempty"`
 	Error                  string                  `json:"error,omitempty"`
