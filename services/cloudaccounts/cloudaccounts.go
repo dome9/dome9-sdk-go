@@ -1,6 +1,7 @@
 package cloudaccounts
 
 const (
+	RESTfulPathAlibaba = "AlibabaCloudAccount"
 	RESTfulPathAWS   = "cloudaccounts"
 	RESTfulPathAzure = "AzureCloudAccount"
 	RESTfulPathGCP   = "GoogleCloudAccount"
@@ -49,6 +50,14 @@ const (
 	//image-assurance
 	RESTfulPathK8SImageAssurance = "vulnerabilityAssessment"
 )
+
+// Alibaba service paths
+const (
+	RESTfulServicePathAlibabaName               = "AccountName"
+	RESTfulServicePathAlibabaOrganizationalUnit = "organizationalUnit"
+	RESTfulServicePathAlibabaCredentials        = "Credentials"
+)
+
 
 type QueryParameters struct {
 	ID string
