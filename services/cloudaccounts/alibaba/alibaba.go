@@ -10,8 +10,6 @@ import (
 type CloudAccountRequest struct {
 	Name                 string                         `json:"name,omitempty"`
 	Credentials          CloudAccountCredentialsRequest `json:"credentials,omitempty"`
-	Error                string                         `json:"error,omitempty"`
-	CreationDate         time.Time                      `json:"creationDate,omitempty"`
 	OrganizationalUnitID string                         `json:"organizationalUnitId,omitempty"`
 }
 
@@ -21,7 +19,6 @@ type CloudAccountResponse struct {
 	CreationDate           time.Time                       `json:"creationDate"`
 	AlibabaAccountId       string                          `json:"alibabaAccountId"`
 	Credentials            CloudAccountCredentialsResponse `json:"credentials"`
-	Error                  string                          `json:"error,omitempty"`
 	OrganizationalUnitID   string                          `json:"organizationalUnitId,omitempty"`
 	OrganizationalUnitPath string                          `json:"organizationalUnitPath"`
 	OrganizationalUnitName string                          `json:"organizationalUnitName"`
