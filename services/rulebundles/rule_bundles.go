@@ -40,9 +40,6 @@ type RuleBundleResponse struct {
 	Version          int    `json:"version"`
 	Language         string `json:"language"`
 	RulesCount       int    `json:"rulesCount"`
-	Default          bool   `json:"default"`
-	Common           bool   `json:"common"`
-	Icon             string `json:"icon"`
 }
 
 type Rule struct {
@@ -57,7 +54,6 @@ type Rule struct {
 	ControlTitle  string   `json:"controlTitle,omitempty"`
 	RuleID        string   `json:"ruleId,omitempty"`
 	Category      string   `json:"category,omitempty"`
-	Labels        []string `json:"labels,omitempty"`
 	LogicHash     string   `json:"logicHash,omitempty"`
 	IsDefault     bool     `json:"isDefault,omitempty"`
 }
