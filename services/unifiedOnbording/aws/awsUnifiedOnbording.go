@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	AwsUnifiedOnboardingResourcePath = "AwsUnifiedOnboarding"
-	UpdateVersion                    = "UpdateVersion"
-	StackConfig                      = "StackConfig"
+	UnifiedOnboardingResourcePath = "AwsUnifiedOnboarding"
+	UpdateVersion                 = "UpdateVersion"
+	StackConfig                   = "StackConfig"
 )
 
 type PostureManagementConfiguration struct {
@@ -34,10 +34,10 @@ type UnifiedOnbordingRequest struct {
 }
 
 type UnifiedOnbordingConfigurationResponse struct {
-	StackName       string     `json:"stackName" :"stack_name"`
-	TemplateUrl     string     `json:"templateUrl" :"template_url"`
-	parameters      Parameters `:"parameters"`
-	IamCapabilities []string   `json:"iamCapabilities" :"iam_capabilities"`
+	StackName       string     `json:"stackName"`
+	TemplateUrl     string     `json:"templateUrl"`
+	Parameters      Parameters `json:"parameters"`
+	IamCapabilities []string   `json:"iamCapabilities"`
 }
 
 type Parameters []struct {
@@ -69,7 +69,7 @@ type Statuses []struct {
 
 func (service *Service) GetConfiguration(id string) (*UnifiedOnbordingConfigurationResponse, *http.Response, error) {
 	v := new(UnifiedOnbordingConfigurationResponse)
-	relativeURL := fmt.Sprintf("%s/%s", AwsUnifiedOnboardingResourcePath, id)
+	relativeURL := fmt.Sprintf("%s/%s", UnifiedOnboardingResourcePath, id)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -80,7 +80,7 @@ func (service *Service) GetConfiguration(id string) (*UnifiedOnbordingConfigurat
 
 func (service *Service) GetInformation(id string) (*UnifiedOnbordingConfigurationResponse, *http.Response, error) {
 	v := new(UnifiedOnbordingConfigurationResponse)
-	relativeURL := fmt.Sprintf("%s/%s/%s/%s", AwsUnifiedOnboardingResourcePath, UpdateVersion, StackConfig, id)
+	relativeURL := fmt.Sprintf("%s/%s/%s/%s", UnifiedOnboardingResourcePath, UpdateVersion, StackConfig, id)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -91,7 +91,7 @@ func (service *Service) GetInformation(id string) (*UnifiedOnbordingConfiguratio
 
 func (service *Service) Create(role UnifiedOnbordingRequest) (*UnifiedOnbordingConfigurationResponse, *http.Response, error) {
 	v := new(UnifiedOnbordingConfigurationResponse)
-	relativeURL := fmt.Sprintf("%s/%s", AwsUnifiedOnboardingResourcePath, StackConfig)
+	relativeURL := fmt.Sprintf("%s/%s", UnifiedOnboardingResourcePath, StackConfig)
 	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, role, &v)
 	if err != nil {
 		return nil, nil, err
