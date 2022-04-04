@@ -36,14 +36,15 @@ type UnifiedOnbordingRequest struct {
 type UnifiedOnbordingConfigurationResponse struct {
 	StackName       string     `json:"stackName"`
 	TemplateUrl     string     `json:"templateUrl"`
-	Parameters      Parameters `json:"parameters"`
+	Parameters      []Parameter `json:"parameters"`
 	IamCapabilities []string   `json:"iamCapabilities"`
 }
 
-type Parameters []struct {
+type Parameter struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
 }
+
 type UnifiedOnbordingInformationResponse struct {
 	OnboardingId            string                  `json:"onboardingId"`
 	InitiatedUserName       string                  `json:"initiatedUserName"`
