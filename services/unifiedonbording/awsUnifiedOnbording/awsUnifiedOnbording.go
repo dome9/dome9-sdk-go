@@ -68,8 +68,8 @@ type Statuses []struct {
 	RemediationRecommendation string `json:"remediationRecommendation"`
 }
 
-func (service *Service) Get(id string) (*UnifiedOnbordingConfigurationResponse, *http.Response, error) {
-	v := new(UnifiedOnbordingConfigurationResponse)
+func (service *Service) Get(id string) (*UnifiedOnbordingInformationResponse, *http.Response, error) {
+	v := new(UnifiedOnbordingInformationResponse)
 	relativeURL := fmt.Sprintf("%s/%s", UnifiedOnboardingResourcePath, id)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
