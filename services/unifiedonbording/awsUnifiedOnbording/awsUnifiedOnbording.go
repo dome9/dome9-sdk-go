@@ -45,7 +45,7 @@ type Parameter struct {
 	Value string `json:"value"`
 }
 
-type UnifiedOnbordingInformationResponse struct {
+type UnifiedOnboardingResponse struct {
 	OnboardingId            string                  `json:"onboardingId"`
 	InitiatedUserName       string                  `json:"initiatedUserName"`
 	InitiatedUserId         int                     `json:"initiatedUserId"`
@@ -68,8 +68,8 @@ type Statuses []struct {
 	RemediationRecommendation string `json:"remediationRecommendation"`
 }
 
-func (service *Service) Get(id string) (*UnifiedOnbordingInformationResponse, *http.Response, error) {
-	v := new(UnifiedOnbordingInformationResponse)
+func (service *Service) Get(id string) (*UnifiedOnboardingResponse, *http.Response, error) {
+	v := new(UnifiedOnboardingResponse)
 	relativeURL := fmt.Sprintf("%s/%s", UnifiedOnboardingResourcePath, id)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
@@ -90,10 +90,10 @@ func (service *Service) GetUpdateStackConfig(id string) (*UnifiedOnbordingConfig
 	return v, resp, nil
 }
 
-func (service *Service) Create(onbordingRequest UnifiedOnbordingRequest) (*UnifiedOnbordingConfigurationResponse, *http.Response, error) {
+func (service *Service) Create(onboardingRequest UnifiedOnbordingRequest) (*UnifiedOnbordingConfigurationResponse, *http.Response, error) {
 	v := new(UnifiedOnbordingConfigurationResponse)
 	relativeURL := fmt.Sprintf("%s/%s", UnifiedOnboardingResourcePath, StackConfig)
-	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, onbordingRequest, &v)
+	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, onboardingRequest, &v)
 	if err != nil {
 		return nil, nil, err
 	}
