@@ -46,16 +46,16 @@ type Parameter struct {
 }
 
 type UnifiedOnboardingResponse struct {
-	OnboardingId            string                  `json:"onboardingId"`
-	InitiatedUserName       string                  `json:"initiatedUserName"`
-	InitiatedUserId         int                     `json:"initiatedUserId"`
-	EnvironmentId           string                  `json:"environmentId"`
-	EnvironmentName         string                  `json:"environmentName"`
-	EnvironmentExternalId   string                  `json:"environmentExternalId"`
-	RootStackId             string                  `json:"rootStackId"`
-	CftVersion              string                  `json:"cftVersion"`
-	UnifiedOnbordingRequest UnifiedOnbordingRequest `json:"onboardingRequest"`
-	Statuses                Statuses                `json:"statuses"`
+	OnboardingId             string                  `json:"onboardingId"`
+	InitiatedUserName        string                  `json:"initiatedUserName"`
+	InitiatedUserId          int                     `json:"initiatedUserId"`
+	EnvironmentId            string                  `json:"environmentId"`
+	EnvironmentName          string                  `json:"environmentName"`
+	EnvironmentExternalId    string                  `json:"environmentExternalId"`
+	RootStackId              string                  `json:"rootStackId"`
+	CftVersion               string                  `json:"cftVersion"`
+	UnifiedOnboardingRequest UnifiedOnbordingRequest `json:"onboardingRequest"`
+	Statuses                 Statuses                `json:"statuses"`
 }
 
 type Statuses []struct {
