@@ -1,4 +1,4 @@
-package awsUnifiedOnboarding
+package aws_unified_onboarding
 
 import (
 	"fmt"
