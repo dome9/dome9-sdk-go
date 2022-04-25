@@ -22,12 +22,12 @@ func main() {
 	}
 
 	// CreateAdmission Control Policy
-	admissionControlPolciResponse, _, err := srv.Create(&admissionControlCreateRequest)
+	admissionControlPolicyResponse, _, err := srv.Create(&admissionControlCreateRequest)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	fmt.Printf("Create AC Policy response type: %T\n Content: %+v", admissionControlPolciResponse, admissionControlPolciResponse)
+	fmt.Printf("Create AC Policy response type: %T\n Content: %+v", admissionControlPolicyResponse, admissionControlPolicyResponse)
 
 	// Get all Admission Control Policy Associations
 	allAdmissionControlPolicies, _, err := srv.GetAllAdmissionControlPolicies()
@@ -38,7 +38,7 @@ func main() {
 	fmt.Printf("GetAll Admission Control Policies response type: %T\n Content: %+v", allAdmissionControlPolicies, allAdmissionControlPolicies)
 
 	// Get specific Admission Control Policy
-	admissionControlPolicy, _, err := srv.GetAdmissionControlPolicy(admissionControlPolciResponse.ID)
+	admissionControlPolicy, _, err := srv.GetAdmissionControlPolicy(admissionControlPolicyResponse.ID)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -54,7 +54,7 @@ func main() {
 	fmt.Printf("Update AC Policy response type: %T\n Content: %+v", admissionControlUpdatedPolicy, admissionControlUpdatedPolicy)
 
 	// Delete AC Policy
-	deleteResponse, err := srv.Delete(admissionControlPolciResponse.ID)
+	deleteResponse, err := srv.Delete(admissionControlPolicyResponse.ID)
 	if err != nil {
 		panic(err)
 	}
