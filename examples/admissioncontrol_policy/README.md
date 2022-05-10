@@ -13,11 +13,11 @@ func main() {
 	srv := admission_policy.New(config)
 
 	admissionControlCreateRequest := admission_policy.AdmissionControlPolicyRequest{
-		TargetId:        "<K8S_Cluster_ID>",
-		TargetType:      "Environment",
+		TargetId:        "<ENV ID or OU ID>",
+		TargetType:      "<Environment/OrganizationalUnit>",
 		RulesetId:       "<RuleSetID>",
 		NotificationIds: []string{"<NOTIFICATION_IDS>"},
-		Action:          "Prevention",
+		Action:          "<Prevention/Detection>",
 		RulesetPlatform: "kubernetesruntimeassurance",
 	}
 
@@ -27,10 +27,10 @@ func main() {
 		fmt.Println(err)
 	}
 
-	fmt.Printf("Create AC Policy response type: %T\n Content: %+v", admissionControlPolicyResponse, admissionControlPolicyResponse)
+	fmt.Printf("Create Admission Control Policy response type: %T\n Content: %+v", admissionControlPolicyResponse, admissionControlPolicyResponse)
 
 	// Get all Admission Control Policy Associations
-	allAdmissionControlPolicies, _, err := srv.GetAllAdmissionControlPolicies()
+	allAdmissionControlPolicies, _, err := srv.GetAll()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -38,7 +38,7 @@ func main() {
 	fmt.Printf("GetAll Admission Control Policies response type: %T\n Content: %+v", allAdmissionControlPolicies, allAdmissionControlPolicies)
 
 	// Get specific Admission Control Policy
-	admissionControlPolicy, _, err := srv.GetAdmissionControlPolicy(admissionControlPolicyResponse.ID)
+	admissionControlPolicy, _, err := srv.Get(admissionControlPolicyResponse.ID)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -47,11 +47,11 @@ func main() {
 
 	// Update specific Admission Control Policy
 	admissionControlCreateRequest.Action = "Detection"
-	admissionControlUpdatedPolicy, _, err := srv.UpdateAdmissionControlPolicy(&admissionControlCreateRequest)
+	admissionControlUpdatedPolicy, _, err := srv.Update(&admissionControlCreateRequest)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Printf("Update AC Policy response type: %T\n Content: %+v", admissionControlUpdatedPolicy, admissionControlUpdatedPolicy)
+	fmt.Printf("Update Admission Control Policy response type: %T\n Content: %+v", admissionControlUpdatedPolicy, admissionControlUpdatedPolicy)
 
 	// Delete AC Policy
 	deleteResponse, err := srv.Delete(admissionControlPolicyResponse.ID)
@@ -59,7 +59,7 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("AC Policy deleted response type: %T\n Content: %+v", deleteResponse, deleteResponse)
+	fmt.Printf("Admission Control Policy deleted response type: %T\n Content: %+v", deleteResponse, deleteResponse)
 }
 
 
