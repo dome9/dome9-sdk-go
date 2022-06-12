@@ -18,13 +18,12 @@ func main() {
 		RulesetId:       "<RuleSetID>",
 		NotificationIds: []string{"<NOTIFICATION_IDS>"},
 		Action:          "<Prevention/Detection>",
-		RulesetPlatform: "kubernetesruntimeassurance",
 	}
 
 	// CreateAdmission Control Policy
 	admissionControlPolicyResponse, _, err := srv.Create(&admissionControlCreateRequest)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	fmt.Printf("Create Admission Control Policy response type: %T\n Content: %+v", admissionControlPolicyResponse, admissionControlPolicyResponse)
@@ -32,7 +31,7 @@ func main() {
 	// Get all Admission Control Policy Associations
 	allAdmissionControlPolicies, _, err := srv.GetAll()
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	fmt.Printf("GetAll Admission Control Policies response type: %T\n Content: %+v", allAdmissionControlPolicies, allAdmissionControlPolicies)
@@ -40,7 +39,7 @@ func main() {
 	// Get specific Admission Control Policy
 	admissionControlPolicy, _, err := srv.Get(admissionControlPolicyResponse.ID)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	fmt.Printf("Get Specific Admission Control Policy response type: %T\n Content: %+v", admissionControlPolicy, admissionControlPolicy)
@@ -49,7 +48,7 @@ func main() {
 	admissionControlCreateRequest.Action = "Detection"
 	admissionControlUpdatedPolicy, _, err := srv.Update(&admissionControlCreateRequest)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	fmt.Printf("Update Admission Control Policy response type: %T\n Content: %+v", admissionControlUpdatedPolicy, admissionControlUpdatedPolicy)
 
