@@ -9,8 +9,15 @@ const (
 )
 
 type RunBundleRequest struct {
-	ID             int    `json:"id"`
-	CloudAccountID string `json:"cloudAccountId"`
+	ID                     int    `json:"id"`
+	Name                   string `json:"name"`
+	Description            string `json:"description"`
+	Dome9CloudAccountID    string `json:"dome9CloudAccountId"`
+	ExternalCloudAccountID string `json:"externalCloudAccountId"`
+	CloudAccountID         string `json:"cloudAccountId"`
+	CloudAccountType       string `json:"cloudAccountType"`
+	RequestID              string `json:"requestId"`
+	ShouldMinimizeResult   bool   `json:"shouldMinimizeResult"`
 }
 
 type RunBundleResponse struct {
@@ -22,33 +29,16 @@ type RunBundleResponse struct {
 	AssessmentPassed bool             `json:"assessmentPassed"`
 	HasErrors        bool             `json:"hasErrors"`
 	ID               int              `json:"id"`
+	AssessmentId     bool             `json:"assessmentId"`
 }
 
 type Request struct {
-	ID                     int    `json:"id"`
-	Name                   string `json:"name"`
-	Description            string `json:"description"`
-	Cft                    Cft    `json:"cft"`
-	IsCft                  bool   `json:"isCft"`
 	Dome9CloudAccountID    string `json:"dome9CloudAccountId"`
 	ExternalCloudAccountID string `json:"externalCloudAccountId"`
 	CloudAccountID         string `json:"cloudAccountId"`
-	Region                 string `json:"region"`
-	CloudNetwork           string `json:"cloudNetwork"`
 	CloudAccountType       string `json:"cloudAccountType"`
 	RequestID              string `json:"requestId"`
-}
-
-type Cft struct {
-	RootName string `json:"rootName"`
-	Params   []struct {
-		Key   string `json:"key"`
-		Value string `json:"value"`
-	} `json:"params"`
-	Files []struct {
-		Name     string `json:"name"`
-		Template string `json:"template"`
-	} `json:"files"`
+	ShouldMinimizeResult   bool   `json:"shouldMinimizeResult"`
 }
 
 type Test struct {
@@ -80,41 +70,28 @@ type EntityResult struct {
 }
 
 type Rule struct {
-	Name          string `json:"name"`
-	Severity      string `json:"severity"`
-	Logic         string `json:"logic"`
-	Description   string `json:"description"`
-	Remediation   string `json:"remediation"`
-	ComplianceTag string `json:"complianceTag"`
-	Domain        string `json:"domain"`
-	Priority      string `json:"priority"`
-	ControlTitle  string `json:"controlTitle"`
-	RuleID        string `json:"ruleId"`
-	LogicHash     string `json:"logicHash"`
-	IsDefault     bool   `json:"isDefault"`
+	Name          string   `json:"name"`
+	Severity      string   `json:"severity"`
+	Logic         string   `json:"logic"`
+	Description   string   `json:"description"`
+	Remediation   string   `json:"remediation"`
+	Cloudbots     string   `json:"cloudbots"`
+	ComplianceTag string   `json:"complianceTag"`
+	Domain        string   `json:"domain"`
+	Priority      string   `json:"priority"`
+	ControlTitle  string   `json:"controlTitle"`
+	RuleID        string   `json:"ruleId"`
+	Category      string   `json:"category"`
+	Labels        []string `json:"labels"`
+	LogicHash     string   `json:"logicHash"`
+	IsDefault     bool     `json:"isDefault"`
 }
 
 type LocationMetadata struct {
-	Account      Account      `json:"account"`
-	Region       *Region      `json:"region"`
-	CloudNetwork CloudNetwork `json:"cloudNetwork"`
+	Account Account `json:"account"`
 }
 
 type Account struct {
-	Srl        string `json:"srl"`
-	Name       string `json:"name"`
-	ID         string `json:"id"`
-	ExternalID string `json:"externalId"`
-}
-
-type Region struct {
-	Srl        string `json:"srl"`
-	Name       string `json:"name"`
-	ID         string `json:"id"`
-	ExternalID string `json:"externalId"`
-}
-
-type CloudNetwork struct {
 	Srl        string `json:"srl"`
 	Name       string `json:"name"`
 	ID         string `json:"id"`
