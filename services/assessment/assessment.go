@@ -1,15 +1,18 @@
 package assessment
 
 import (
+	"fmt"
 	"net/http"
 )
 
 const (
 	assessmentResourcePath = "assessment/bundleV2"
+	assessmentDeletePath   = "AssessmentHistory"
+	assessmentGetPath      = "AssessmentHistory"
 )
 
 type RunBundleRequest struct {
-	ID                     int    `json:"id"`
+	BundleID               int    `json:"id"`
 	Name                   string `json:"name"`
 	Description            string `json:"description"`
 	Dome9CloudAccountID    string `json:"dome9CloudAccountId"`
@@ -111,9 +114,32 @@ type EntitiesWithPermissionIssues struct {
 	CloudVendorIdentifier string `json:"cloudVendorIdentifier"`
 }
 
-func (service *Service) RunBundle(body *RunBundleRequest) (*RunBundleResponse, *http.Response, error) {
+func (service *Service) Run(body *RunBundleRequest) (*RunBundleResponse, *http.Response, error) {
 	v := new(RunBundleResponse)
 	resp, err := service.Client.NewRequestDo("POST", assessmentResourcePath, nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+
+func (service *Service) Delete(id string) (*http.Response, error) {
+	relativeURL := fmt.Sprintf("%s/%s", assessmentDeletePath, id)
+	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+
+func (service *Service) Get(id string) (*RunBundleResponse, *http.Response, error) {
+	v := new(RunBundleResponse)
+	relativeURL := fmt.Sprintf("%s/%s", assessmentGetPath, id)
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
