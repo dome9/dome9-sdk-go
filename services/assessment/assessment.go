@@ -7,8 +7,8 @@ import (
 
 const (
 	assessmentResourcePath = "assessment/bundleV2"
-	assessmentDeletePath   = "AssessmentHistory"
-	assessmentGetPath      = "AssessmentHistory"
+	assessmentDeletePath   = "AssessmentHistoryV2"
+	assessmentGetPath      = "AssessmentHistoryV2"
 )
 
 type RunBundleRequest struct {
@@ -24,18 +24,29 @@ type RunBundleRequest struct {
 }
 
 type RunBundleResponse struct {
-	Request          Request          `json:"request"`
-	Tests            []Test           `json:"tests"`
-	LocationMetadata LocationMetadata `json:"locationMetadata"`
-	TestEntities     interface{}      `json:"testEntities"`
-	DataSyncStatus   []DataSyncStatus `json:"dataSyncStatus"`
-	AssessmentPassed bool             `json:"assessmentPassed"`
-	HasErrors        bool             `json:"hasErrors"`
-	ID               int              `json:"id"`
-	AssessmentId     bool             `json:"assessmentId"`
+	Request                 Request          `json:"request"`
+	Tests                   []Test           `json:"tests"`
+	TestEntities            interface{}      `json:"testEntities"`
+	Exclusions              []Exclusion      `json:"exclusions"`
+	Remediations            []Remediation    `json:"remediations"`
+	DataSyncStatus          []DataSyncStatus `json:"dataSyncStatus"`
+	CreatedTime             string           `json:"createdTime"`
+	ID                      int              `json:"id"`
+	AssessmentId            string           `json:"assessmentId"`
+	TriggeredBy             string           `json:"triggeredBy"`
+	AssessmentPassed        bool             `json:"assessmentPassed"`
+	HasErrors               bool             `json:"hasErrors"`
+	Stats                   Stats            `json:"stats"`
+	HasDataSyncStatusIssues bool             `json:"hasDataSyncStatusIssues"`
+	ComparisonCustomId      string           `json:"comparisonCustomId"`
+	AdditionalFields        interface{}      `json:"additionalFields"`
 }
 
 type Request struct {
+	IsTemplate             bool   `json:"isTemplate"`
+	BundleID               int    `json:"id"`
+	Name                   string `json:"name"`
+	Description            string `json:"description"`
 	Dome9CloudAccountID    string `json:"dome9CloudAccountId"`
 	ExternalCloudAccountID string `json:"externalCloudAccountId"`
 	CloudAccountID         string `json:"cloudAccountId"`
@@ -90,15 +101,29 @@ type Rule struct {
 	IsDefault     bool     `json:"isDefault"`
 }
 
-type LocationMetadata struct {
-	Account Account `json:"account"`
+type Exclusion struct {
+	Platform              string                       `json:"platform"`
+	ID                    int                          `json:"id"`
+	Rules                 []ExclusionOrRemediationRule `json:"rules"`
+	LogicExpressions      []string                     `json:"logicExpressions"`
+	RulesetId             int                          `json:"rulesetId"`
+	CloudAccountIds       []string                     `json:"cloudAccountIds"`
+	Comment               string                       `json:"comment"`
+	OrganizationalUnitIds []string                     `json:"organizationalUnitIds"`
+	DateRange             Date                         `json:"dateRange"`
 }
 
-type Account struct {
-	Srl        string `json:"srl"`
-	Name       string `json:"name"`
-	ID         string `json:"id"`
-	ExternalID string `json:"externalId"`
+type Remediation struct {
+	Platform              string                       `json:"platform"`
+	ID                    int                          `json:"id"`
+	Rules                 []ExclusionOrRemediationRule `json:"rules"`
+	LogicExpressions      []string                     `json:"logicExpressions"`
+	RulesetId             int                          `json:"rulesetId"`
+	CloudAccountIds       []string                     `json:"cloudAccountIds"`
+	Comment               string                       `json:"comment"`
+	CloudBots             []string                     `json:"cloudBots"`
+	OrganizationalUnitIds []string                     `json:"organizationalUnitIds"`
+	DateRange             Date                         `json:"dateRange"`
 }
 
 type DataSyncStatus struct {
@@ -108,10 +133,44 @@ type DataSyncStatus struct {
 	EntitiesWithPermissionIssues []EntitiesWithPermissionIssues `json:"entitiesWithPermissionIssues"`
 }
 
+type Stats struct {
+	Passed                  string        `json:"passed"`
+	PassedRulesBySeverity   RulesSeverity `json:"passedRulesBySeverity"`
+	Failed                  string        `json:"failed"`
+	FailedRulesBySeverity   RulesSeverity `json:"failedRulesBySeverity"`
+	Error                   string        `json:"error"`
+	FailedTests             string        `json:"failedTests"`
+	LogicallyTested         string        `json:"logicallyTested"`
+	FailedEntities          string        `json:"failedEntities"`
+	ExcludedTests           string        `json:"excludedTests"`
+	ExcludedFailedTests     string        `json:"excludedFailedTests"`
+	ExcludedRules           string        `json:"excludedRules"`
+	ExcludedRulesBySeverity RulesSeverity `json:"excludedRulesBySeverity"`
+}
+
 type EntitiesWithPermissionIssues struct {
 	ExternalID            string `json:"externalId"`
 	Name                  string `json:"name"`
 	CloudVendorIdentifier string `json:"cloudVendorIdentifier"`
+}
+
+type ExclusionOrRemediationRule struct {
+	LogicHash string `json:"logicHash"`
+	ID        int    `json:"id"`
+	Name      string `json:"name"`
+}
+
+type Date struct {
+	From string `json:"from"`
+	To   string `json:"to"`
+}
+
+type RulesSeverity struct {
+	Informational string `json:"informational"`
+	Low           string `json:"low"`
+	Medium        string `json:"medium"`
+	High          string `json:"high"`
+	Critical      string `json:"critical"`
 }
 
 func (service *Service) Run(body *RunBundleRequest) (*RunBundleResponse, *http.Response, error) {
@@ -124,7 +183,6 @@ func (service *Service) Run(body *RunBundleRequest) (*RunBundleResponse, *http.R
 	return v, resp, nil
 }
 
-
 func (service *Service) Delete(id string) (*http.Response, error) {
 	relativeURL := fmt.Sprintf("%s/%s", assessmentDeletePath, id)
 	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
@@ -134,7 +192,6 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 
 	return resp, nil
 }
-
 
 func (service *Service) Get(id string) (*RunBundleResponse, *http.Response, error) {
 	v := new(RunBundleResponse)
