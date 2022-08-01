@@ -60,8 +60,8 @@ type Magellan struct {
 }
 
 type WebhookResponse struct {
-	RequestTime     time.Time   `json:"requestTime"`
-	ResponseContent interface{} `json:"responseContent"`
+	RequestTime     time.Time              `json:"requestTime"`
+	ResponseContent map[string]interface{} `json:"responseContent"`
 }
 
 type AdditionalField struct {
@@ -116,8 +116,8 @@ type Finding struct {
 }
 
 type FieldAggregation struct {
-	Value interface{} `json:"value"`
-	Count float64     `json:"count"`
+	Value map[string]interface{} `json:"value"`
+	Count float64                `json:"count"`
 }
 
 type ContinuousComplianceFindingResponse struct {
