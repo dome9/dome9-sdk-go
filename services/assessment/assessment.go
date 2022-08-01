@@ -24,22 +24,22 @@ type RunBundleRequest struct {
 }
 
 type RunBundleResponse struct {
-	Request                 Request          `json:"request"`
-	Tests                   []Test           `json:"tests"`
-	TestEntities            interface{}      `json:"testEntities"`
-	Exclusions              []Exclusion      `json:"exclusions"`
-	Remediations            []Remediation    `json:"remediations"`
-	DataSyncStatus          []DataSyncStatus `json:"dataSyncStatus"`
-	CreatedTime             string           `json:"createdTime"`
-	ID                      int              `json:"id"`
-	AssessmentId            string           `json:"assessmentId"`
-	TriggeredBy             string           `json:"triggeredBy"`
-	AssessmentPassed        bool             `json:"assessmentPassed"`
-	HasErrors               bool             `json:"hasErrors"`
-	Stats                   Stats            `json:"stats"`
-	HasDataSyncStatusIssues bool             `json:"hasDataSyncStatusIssues"`
-	ComparisonCustomId      string           `json:"comparisonCustomId"`
-	AdditionalFields        interface{}      `json:"additionalFields"`
+	Request                 Request                  `json:"request"`
+	Tests                   []Test                   `json:"tests"`
+	TestEntities            map[string][]interface{} `json:"testEntities"`
+	Exclusions              []Exclusion              `json:"exclusions"`
+	Remediations            []Remediation            `json:"remediations"`
+	DataSyncStatus          []DataSyncStatus         `json:"dataSyncStatus"`
+	CreatedTime             string                   `json:"createdTime"`
+	ID                      int                      `json:"id"`
+	AssessmentId            string                   `json:"assessmentId"`
+	TriggeredBy             string                   `json:"triggeredBy"`
+	AssessmentPassed        bool                     `json:"assessmentPassed"`
+	HasErrors               bool                     `json:"hasErrors"`
+	Stats                   Stats                    `json:"stats"`
+	HasDataSyncStatusIssues bool                     `json:"hasDataSyncStatusIssues"`
+	ComparisonCustomId      string                   `json:"comparisonCustomId"`
+	AdditionalFields        map[string][]interface{} `json:"additionalFields"`
 }
 
 type Request struct {
@@ -73,14 +73,22 @@ type ExclusionStats struct {
 }
 
 type EntityResult struct {
-	ValidationStatus string      `json:"validationStatus"`
-	IsRelevant       bool        `json:"isRelevant"`
-	IsValid          bool        `json:"isValid"`
-	IsExcluded       bool        `json:"isExcluded"`
-	ExclusionID      string      `json:"exclusionId"`
-	RemediationID    string      `json:"remediationId"`
-	Error            string      `json:"error"`
-	TestObj          interface{} `json:"testObj"`
+	ValidationStatus string                          `json:"validationStatus"`
+	IsRelevant       bool                            `json:"isRelevant"`
+	IsValid          bool                            `json:"isValid"`
+	IsExcluded       bool                            `json:"isExcluded"`
+	ExclusionID      string                          `json:"exclusionId"`
+	RemediationID    string                          `json:"remediationId"`
+	Error            string                          `json:"error"`
+	TestObj          RuleEngineFailedEntityReference `json:"testObj"`
+}
+
+type RuleEngineFailedEntityReference struct {
+	Id                         string `json:"id"`
+	Dome9Id                    string `json:"dome9Id"`
+	EntityType                 string `json:"entityType"`
+	EntityIndex                int    `json:"entityIndex"`
+	CustomEntityComparisonHash string `json:"customEntityComparisonHash"`
 }
 
 type Rule struct {
@@ -134,17 +142,17 @@ type DataSyncStatus struct {
 }
 
 type Stats struct {
-	Passed                  string        `json:"passed"`
+	Passed                  int           `json:"passed"`
 	PassedRulesBySeverity   RulesSeverity `json:"passedRulesBySeverity"`
-	Failed                  string        `json:"failed"`
+	Failed                  int           `json:"failed"`
 	FailedRulesBySeverity   RulesSeverity `json:"failedRulesBySeverity"`
-	Error                   string        `json:"error"`
-	FailedTests             string        `json:"failedTests"`
-	LogicallyTested         string        `json:"logicallyTested"`
-	FailedEntities          string        `json:"failedEntities"`
-	ExcludedTests           string        `json:"excludedTests"`
-	ExcludedFailedTests     string        `json:"excludedFailedTests"`
-	ExcludedRules           string        `json:"excludedRules"`
+	Error                   int           `json:"error"`
+	FailedTests             int           `json:"failedTests"`
+	LogicallyTested         int           `json:"logicallyTested"`
+	FailedEntities          int           `json:"failedEntities"`
+	ExcludedTests           int           `json:"excludedTests"`
+	ExcludedFailedTests     int           `json:"excludedFailedTests"`
+	ExcludedRules           int           `json:"excludedRules"`
 	ExcludedRulesBySeverity RulesSeverity `json:"excludedRulesBySeverity"`
 }
 
@@ -166,11 +174,11 @@ type Date struct {
 }
 
 type RulesSeverity struct {
-	Informational string `json:"informational"`
-	Low           string `json:"low"`
-	Medium        string `json:"medium"`
-	High          string `json:"high"`
-	Critical      string `json:"critical"`
+	Informational int `json:"informational"`
+	Low           int `json:"low"`
+	Medium        int `json:"medium"`
+	High          int `json:"high"`
+	Critical      int `json:"critical"`
 }
 
 func (service *Service) Run(body *RunBundleRequest) (*RunBundleResponse, *http.Response, error) {
@@ -184,7 +192,7 @@ func (service *Service) Run(body *RunBundleRequest) (*RunBundleResponse, *http.R
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	relativeURL := fmt.Sprintf("%s/%s", assessmentDeletePath, id)
+	relativeURL := fmt.Sprintf("%s%s", assessmentDeletePath, id)
 	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
 	if err != nil {
 		return nil, err
