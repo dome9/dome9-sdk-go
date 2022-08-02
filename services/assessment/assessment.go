@@ -3,12 +3,11 @@ package assessment
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 )
 
 const (
 	assessmentResourcePath    = "assessment/bundleV2"
-	AssessmentHistoryBasePath = "AssessmentHistoryV2"
+	assessmentHistoryBasePath = "AssessmentHistoryV2"
 )
 
 type RunBundleRequest struct {
@@ -195,16 +194,11 @@ func (service *Service) Run(body *RunBundleRequest) (*RunBundleResponse, *http.R
 	return v, resp, nil
 }
 
-func (service *Service) Delete(id string) (*http.Response, error) {
-	relativeURL := fmt.Sprintf("%s/%s", AssessmentHistoryBasePath, id)
-
-	historyId, err := strconv.Atoi(id)
-	if err != nil {
-		return nil, err
-	}
+func (service *Service) Delete(id int) (*http.Response, error) {
+	relativeURL := fmt.Sprintf("%s/%v", assessmentHistoryBasePath, id)
 
 	deleteRequest := DeleteRequest{
-		HistoryId: historyId,
+		HistoryId: id,
 	}
 
 	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, deleteRequest, nil, nil)
@@ -217,7 +211,7 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 
 func (service *Service) Get(id string) (*RunBundleResponse, *http.Response, error) {
 	v := new(RunBundleResponse)
-	relativeURL := fmt.Sprintf("%s/%s", AssessmentHistoryBasePath, id)
+	relativeURL := fmt.Sprintf("%s/%s", assessmentHistoryBasePath, id)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
