@@ -3,6 +3,7 @@ package assessment
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 const (
@@ -40,6 +41,10 @@ type RunBundleResponse struct {
 	HasDataSyncStatusIssues bool                     `json:"hasDataSyncStatusIssues"`
 	ComparisonCustomId      string                   `json:"comparisonCustomId"`
 	AdditionalFields        map[string][]interface{} `json:"additionalFields"`
+}
+
+type DeleteRequest struct {
+	HistoryId int `json:"historyId"`
 }
 
 type Request struct {
@@ -192,8 +197,18 @@ func (service *Service) Run(body *RunBundleRequest) (*RunBundleResponse, *http.R
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	relativeURL := fmt.Sprintf("%s%s", assessmentDeletePath, id)
-	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
+	relativeURL := fmt.Sprintf("%s/%s", assessmentDeletePath, id)
+
+	historyId, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+
+	deleteRequest := DeleteRequest{
+		HistoryId: historyId,
+	}
+
+	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, deleteRequest, nil, nil)
 	if err != nil {
 		return nil, err
 	}
