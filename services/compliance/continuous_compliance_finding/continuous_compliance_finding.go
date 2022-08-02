@@ -3,7 +3,6 @@ package continuous_compliance_finding
 import (
 	"fmt"
 	"net/http"
-	"time"
 )
 
 const (
@@ -17,8 +16,8 @@ type Sorting struct {
 }
 
 type DateRange struct {
-	From *time.Time `json:"from,omitempty"`
-	To   *time.Time `json:"to,omitempty"`
+	From string `json:"from,omitempty"`
+	To   string `json:"to,omitempty"`
 }
 
 type FieldFilter struct {
@@ -44,9 +43,9 @@ type ContinuousComplianceFindingRequest struct {
 }
 
 type FindingComment struct {
-	Text      string    `json:"text,omitempty"`
-	Timestamp time.Time `json:"timestamp"`
-	UserName  string    `json:"userName"`
+	Text      string `json:"text,omitempty"`
+	Timestamp string `json:"timestamp"`
+	UserName  string `json:"userName"`
 }
 
 type TagRule struct {
@@ -55,12 +54,12 @@ type TagRule struct {
 }
 
 type Magellan struct {
-	AlertWindowStartTime time.Time `json:"alertWindowStartTime"`
-	AlertWindowEndTime   time.Time `json:"alertWindowEndTime"`
+	AlertWindowStartTime string `json:"alertWindowStartTime"`
+	AlertWindowEndTime   string `json:"alertWindowEndTime"`
 }
 
 type WebhookResponse struct {
-	RequestTime     time.Time              `json:"requestTime"`
+	RequestTime     string                 `json:"requestTime"`
 	ResponseContent map[string]interface{} `json:"responseContent"`
 }
 
@@ -72,8 +71,8 @@ type AdditionalField struct {
 type Finding struct {
 	ID                          string                     `json:"id"`
 	FindingKey                  string                     `json:"findingKey"`
-	CreatedTime                 time.Time                  `json:"createdTime"`
-	UpdatedTime                 time.Time                  `json:"updatedTime"`
+	CreatedTime                 string                     `json:"createdTime"`
+	UpdatedTime                 string                     `json:"updatedTime"`
 	CloudAccountType            string                     `json:"cloudAccountType"`
 	Comments                    []FindingComment           `json:"comments,omitempty"`
 	CloudAccountId              string                     `json:"cloudAccountId"`
@@ -100,7 +99,7 @@ type Finding struct {
 	BundleName                  string                     `json:"bundleName"`
 	Acknowledged                bool                       `json:"acknowledged"`
 	Origin                      string                     `json:"origin"`
-	LastSeenTime                time.Time                  `json:"lastSeenTime"`
+	LastSeenTime                string                     `json:"lastSeenTime"`
 	OwnerUserName               string                     `json:"ownerUserName,omitempty"`
 	Magellan                    Magellan                   `json:"magellan,omitempty"`
 	IsExcluded                  bool                       `json:"isExcluded"`
@@ -116,8 +115,8 @@ type Finding struct {
 }
 
 type FieldAggregation struct {
-	Value map[string]interface{} `json:"value"`
-	Count float64                `json:"count"`
+	Value string  `json:"value"`
+	Count float64 `json:"count"`
 }
 
 type ContinuousComplianceFindingResponse struct {
