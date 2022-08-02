@@ -8,8 +8,7 @@ import (
 
 const (
 	assessmentResourcePath = "assessment/bundleV2"
-	assessmentDeletePath   = "AssessmentHistoryV2"
-	assessmentGetPath      = "AssessmentHistoryV2"
+	AssessmentHistoryBasePath    = "AssessmentHistoryV2"
 )
 
 type RunBundleRequest struct {
@@ -197,7 +196,7 @@ func (service *Service) Run(body *RunBundleRequest) (*RunBundleResponse, *http.R
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	relativeURL := fmt.Sprintf("%s/%s", assessmentDeletePath, id)
+	relativeURL := fmt.Sprintf("%s/%s", AssessmentHistoryBasePath, id)
 
 	historyId, err := strconv.Atoi(id)
 	if err != nil {
@@ -218,7 +217,7 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 
 func (service *Service) Get(id string) (*RunBundleResponse, *http.Response, error) {
 	v := new(RunBundleResponse)
-	relativeURL := fmt.Sprintf("%s/%s", assessmentGetPath, id)
+	relativeURL := fmt.Sprintf("%s/%s", AssessmentHistoryBasePath, id)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
