@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	assessmentResourcePath = "assessment/bundleV2"
-	AssessmentHistoryBasePath    = "AssessmentHistoryV2"
+	assessmentResourcePath    = "assessment/bundleV2"
+	AssessmentHistoryBasePath = "AssessmentHistoryV2"
 )
 
 type RunBundleRequest struct {
