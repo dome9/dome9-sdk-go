@@ -29,7 +29,7 @@ type Filter struct {
 	FreeTextPhrase   string         `json:"freeTextPhrase,omitempty"`
 	Fields           *[]FieldFilter `json:"fields,omitempty"`
 	OnlyCIEM         bool           `json:"onlyCIEM,omitempty"`
-	IncludedFeatures *[]string      `json:"includedFeatures,omitempty"`
+	IncludedFeatures []string       `json:"includedFeatures,omitempty"`
 	CreationTime     *DateRange     `json:"creationTime,omitempty"`
 }
 
@@ -69,7 +69,7 @@ type AdditionalField struct {
 }
 
 type Finding struct {
-	ID                          string                     `json:"id"`
+	Id                          string                     `json:"id"`
 	FindingKey                  string                     `json:"findingKey"`
 	CreatedTime                 string                     `json:"createdTime"`
 	UpdatedTime                 string                     `json:"updatedTime"`
