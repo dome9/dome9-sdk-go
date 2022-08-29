@@ -35,7 +35,7 @@ type Filter struct {
 
 type ContinuousComplianceFindingRequest struct {
 	PageSize     int       `json:"pageSize,omitempty"`
-	Sorting      Sorting   `json:"sorting,omitempty"`
+	Sorting      *Sorting  `json:"sorting,omitempty"`
 	MultiSorting []Sorting `json:"multiSorting,omitempty"`
 	Filter       *Filter   `json:"filter,omitempty"`
 	SearchAfter  *[]string `json:"searchAfter,omitempty"`
@@ -79,7 +79,7 @@ type Finding struct {
 	CloudAccountExternalId      string                     `json:"cloudAccountExternalId"`
 	OrganizationalUnitId        string                     `json:"organizationalUnitId,omitempty"`
 	OrganizationalUnitPath      string                     `json:"organizationalUnitPath,omitempty"`
-	BundleId                    float64                    `json:"bundleId"`
+	BundleId                    int                        `json:"bundleId"`
 	AlertType                   string                     `json:"alertType"`
 	RuleId                      string                     `json:"ruleId,omitempty"`
 	RuleName                    string                     `json:"ruleName"`
@@ -115,15 +115,15 @@ type Finding struct {
 }
 
 type FieldAggregation struct {
-	Value string  `json:"value"`
-	Count float64 `json:"count"`
+	Value string `json:"value"`
+	Count int    `json:"count"`
 }
 
 type ContinuousComplianceFindingResponse struct {
-	Findings           []Finding                     `json:"findings"`
-	TotalFindingsCount float64                       `json:"totalFindingsCount"`
-	Aggregations       map[string][]FieldAggregation `json:"aggregations"`
-	SearchAfter        []string                      `json:"searchAfter"`
+	Findings           []Finding `json:"findings"`
+	TotalFindingsCount int       `json:"totalFindingsCount"`
+	//Aggregations       map[string][]FieldAggregation `json:"aggregations"`
+	SearchAfter []string `json:"searchAfter"`
 }
 
 func (service *Service) Search(body *ContinuousComplianceFindingRequest) (*ContinuousComplianceFindingResponse, *http.Response, error) {
