@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	continuousComplianceFindingPath = "Finding"
+	continuousComplianceFindingPath = "Compliance/Finding"
 	searchFindingPath               = "search"
 )
 
@@ -35,7 +35,7 @@ type Filter struct {
 
 type ContinuousComplianceFindingRequest struct {
 	PageSize     int       `json:"pageSize,omitempty"`
-	Sorting      *Sorting  `json:"sorting,omitempty"`
+	Sorting      Sorting   `json:"sorting,omitempty"`
 	MultiSorting []Sorting `json:"multiSorting,omitempty"`
 	Filter       *Filter   `json:"filter,omitempty"`
 	SearchAfter  *[]string `json:"searchAfter,omitempty"`
