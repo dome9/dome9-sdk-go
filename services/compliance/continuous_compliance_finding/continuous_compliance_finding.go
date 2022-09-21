@@ -120,10 +120,10 @@ type FieldAggregation struct {
 }
 
 type ContinuousComplianceFindingResponse struct {
-	Findings           []Finding `json:"findings"`
-	TotalFindingsCount int       `json:"totalFindingsCount"`
-	//Aggregations       map[string][]FieldAggregation `json:"aggregations"`
-	SearchAfter []string `json:"searchAfter"`
+	Findings           []Finding                     `json:"findings"`
+	TotalFindingsCount int                           `json:"totalFindingsCount"`
+	Aggregations       map[string][]FieldAggregation `json:"aggregations"`
+	SearchAfter        []string                      `json:"searchAfter"`
 }
 
 func (service *Service) Search(body *ContinuousComplianceFindingRequest) (*ContinuousComplianceFindingResponse, *http.Response, error) {
