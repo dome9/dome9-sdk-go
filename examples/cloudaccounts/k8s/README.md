@@ -83,6 +83,16 @@ func main() {
 	}
 	fmt.Printf("Image Assurance Enabled\n")
 	
+	// Enable Image Assurance
+	_, err = srv.EnableFlowLogs(k8s.FlowLogsEnableRequest{
+		CloudAccountId: clusterId,
+		Enabled: true,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("FLow Logs Enabled\n")
+
 	// Delete k8s cloud account
 	_, err = srv.Delete(clusterId)
 	if err != nil {
