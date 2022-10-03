@@ -83,8 +83,8 @@ func main() {
 	}
 	fmt.Printf("Image Assurance Enabled\n")
 	
-	// Enable Image Assurance
-	_, err = srv.EnableFlowLogs(k8s.FlowLogsEnableRequest{
+	// Enable Threat Intelligence
+	_, err = srv.EnableThreatIntelligence(k8s.FlowLogsEnableRequest{
 		CloudAccountId: clusterId,
 		Enabled: true,
 	})
