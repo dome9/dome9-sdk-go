@@ -151,7 +151,7 @@ func (service *Service) EnableImageAssurance(body ImageAssuranceEnableRequest) (
 }
 
 /*
-flow-logs
+threat-intelligence
 */
 func (service *Service) EnableThreatIntelligence(body ThreatIntelligenceEnableRequest) (*http.Response, error) {
 	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathK8S, cloudaccounts.RESTfulPathK8SThreatIntelligence, cloudaccounts.RESTfulPathK8sEnable)
