@@ -24,7 +24,7 @@ type CloudAccountResponse struct {
 	RuntimeProtectionEnabled  bool      `json:"runtimeProtection"`
 	AdmissionControlEnabled   bool      `json:"admissionControl"`
 	ImageAssuranceEnabled     bool      `json:"vulnerabilityAssessment"`
-	ThreatIntelligenceEnabled bool      `json:"ThreatIntelligence"`
+	ThreatIntelligenceEnabled bool      `json:"Magellan"`
 }
 
 type CloudAccountUpdateNameRequest struct {
