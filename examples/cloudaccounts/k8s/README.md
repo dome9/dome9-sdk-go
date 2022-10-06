@@ -83,6 +83,16 @@ func main() {
 	}
 	fmt.Printf("Image Assurance Enabled\n")
 	
+	// Enable Threat Intelligence
+	_, err = srv.EnableThreatIntelligence(k8s.ThreatIntelligenceEnableRequest{
+		CloudAccountId: clusterId,
+		Enabled: true,
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Threat intelligence Enabled\n")
+
 	// Delete k8s cloud account
 	_, err = srv.Delete(clusterId)
 	if err != nil {

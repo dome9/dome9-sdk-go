@@ -49,6 +49,8 @@ const (
 	RESTfulPathK8SAdmissionControl = "admission-control"
 	//image-assurance
 	RESTfulPathK8SImageAssurance = "vulnerabilityAssessment"
+	//threat-intelligence
+	RESTfulPathK8SThreatIntelligence = "magellan-kubernetes-flowlogs"
 )
 
 // Alibaba service paths
