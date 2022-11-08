@@ -18,7 +18,7 @@ func main() {
 		RulesetId:       "<RuleSetID>",
 		NotificationIds: []string{"<NOTIFICATION_IDS>"},
 		AdmissionControllerAction:          "<Prevention/Detection>",
-        AdmissionControlUnScannedAction:      "<Prevention/Detection>",
+		AdmissionControlUnScannedAction:      "<Prevention/Detection>",
 	}
 
 	// CreateImageAssurance Policy
@@ -46,7 +46,8 @@ func main() {
 	fmt.Printf("Get Specific ImageAssurance Policy response type: %T\n Content: %+v", policy, policy)
 
 	// Update specific ImageAssurance Policy
-	createRequest.Action = "Detection"
+	createRequest.AdmissionControllerAction = "Detection"
+	createRequest.AdmissionControlUnScannedAction = "Detection"
 	updatedPolicy, _, err := srv.Update(&createRequest)
 	if err != nil {
 		panic(err)
