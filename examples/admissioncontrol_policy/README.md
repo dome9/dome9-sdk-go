@@ -9,7 +9,7 @@ import (
 
 func main() {
 	// Pass accessID, secretKey, rawUrl, or set environment variables
-	config, _ := dome9.NewConfig("Access-ID", "Secret-Key", "https://api.dome9.com/v2/")
+	config, _ := dome9.NewConfig("Access-ID", "Secret-Key", "https://api.dome9.com/v2/", nil)
 	srv := admission_policy.New(config)
 
 	admissionControlCreateRequest := admission_policy.AdmissionControlPolicyRequest{

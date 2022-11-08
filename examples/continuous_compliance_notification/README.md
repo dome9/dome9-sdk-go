@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Pass accessID, secretKey, rawUrl, or set environment variables
-	config, _ := dome9.NewConfig("", "", "")
+	config, _ := dome9.NewConfig("", "", "", nil)
 	srv := continuous_compliance_notification.New(config)
 	var req continuous_compliance_notification.ContinuousComplianceNotificationRequest
 

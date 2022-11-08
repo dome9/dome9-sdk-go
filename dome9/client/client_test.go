@@ -138,7 +138,7 @@ func TestNewClient(t *testing.T) {
 func setupMuxConfig() *dome9.Config {
 	mux = http.NewServeMux()
 	server = httptest.NewServer(mux)
-	config, err := dome9.NewConfig("", "", server.URL)
+	config, err := dome9.NewConfig("", "", server.URL, nil)
 	if err != nil {
 		panic(err)
 	}

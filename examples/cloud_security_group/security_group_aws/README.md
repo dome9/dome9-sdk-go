@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	config, _ := dome9.NewConfig("", "", "")
+	config, _ := dome9.NewConfig("", "", "", nil)
 	srv := securitygroupaws.New(config)
 
 	scope := securitygroupaws.Scope{

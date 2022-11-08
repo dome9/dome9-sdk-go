@@ -11,7 +11,7 @@ import (
 
 func main() {
 	// Pass accessID, secretKey, rawUrl, or set environment variables
-	config, _ := dome9.NewConfig("", "", "")
+	config, _ := dome9.NewConfig("", "", "", nil)
 	srv := k8s.New(config)
 	var createAccountReqBody k8s.CloudAccountRequest
 	

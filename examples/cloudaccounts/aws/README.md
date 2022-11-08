@@ -11,7 +11,7 @@ import (
 
 func main() {
 	// pass accessID, secretKey, rawUrl, or set environment variables
-	config, _ := dome9.NewConfig("", "", "")
+	config, _ := dome9.NewConfig("", "", "", nil)
 	srv := aws.New(config)
 	var req aws.CloudAccountRequest
 

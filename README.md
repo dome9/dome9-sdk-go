@@ -40,7 +40,7 @@ import (
 func main() {
 	accessID := "ACCESS ID"
 	secretKey := "SECRET KEY"
-	config, err := dome9.NewConfig(accessID, secretKey, "")
+	config, err := dome9.NewConfig(accessID, secretKey, "", nil)
 
 	if err != nil {
 		panic(err)
