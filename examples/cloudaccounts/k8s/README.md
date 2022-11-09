@@ -67,6 +67,7 @@ func main() {
 	_, err = srv.EnableAdmissionControl(k8s.AdmissionControlEnableRequest{
 		CloudAccountId: clusterId,
 		Enabled: true,
+		CreateDefaultPolicy: true,
 	})
 	if err != nil {
 		panic(err)
