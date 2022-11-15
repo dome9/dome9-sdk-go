@@ -13,15 +13,15 @@ func main() {
 	srv := imageassurance_policy.New(config)
 
 	request := imageassurance_policy.ImageAssurancePolicyRequest{
-		TargetId:        "<ENV ID or OU ID>",
-		TargetType:      "<Environment/OrganizationalUnit>",
-		RulesetId:       "<RuleSetID>",
-		NotificationIds: []string{"<NOTIFICATION_IDS>"},
-		AdmissionControllerAction:          "<Prevention/Detection>",
-		AdmissionControlUnScannedAction:      "<Prevention/Detection>",
+		TargetId:                            "<ENV ID or OU ID>",
+		TargetType:                          "<Environment/OrganizationalUnit>",
+		RulesetId:                           "<RuleSetID>",
+		NotificationIds:                     []string{"<NOTIFICATION_IDS>"},
+		AdmissionControllerAction:           "<Prevention/Detection>", // Optional
+		AdmissionControlUnScannedAction:     "<Prevention/Detection>", // Optional
 	}
 
-	// CreateImageAssurance Policy
+	// Create Image Assurance Policy
 	response, _, err := srv.Create(&request)
 	if err != nil {
 		panic(err)
@@ -54,7 +54,7 @@ func main() {
 	}
 	fmt.Printf("Update ImageAssurance Policy response type: %T\n Content: %+v", updatedPolicy, updatedPolicy)
 
-	// Delete AC Policy
+	// Delete ImageAssurance Policy
 	deleteResponse, err := srv.Delete(response.ID)
 	if err != nil {
 		panic(err)
