@@ -21,17 +21,17 @@ func New(c *dome9.Config) *Service {
 
 type ImageAssurancePolicyRequest struct {
 	TargetId                        string   `json:"targetId"`
-	TargetType                      string   `json:"targetType,omitempty"`
+	TargetType                      string   `json:"targetType"`
 	NotificationIds                 []string `json:"notificationIds"`
 	RulesetId                       int      `json:"rulesetId"`
-	AdmissionControllerAction       string   `json:"admissionControllerAction"`
-	AdmissionControlUnScannedAction string   `json:"admissionControlUnScannedAction"`
+	AdmissionControllerAction       string   `json:"admissionControllerAction,omitempty"`
+	AdmissionControlUnScannedAction string   `json:"admissionControlUnScannedAction,omitempty"`
 }
 
 type ImageAssurancePolicyResponse struct {
 	ID                              string   `json:"id"`
 	TargetId                        string   `json:"targetId"`
-	TargetType                      string   `json:"targetType,omitempty"`
+	TargetType                      string   `json:"targetType"`
 	NotificationIds                 []string `json:"notificationIds"`
 	RulesetId                       int      `json:"rulesetId"`
 	AdmissionControllerAction       string   `json:"admissionControllerAction"`
