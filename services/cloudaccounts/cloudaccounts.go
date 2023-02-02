@@ -66,7 +66,6 @@ const (
 	RESTfulServicePathOciTempData           = "Save-Temp-Data"
 	RESTfulServicePathOciName               = "Account-Name"
 	RESTfulServicePathOciOrganizationalUnit = "organizational-Unit"
-	RESTfulServicePathOciCredentials        = "Credentials"
 )
 
 type QueryParameters struct {

@@ -132,14 +132,3 @@ func (service *Service) UpdateOrganizationalID(id string, body CloudAccountUpdat
 
 	return v, resp, nil
 }
-
-func (service *Service) UpdateCredentials(id string, body CloudAccountCredentialsRequest) (*CloudAccountResponse, *http.Response, error) {
-	v := new(CloudAccountResponse)
-	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathOci, id, cloudaccounts.RESTfulServicePathOciCredentials)
-	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return v, resp, nil
-}
