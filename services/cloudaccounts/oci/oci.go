@@ -7,10 +7,19 @@ import (
 	"time"
 )
 
+type CloudAccountRequestTempData struct {
+	Name       string `json:"name"`
+	TenancyId  string `json:"tenancyId"`
+	HomeRegion string `json:"homeRegion"`
+	UserName   string `json:"userName,omitempty"`
+	GroupName  string `json:"groupName,omitempty"`
+	PolicyName string `json:"policyName,omitempty"`
+}
+
 type CloudAccountRequest struct {
-	Name                 string                         `json:"name,omitempty"`
-	Credentials          CloudAccountCredentialsRequest `json:"credentials,omitempty"`
-	OrganizationalUnitID string                         `json:"organizationalUnitId,omitempty"`
+	UserOcid             string `json:"userOcid"`
+	TenancyId            string `json:"tenancyId"`
+	OrganizationalUnitID string `json:"organizationalUnitId"`
 }
 
 type CloudAccountResponse struct {
@@ -73,6 +82,17 @@ func (service *Service) Get(id string) (*CloudAccountResponse, *http.Response, e
 func (service *Service) Create(body CloudAccountRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
 	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulPathOci, nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) CreateTempData(body CloudAccountRequestTempData) (*CloudAccountResponse, *http.Response, error) {
+	v := new(CloudAccountResponse)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathOci, cloudaccounts.RESTfulServicePathOciTempData)
+	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, body, v)
 	if err != nil {
 		return nil, nil, err
 	}

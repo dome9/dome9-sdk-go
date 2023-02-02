@@ -63,6 +63,7 @@ const (
 
 // Oci service paths
 const (
+	RESTfulServicePathOciTempData           = "Save-Temp-Data"
 	RESTfulServicePathOciName               = "Account-Name"
 	RESTfulServicePathOciOrganizationalUnit = "organizational-Unit"
 	RESTfulServicePathOciCredentials        = "Credentials"
