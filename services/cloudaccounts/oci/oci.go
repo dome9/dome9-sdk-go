@@ -111,17 +111,6 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 	return resp, nil
 }
 
-func (service *Service) UpdateName(id string, body CloudAccountUpdateNameRequest) (*CloudAccountResponse, *http.Response, error) {
-	v := new(CloudAccountResponse)
-	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathOci, id, cloudaccounts.RESTfulServicePathOciName)
-	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, v)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return v, resp, nil
-}
-
 func (service *Service) UpdateOrganizationalID(id string, body CloudAccountUpdateOrganizationalIDRequest) (*CloudAccountResponse, *http.Response, error) {
 	v := new(CloudAccountResponse)
 	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathOci, id, cloudaccounts.RESTfulServicePathOciOrganizationalUnit)
