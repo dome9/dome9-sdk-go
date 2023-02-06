@@ -6,7 +6,7 @@ const (
 	RESTfulPathGCP     = "GoogleCloudAccount"
 	RESTfulPathK8S     = "KubernetesAccount"
 	RESTfulPathAlibaba = "AlibabaCloudAccount"
-	RESTfulPathOci     = "Oci-Cloud-Account"
+	RESTfulPathOci     = "oci-cloud-account"
 )
 
 // AWS service paths
@@ -63,7 +63,7 @@ const (
 
 // Oci service paths
 const (
-	RESTfulServicePathOciTempData           = "Save-Temp-Data"
+	RESTfulServicePathOciTempData           = "save-temp-data"
 	RESTfulServicePathOciOrganizationalUnit = "organizational-Unit"
 )
 
