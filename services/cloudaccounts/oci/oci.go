@@ -11,9 +11,6 @@ type CloudAccountRequestTempData struct {
 	Name       string `json:"name"`
 	TenancyId  string `json:"tenancyId"`
 	HomeRegion string `json:"homeRegion"`
-	UserName   string `json:"userName,omitempty"`
-	GroupName  string `json:"groupName,omitempty"`
-	PolicyName string `json:"policyName,omitempty"`
 }
 
 type CloudAccountRequest struct {
