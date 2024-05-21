@@ -39,7 +39,7 @@ func main() {
 		ScanMode:                   "ScanMode", // can be "inAccount", inAccountHub, inAccountSub or "saas" 
 		IsTerraform:                true,
 		AgentlessAccountSettings: &awp_azure_onboarding.AgentlessAccountSettings{
-			DisabledRegions:              []string{"East US"},
+			DisabledRegions:              []string{"eastus"},
 			ScanMachineIntervalInHours:   4,
 			MaxConcurrenceScansPerRegion: 1,
 			SkipFunctionAppsScan:         false,
@@ -71,7 +71,7 @@ func main() {
 
 	// Define the new settings
 	newSettings := awp_azure_onboarding.AgentlessAccountSettings{
-		DisabledRegions:              []string{"East US", "West US"},
+		DisabledRegions:              []string{"eastus", "westus"},
 		ScanMachineIntervalInHours:   10,
 		MaxConcurrenceScansPerRegion: 6,
 		SkipFunctionAppsScan:         false,
@@ -79,7 +79,7 @@ func main() {
 	}
 
 	// Update AWP Azure Onboarding settings
-	updateResponse, err := srv.UpdateAWPSettings("azure", cloudAccountId, newSettings)
+	updateResponse, err := srv.UpdateAzureSettings("azure", cloudAccountId, newSettings)
 
 	if err != nil {
 		panic(err)
