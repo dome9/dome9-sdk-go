@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/url"
 	"time"
 )
 
@@ -14,11 +13,9 @@ const (
 	cloudAccountsPath             = "AzureCloudAccount/"
 )
 
-
 type CreateAWPOnboardingDataRequest struct {
 	CentralizedId              string                    `url:"centralizedId"`
 }
-
 
 type AgentlessAzureTerraformOnboardingDataResponse struct {
 	Region                                     string `json:"region"`
@@ -166,16 +163,9 @@ func (service *Service) DeleteAWPOnboarding(id string) (*http.Response, error) {
 
 func (service *Service) Get(id string, req CreateAWPOnboardingDataRequest) (*AgentlessAzureTerraformOnboardingDataResponse, *http.Response, error) {
 	v := new(AgentlessAzureTerraformOnboardingDataResponse)
-	basePath := fmt.Sprintf("%s/%s/onboarding", awpAzureGetOnboardingDataPath, id)
+	Path := fmt.Sprintf("%s/%s/onboarding", awpAzureGetOnboardingDataPath, id)
+	resp, err := service.Client.NewRequestDo("GET", Path, req, nil, v)
 
-	params := url.Values{}
-	if req.CentralizedId != "" {
-		params.Add("centralizedId", req.CentralizedId)
-	}
-
-	path := fmt.Sprintf("%s?%s", basePath, params.Encode())
-
-	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
