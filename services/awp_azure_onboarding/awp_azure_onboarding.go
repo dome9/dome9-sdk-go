@@ -164,12 +164,17 @@ func (service *Service) DeleteAWPOnboarding(id string) (*http.Response, error) {
 func (service *Service) Get(id string, req CreateAWPOnboardingDataRequest) (*AgentlessAzureTerraformOnboardingDataResponse, *http.Response, error) {
 	v := new(AgentlessAzureTerraformOnboardingDataResponse)
 	Path := fmt.Sprintf("%s/%s/onboarding", awpAzureGetOnboardingDataPath, id)
-	resp, err := service.Client.NewRequestDo("GET", Path, nil, req, v)
+
+	queryParams := make(map[string]string)
+    if req.CentralizedId != "" {
+        queryParams["centralizedId"] = req.CentralizedId
+    }
+    resp, err := service.Client.NewRequestDo("GET", path, queryParams, nil, v)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return v, resp, nil
+    return v, resp, nil
 }
 
 func (service *Service) GetCloudAccountId(externalAccountId string) (string, *http.Response, error) {
