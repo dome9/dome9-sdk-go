@@ -167,12 +167,12 @@ func (service *Service) Get(id string, req CreateAWPOnboardingDataRequest) (*Age
 	v := new(AgentlessAzureTerraformOnboardingDataResponse)
 	basePath := fmt.Sprintf("%s/%s/onboarding", awpAzureGetOnboardingDataPath, id)
 
-	queryParams, err := query.Values(req)
-	if err != nil {
-		return nil, nil, err
+	params := url.Values{}
+	if req.CentralizedId != "" {
+		params.Add("centralizedId", req.CentralizedId)
 	}
 
-	path := fmt.Sprintf("%s?%s", basePath, queryParams.Encode())
+	path := fmt.Sprintf("%s?%s", basePath, params.Encode())
 
 	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
 	if err != nil {
