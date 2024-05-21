@@ -163,7 +163,7 @@ func (service *Service) DeleteAWPOnboarding(id string) (*http.Response, error) {
 
 func (service *Service) Get(id string, req CreateAWPOnboardingDataRequest) (*AgentlessAzureTerraformOnboardingDataResponse, *http.Response, error) {
 	v := new(AgentlessAzureTerraformOnboardingDataResponse)
-	Path := fmt.Sprintf("%s/%s/onboarding", awpAzureGetOnboardingDataPath, id)
+	path := fmt.Sprintf("%s/%s/onboarding", awpAzureGetOnboardingDataPath, id)
 
 	queryParams := make(map[string]string)
     if req.CentralizedId != "" {
