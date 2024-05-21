@@ -10,7 +10,7 @@ import (
 const (
 	awpAzureGetOnboardingDataPath = "workload/agentless/azure/terraform"
 	azureOnboardingResourcePath   = "workload/agentless/azure/accounts"
-	cloudAccountsPath             = "cloudaccounts/"
+	cloudAccountsPath             = "AzureCloudAccount/"
 )
 
 type CreateAWPOnboardingDataRequest struct {

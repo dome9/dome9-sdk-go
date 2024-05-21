@@ -12,9 +12,17 @@ func main() {
 	config, _ := dome9.NewConfig("Access-ID", "Secret-Key", "https://api.dome9.com/v2/")
 	srv := awp_azure_onboarding.New(config)
 
+	// Get cloud account ID
+	cloudAccountId, _, err := srv.GetCloudAccountId("Azure subscription ID or Cloudguard Account ID")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Cloud Account ID: %s\n", cloudAccountId)
+	
 	// Define the request
 	awpAzureOnboardingDataRequest := awp_azure_onboarding.CreateAWPOnboardingDataRequest{
-		CentralizedId:     string // optional 
+		CentralizedId:     "string", // optional 
 	}
 
 	// Get awp azure onboarding data
@@ -25,13 +33,6 @@ func main() {
 
 	fmt.Printf("Get AWP Azure Onboarding Data response type: %T\n Content: %+v", appAzureOnboardingDataResponse, appAzureOnboardingDataResponse)
 
-	// Get cloud account ID
-	cloudAccountId, _, err := srv.GetCloudAccountId("Azure subscription ID or Cloudguard Account ID")
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("Cloud Account ID: %s\n", cloudAccountId)
 
 	// Define the request
 	awpAzureOnboardingRequest := awp_azure_onboarding.CreateAWPOnboardingRequest{
@@ -60,7 +61,7 @@ func main() {
 
 	fmt.Printf("Onboarding AWP Azure Account with for type: %T\n Content: %+v", awpAzureOnboardingResponse, awpAzureOnboardingResponse)
 
-	getAzureOnboardingDataResponse, _, err := srv.GetAzureOnboarding("azure", cloudAccountId)
+	getAwpOnboardingDataResponse, _, err := srv.GetAWPOnboarding("azure", cloudAccountId)
 
 	if err != nil {
 		panic(err)
