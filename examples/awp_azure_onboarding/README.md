@@ -53,7 +53,7 @@ func main() {
 		ShouldCreatePolicy: "true",
 	}
 
-	awpAzureOnboardingResponse, err := srv.CreateAzureOnboarding(cloudAccountId, awpAzureOnboardingRequest, options)
+	awpAzureOnboardingResponse, err := srv.CreateAWPOnboarding(cloudAccountId, awpAzureOnboardingRequest, options)
 
 	if err != nil {
 		panic(err)
