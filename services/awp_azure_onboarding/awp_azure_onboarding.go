@@ -13,9 +13,11 @@ const (
 	cloudAccountsPath             = "AzureCloudAccount/"
 )
 
+
 type CreateAWPOnboardingDataRequest struct {
-	CentralizedId              string                    `json:"centralizedId"`
+	CentralizedId              string                    `url:"centralizedId"`
 }
+
 
 type AgentlessAzureTerraformOnboardingDataResponse struct {
 	Region                                     string `json:"region"`
@@ -163,18 +165,21 @@ func (service *Service) DeleteAWPOnboarding(id string) (*http.Response, error) {
 
 func (service *Service) Get(id string, req CreateAWPOnboardingDataRequest) (*AgentlessAzureTerraformOnboardingDataResponse, *http.Response, error) {
 	v := new(AgentlessAzureTerraformOnboardingDataResponse)
-	path := fmt.Sprintf("%s/%s/onboarding", awpAzureGetOnboardingDataPath, id)
+	basePath := fmt.Sprintf("%s/%s/onboarding", awpAzureGetOnboardingDataPath, id)
 
-	queryParams := make(map[string]string)
-    if req.CentralizedId != "" {
-        queryParams["centralizedId"] = req.CentralizedId
-    }
-    resp, err := service.Client.NewRequestDo("GET", path, queryParams, nil, v)
+	queryParams, err := query.Values(req)
 	if err != nil {
 		return nil, nil, err
 	}
 
-    return v, resp, nil
+	path := fmt.Sprintf("%s?%s", basePath, queryParams.Encode())
+
+	resp, err := service.Client.NewRequestDo("GET", path, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
 }
 
 func (service *Service) GetCloudAccountId(externalAccountId string) (string, *http.Response, error) {
