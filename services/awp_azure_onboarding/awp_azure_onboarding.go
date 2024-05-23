@@ -11,6 +11,9 @@ const (
 	awpAzureGetOnboardingDataPath = "workload/agentless/azure/terraform"
 	azureOnboardingResourcePath   = "workload/agentless/azure/accounts"
 	cloudAccountsPath             = "AzureCloudAccount/"
+
+    ScanModeInAccountSub = "inAccountSub"
+    ScanModeInAccountHub = "inAccountHub"
 )
 
 type CreateAWPOnboardingDataRequest struct {
@@ -113,8 +116,16 @@ func (service *Service) CreateAWPOnboarding(id string, req CreateAWPOnboardingRe
 	maxRetries := 3
 	retryInterval := time.Second * 5
 
-	// Create the base path
-	basePath := fmt.Sprintf("%s/%s/enable", azureOnboardingResourcePath, id)
+	// Determine the base path based on ScanMode
+    var basePath string
+    switch req.ScanMode {
+    case ScanModeInAccountSub:
+        basePath = fmt.Sprintf("%s/%s/enableSubAccount", azureOnboardingResourcePath, id)
+    case ScanModeInAccountHub:
+        basePath = fmt.Sprintf("%s/%s/enableCentralizedAccount", azureOnboardingResourcePath, id)
+    default:
+        basePath = fmt.Sprintf("%s/%s/enable", azureOnboardingResourcePath, id)
+    }
 
 	// Initialize the response and error variables outside the loop
 	var resp *http.Response
