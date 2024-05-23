@@ -38,6 +38,7 @@ func main() {
 	awpAzureOnboardingRequest := awp_azure_onboarding.CreateAWPOnboardingRequest{
 		ScanMode:                   "ScanMode", // can be "inAccount", inAccountHub, inAccountSub or "saas" 
 		IsTerraform:                true,
+		CentralizedCloudAccountId:  "string", // relevant for inAccountSub mode
 		AgentlessAccountSettings: &awp_azure_onboarding.AgentlessAccountSettings{
 			DisabledRegions:              []string{"eastus"},
 			ScanMachineIntervalInHours:   4,

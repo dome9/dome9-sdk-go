@@ -84,6 +84,7 @@ type AgentlessAccountSettings struct {
 }
 
 type CreateAWPOnboardingRequest struct {
+    CentralizedCloudAccountId  string                    `json:"centralizedCloudAccountId"`
 	ScanMode                   string                    `json:"scanMode"`
 	IsTerraform                bool                      `json:"isTerraform"`
 	AgentlessAccountSettings   *AgentlessAccountSettings `json:"agentlessAccountSettings"`
