@@ -84,9 +84,16 @@ type AgentlessAccountSettings struct {
 
 type CreateAWPOnboardingRequest struct {
 	CrossAccountRoleName       string                    `json:"crossAccountRoleName"`
+	CrossAccountRoleExternalId string                    `json:"crossAccountRoleExternalId"`
+	IsTerraform                bool                      `json:"isTerraform"`
+	AgentlessAccountSettings   *AgentlessAccountSettings `json:"agentlessAccountSettings"`
+	ScanMode                   string                    `json:"scanMode"`
+}
+
+type CreateAWPOnboardingCentralizedRequest struct {
+	CrossAccountRoleName       string                    `json:"crossAccountRoleName"`
 	CentralizedCloudAccountId  string                    `json:"centralizedCloudAccountId"`
 	CrossAccountRoleExternalId string                    `json:"crossAccountRoleExternalId"`
-	ScanMode                   string                    `json:"scanMode"`
 	IsTerraform                bool                      `json:"isTerraform"`
 	AgentlessAccountSettings   *AgentlessAccountSettings `json:"agentlessAccountSettings"`
 }
@@ -118,40 +125,25 @@ type DeleteOptions struct {
 }
 
 func (service *Service) CreateAWPOnboarding(id string, req CreateAWPOnboardingRequest, queryParams CreateOptions) (*http.Response, error) {
+	// Create the base path
+	basePath := fmt.Sprintf("%s/%s/enable", awsOnboardingResourcePath, id)
+	return service.DoCreateAWPOnboarding(queryParams, req, basePath)
+}
+
+func (service *Service) CreateAWPOnboardingCentralized(id string, req CreateAWPOnboardingCentralizedRequest, scanMode string, queryParams CreateOptions) (*http.Response, error) {
+	// Create the base path
+	pathPostfix := "enableSubAccount"
+	if scanMode == "inAccountHub" {
+		pathPostfix = "enableCentralizedAccount"
+	}
+	basePath := fmt.Sprintf("%s/%s/%s", awsOnboardingResourcePath, id, pathPostfix)
+	return service.DoCreateAWPOnboarding(queryParams, req, basePath)
+}
+
+func (service *Service) DoCreateAWPOnboarding(queryParams CreateOptions, body interface{}, basePath string) (*http.Response, error) {
 	// Define the maximum number of retries and the interval between retries
 	maxRetries := 3
 	retryInterval := time.Second * 5
-	var body interface{}
-
-	if req.ScanMode == "inAccountSub" {
-		// omit ScanMode from the request body
-		body = struct {
-			CrossAccountRoleName       string                    `json:"crossAccountRoleName"`
-			CentralizedCloudAccountId  string                    `json:"centralizedCloudAccountId"`
-			CrossAccountRoleExternalId string                    `json:"crossAccountRoleExternalId"`
-			IsTerraform                bool                      `json:"isTerraform"`
-			AgentlessAccountSettings   *AgentlessAccountSettings `json:"agentlessAccountSettings"`
-		}{
-			CrossAccountRoleName:       req.CrossAccountRoleName,
-			CentralizedCloudAccountId:  req.CentralizedCloudAccountId,
-			CrossAccountRoleExternalId: req.CrossAccountRoleExternalId,
-			IsTerraform:                req.IsTerraform,
-			AgentlessAccountSettings:   req.AgentlessAccountSettings,
-		}
-	} else {
-		body = req
-	}
-
-	pathPostfix := "enable"
-
-	if req.ScanMode == "inAccountHub" {
-		pathPostfix = "enableCentralizedAccount"
-	} else if req.ScanMode == "inAccountSub" {
-		pathPostfix = "enableSubAccount"
-	}
-
-	// Create the base path
-	basePath := fmt.Sprintf("%s/%s/%s", awsOnboardingResourcePath, id, pathPostfix)
 
 	// Initialize the response and error variables outside the loop
 	var resp *http.Response
