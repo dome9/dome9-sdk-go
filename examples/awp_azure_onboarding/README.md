@@ -98,7 +98,7 @@ func main() {
 	fmt.Printf("Get updated AWP Onboarding account configuration response type: %T\n Content: %+v", updatedAwpOnboardingDataResponse, *updatedAwpOnboardingDataResponse.AgentlessAccountSettings)
 
 	
-	// Delete AWP AWS Onboarding
+	// Delete AWP Azure Onboarding
 	deleteResponse, err := srv.DeleteAWPOnboarding(cloudAccountId)
 
 	if err != nil {
