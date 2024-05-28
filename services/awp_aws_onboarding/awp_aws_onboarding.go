@@ -124,23 +124,15 @@ type DeleteOptions struct {
 	ForceDelete string `url:"forceDelete"`
 }
 
-func (service *Service) CreateAWPOnboarding(id string, req CreateAWPOnboardingRequest, queryParams CreateOptions) (*http.Response, error) {
+func (service *Service) CreateAWPOnboarding(id string, body interface{}, scanMode string, queryParams CreateOptions) (*http.Response, error) {
 	// Create the base path
-	basePath := fmt.Sprintf("%s/%s/enable", awsOnboardingResourcePath, id)
-	return service.DoCreateAWPOnboarding(queryParams, req, basePath)
-}
-
-func (service *Service) CreateAWPOnboardingCentralized(id string, req CreateAWPOnboardingCentralizedRequest, scanMode string, queryParams CreateOptions) (*http.Response, error) {
-	// Create the base path
-	pathPostfix := "enableSubAccount"
+	pathPostfix := "enable"
 	if scanMode == "inAccountHub" {
 		pathPostfix = "enableCentralizedAccount"
+	} else if scanMode == "inAccountSub" {
+		pathPostfix = "enableSubAccount"
 	}
 	basePath := fmt.Sprintf("%s/%s/%s", awsOnboardingResourcePath, id, pathPostfix)
-	return service.DoCreateAWPOnboarding(queryParams, req, basePath)
-}
-
-func (service *Service) DoCreateAWPOnboarding(queryParams CreateOptions, body interface{}, basePath string) (*http.Response, error) {
 	// Define the maximum number of retries and the interval between retries
 	maxRetries := 3
 	retryInterval := time.Second * 5
