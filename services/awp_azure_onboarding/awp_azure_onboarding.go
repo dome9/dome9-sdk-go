@@ -23,8 +23,8 @@ type CreateAWPOnboardingDataRequest struct {
 type AgentlessAzureTerraformOnboardingDataResponse struct {
 	Region                                     string `json:"region"`
 	AppClientId                                string `json:"appClientId"`
-	AwpCloudAccountId                          string `json:"awpCloudAccountId"`
-	AwpCentralizedCloudAccountId               string `json:"awpCentralizedCloudAccountId"`
+	CloudAccountId                          string `json:"CloudAccountId"`
+	CentralizedCloudAccountId               string `json:"CentralizedCloudAccountId"`
 }
 
 type CloudAccountResponse struct {
