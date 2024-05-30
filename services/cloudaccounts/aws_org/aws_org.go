@@ -2,6 +2,7 @@ package aws_org
 
 import (
 	_ "encoding/json"
+	"time"
 )
 
 type CloudCredentialsType string
@@ -41,10 +42,13 @@ type UpdateConfigurationRequest struct {
 }
 
 type MappingStrategyType string
+type OnboardingMode string
 
 const (
-	Flat  MappingStrategyType = "Flat"
-	Clone MappingStrategyType = "Clone"
+	Flat   MappingStrategyType = "Flat"
+	Clone  MappingStrategyType = "Clone"
+	Read   OnboardingMode      = "Read"
+	Manage OnboardingMode      = "Manage"
 )
 
 type PostureManagementConfiguration struct {
@@ -52,13 +56,50 @@ type PostureManagementConfiguration struct {
 	OnboardingMode OnboardingMode `json:"onboardingMode"`
 }
 
-type OnboardingMode string
-
-const (
-	Read   OnboardingMode = "Read"
-	Manage OnboardingMode = "Manage"
-)
-
 type UpdateStackSetArnRequest struct {
 	StackSetArn string `json:"stackSetArn" validate:"required,stackSetArn"`
+}
+
+type OrganizationOnboardingConfigurationBase struct {
+	OrganizationRootOuId string                         `json:"organizationRootOuId,omitempty"`
+	MappingStrategy      MappingStrategyType            `json:"mappingStrategy"`
+	PostureManagement    PostureManagementConfiguration `json:"postureManagement"`
+}
+
+type AwsOrganizationOnboardingConfiguration struct {
+	OrganizationOnboardingConfigurationBase
+}
+
+type OnboardingCftBase struct {
+	ExternalId string `json:"externalId"`
+	Content    string `json:"content"`
+}
+
+type ManagementCftConfiguration struct {
+	OnboardingCftBase
+	ManagementCftUrl      string `json:"managementCftUrl"`
+	IsManagementOnboarded bool   `json:"isManagementOnboarded"`
+}
+
+type OnboardingMemberCft struct {
+	OnboardingCftBase
+	OnboardingCftUrl string `json:"onboardingCftUrl"`
+}
+
+type OrganizationManagementViewModel struct {
+	Id                            string                                 `json:"id"`
+	AccountId                     int64                                  `json:"accountId"`
+	ExternalOrganizationId        string                                 `json:"externalOrganizationId"`
+	ExternalManagementAccountId   string                                 `json:"externalManagementAccountId"`
+	ManagementAccountStackId      string                                 `json:"managementAccountStackId"`
+	ManagementAccountStackRegion  string                                 `json:"managementAccountStackRegion"`
+	OnboardingConfiguration       AwsOrganizationOnboardingConfiguration `json:"onboardingConfiguration"`
+	UserId                        int                                    `json:"userId"`
+	EnableStackModify             bool                                   `json:"enableStackModify"`
+	StackSetArn                   string                                 `json:"stackSetArn"`
+	OrganizationName              string                                 `json:"organizationName"`
+	UpdateTime                    time.Time                              `json:"updateTime"`
+	CreationTime                  time.Time                              `json:"creationTime"`
+	StackSetRegions               map[string]struct{}                    `json:"stackSetRegions"`
+	StackSetOrganizationalUnitIds map[string]struct{}                    `json:"stackSetOrganizationalUnitIds"`
 }
