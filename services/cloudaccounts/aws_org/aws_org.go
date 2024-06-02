@@ -2,6 +2,9 @@ package aws_org
 
 import (
 	_ "encoding/json"
+	"fmt"
+	"github.com/dome9/dome9-sdk-go/services/cloudaccounts"
+	"net/http"
 	"time"
 )
 
@@ -102,4 +105,111 @@ type OrganizationManagementViewModel struct {
 	CreationTime                  time.Time                              `json:"creationTime"`
 	StackSetRegions               map[string]struct{}                    `json:"stackSetRegions"`
 	StackSetOrganizationalUnitIds map[string]struct{}                    `json:"stackSetOrganizationalUnitIds"`
+}
+
+type OnboardingConfigurationOptions struct {
+	AwsAccountId string `json:"awsAccountId"`
+}
+
+func (service *Service) Create(body OnboardingRequest) (*OrganizationManagementViewModel, *http.Response, error) {
+	v := new(OrganizationManagementViewModel)
+	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulServicePathAwsOrgMgmt, nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) UpdateStackSetArn(id string, body UpdateStackSetArnRequest) (*http.Response, error) {
+	if id == "" {
+		return nil, fmt.Errorf("id parameter must be passed")
+	}
+
+	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmt, id, cloudaccounts.RESTfulServicePathAwsOrgMgmtStacksetArn)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (service *Service) UpdateConfiguration(id string, body UpdateConfigurationRequest) (*http.Response, error) {
+	if id == "" {
+		return nil, fmt.Errorf("id parameter must be passed")
+	}
+
+	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmt, id, cloudaccounts.RESTfulServicePathAwsOrgMgmtConfiguration)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (service *Service) Delete(id string) (*http.Response, error) {
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmt, id)
+	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (service *Service) Get(id string) (*OrganizationManagementViewModel, *http.Response, error) {
+	if id == "" {
+		return nil, nil, fmt.Errorf("id parameter must be passed")
+	}
+
+	v := new(OrganizationManagementViewModel)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmt, id)
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GetAll() (*[]OrganizationManagementViewModel, *http.Response, error) {
+	v := new([]OrganizationManagementViewModel)
+	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulServicePathAwsOrgMgmt, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GetOnboardingConfiguration(awsAccountId string) (*ManagementCftConfiguration, *http.Response, error) {
+	if awsAccountId == "" {
+		return nil, nil, fmt.Errorf("awsAccountId parameter must be passed")
+	}
+
+	v := new(ManagementCftConfiguration)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmt, cloudaccounts.RESTfulServicePathAwsOrgMgmtOnboardingMgmtStack)
+	onboardingConfigurationOptions := OnboardingConfigurationOptions{
+		AwsAccountId: awsAccountId,
+	}
+
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, onboardingConfigurationOptions, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GetMemberAccountConfiguration() (*OnboardingMemberCft, *http.Response, error) {
+	v := new(OnboardingMemberCft)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmt, cloudaccounts.RESTfulServicePathAwsOrgMgmtOnboardingMemberAccountStack)
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
 }
