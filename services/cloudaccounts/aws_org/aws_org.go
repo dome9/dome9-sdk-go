@@ -190,7 +190,7 @@ func (service *Service) GetOnboardingConfiguration(awsAccountId string) (*Manage
 	}
 
 	v := new(ManagementCftConfiguration)
-	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmt, cloudaccounts.RESTfulServicePathAwsOrgMgmtOnboardingMgmtStack)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmtOnboarding, cloudaccounts.RESTfulServicePathAwsOrgMgmtOnboardingMgmtStack)
 	onboardingConfigurationOptions := OnboardingConfigurationOptions{
 		AwsAccountId: awsAccountId,
 	}
@@ -205,7 +205,7 @@ func (service *Service) GetOnboardingConfiguration(awsAccountId string) (*Manage
 
 func (service *Service) GetMemberAccountConfiguration() (*OnboardingMemberCft, *http.Response, error) {
 	v := new(OnboardingMemberCft)
-	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmt, cloudaccounts.RESTfulServicePathAwsOrgMgmtOnboardingMemberAccountStack)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAwsOrgMgmtOnboarding, cloudaccounts.RESTfulServicePathAwsOrgMgmtOnboardingMemberAccountStack)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
