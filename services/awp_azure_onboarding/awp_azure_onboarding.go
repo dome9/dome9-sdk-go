@@ -87,6 +87,7 @@ type CreateAWPAzureOnboardingRequest struct {
     CentralizedCloudAccountId  string                         `json:"centralizedCloudAccountId"`
 	ScanMode                   string                         `json:"scanMode"`
 	IsTerraform                bool                           `json:"isTerraform"`
+	ManagementGroupId          string                         `json:"managementGroupId"`
 	AgentlessAccountSettings   *AgentlessAzureAccountSettings `json:"agentlessAccountSettings"`
 }
 
