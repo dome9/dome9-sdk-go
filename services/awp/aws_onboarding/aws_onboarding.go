@@ -36,6 +36,7 @@ func (service *Service) CreateAWPOnboarding(id string, req CreateAWPOnboardingRe
 	pathPostfix := "enable"
 	if req.ScanMode == awp_onboarding.ScanModeInAccountSub {
 		pathPostfix = "enableSubAccount"
+		req.ScanMode = ""
 	} else if req.ScanMode == awp_onboarding.ScanModeInAccountHub {
 		pathPostfix = "enableCentralizedAccount"
 	}
