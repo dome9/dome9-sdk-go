@@ -15,7 +15,7 @@ type CreateAWPOnboardingRequestAzure struct {
 	ScanMode                   string                         `json:"scanMode"`
 	IsTerraform                bool                           `json:"isTerraform"`
 	ManagementGroupId          string                         `json:"managementGroupId"`
-	AgentlessAccountSettings   *awp_onboarding.AgentlessAzureAccountSettings `json:"agentlessAccountSettings"`
+	AgentlessAccountSettings   *awp_onboarding.AgentlessAccountSettings `json:"agentlessAccountSettings"`
 }
 
 type AgentlessTerraformOnboardingDataResponseAzure struct {
@@ -31,9 +31,9 @@ type GetAWPOnboardingDataRequestAzure struct {
 
 func (service *Service) CreateAWPOnboarding(id string, req CreateAWPOnboardingRequestAzure, queryParams awp_onboarding.CreateOptions) (*http.Response, error) {
 	pathPostfix := "enable"
-	if req.scanMode == awp_onboarding.ScanModeInAccountSub {
+	if req.ScanMode == awp_onboarding.ScanModeInAccountSub {
 		pathPostfix = "enableSubAccount"
-	} else if req.scanMode == awp_onboarding.ScanModeInAccountHub {
+	} else if req.ScanMode == awp_onboarding.ScanModeInAccountHub {
 		pathPostfix = "enableCentralizedAccount"
 	}
 
@@ -45,8 +45,8 @@ func (service *Service) GetAWPOnboarding(id string) (*awp_onboarding.GetAWPOnboa
 	return awp_onboarding.GetAWPOnboarding(service.Client, "azure", id)
 }
 
-func (service *Service) DeleteAWPOnboarding(id string, queryParams awp_onboarding.DeleteOptions) (*http.Response, error) {
-	return awp_onboarding.DeleteAWPOnboarding(service.Client, "azure", id, queryParams)
+func (service *Service) DeleteAWPOnboarding(id string) (*http.Response, error) {
+	return awp_onboarding.DeleteAWPOnboarding(service.Client, "azure", id, awp_onboarding.DeleteOptions{})
 }
 
 func (service *Service) UpdateAWPSettings(id string, req awp_onboarding.AgentlessAccountSettings) (*http.Response, error) {
