@@ -21,7 +21,7 @@ func main() {
 	}
 
 	// Get awp azure onboarding data
-	appAzureOnboardingDataResponse, _, err := srv.Get(cloudAccountId, awpAzureOnboardingDataRequest)
+	appAzureOnboardingDataResponse, _, err := srv.GetOnboardingData(cloudAccountId, awpAzureOnboardingDataRequest)
 	if err != nil {
 		panic(err)
 	}
