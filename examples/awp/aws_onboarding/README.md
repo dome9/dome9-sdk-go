@@ -4,7 +4,9 @@ package main
 import (
 	"fmt"
 	"github.com/dome9/dome9-sdk-go/dome9"
-	"github.com/dome9/dome9-sdk-go/services/awp_aws_onboarding"
+	"github.com/dome9/dome9-sdk-go/services/awp"
+	"github.com/dome9/dome9-sdk-go/services/awp/aws_onboarding"
+	"github.com/dome9/dome9-sdk-go/services/cloudaccounts"
 )
 
 func main() {
@@ -13,7 +15,7 @@ func main() {
 	srv := awp_aws_onboarding.New(config)
 
 	// Get awp aws onboarding data
-	appAwsOnboardingDataResponse, _, err := srv.Get()
+	appAwsOnboardingDataResponse, _, err := srv.GetOnboardingData()
 	if err != nil {
 		panic(err)
 	}
@@ -21,19 +23,22 @@ func main() {
 	fmt.Printf("Get AWP AWS Onboarding Data response type: %T\n Content: %+v", appAwsOnboardingDataResponse, appAwsOnboardingDataResponse)
 
 	// Get cloud account ID
-	cloudAccountId, _, err := srv.GetCloudAccountId("AWS External ID or Cloudguard Account ID")
+	getCloudAccountQueryParams := cloudaccounts.QueryParameters{ID: "AWS External ID or Cloudguard Account ID"}
+	cloudAccountresp, _, err := d9Client.cloudaccountAWS.Get(&getCloudAccountQueryParams)
 	if err != nil {
-		panic(err)
+		return err
 	}
+	cloudAccountId := cloudAccountresp.ID
 
 	fmt.Printf("Cloud Account ID: %s\n", cloudAccountId)
 
 	// Define the request
-	awpAwsOnboardingRequest := awp_aws_onboarding.CreateAWPOnboardingRequest{
+	awpAwsOnboardingRequest := awp_aws_onboarding.CreateAWPOnboardingRequestAws{
 		CrossAccountRoleName:       "Cross-Account-Role-Name",
 		CrossAccountRoleExternalId: "Cross-Account-Role-External-Id",
-		ScanMode:                   "ScanMode", // can be "inAccount" or "saas"
+		ScanMode:                   "ScanMode", // can be "inAccount", "saas", inAccountHub, inAccountSub
 		IsTerraform:                true,
+		// following settings available for inAccount and saas scan modes
 		AgentlessAccountSettings: &awp_aws_onboarding.AgentlessAccountSettings{
 			DisabledRegions:              []string{"eu-west-3"},
 			ScanMachineIntervalInHours:   4,
@@ -45,7 +50,7 @@ func main() {
 
 	// Create AWP AWS Onboarding
 
-	options := awp_aws_onboarding.CreateOptions{
+	options := awp_onboarding.CreateOptions{
 		ShouldCreatePolicy: "true",
 	}
 
@@ -75,7 +80,7 @@ func main() {
 	}
 
 	// Update AWP AWS Onboarding settings
-	updateResponse, err := srv.UpdateAWPSettings("aws", cloudAccountId, newSettings)
+	updateResponse, err := srv.UpdateAWPSettings(cloudAccountId, newSettings)
 
 	if err != nil {
 		panic(err)
@@ -84,7 +89,7 @@ func main() {
 	fmt.Printf("Update AWP AWS Onboarding settings response type: %T\n Content: %+v", updateResponse, updateResponse)
 
 	// Get the updated AWP Onboarding data
-	updatedAwpOnboardingDataResponse, _, err := srv.GetAWPOnboarding("aws", cloudAccountId)
+	updatedAwpOnboardingDataResponse, _, err := srv.GetAWPOnboarding(cloudAccountId)
 
 	if err != nil {
 		panic(err)
@@ -93,7 +98,7 @@ func main() {
 	fmt.Printf("Get updated AWP Onboarding account configuration response type: %T\n Content: %+v", updatedAwpOnboardingDataResponse, *updatedAwpOnboardingDataResponse.AgentlessAccountSettings)
 
 	// Define the delete options
-	deleteOptions := awp_aws_onboarding.DeleteOptions{
+	deleteOptions := awp_onboarding.DeleteOptions{
 		ForceDelete: "true",
 	}
 
