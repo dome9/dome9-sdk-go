@@ -37,8 +37,8 @@ func main() {
 		ManagementGroupId:          "string", // relevant for inAccountHub mode
 		AgentlessAccountSettings: &awp_onboarding.AgentlessAccountSettings{
 			DisabledRegions:              []string{"eastus"},
-			ScanMachineIntervalInHours:   4,
-			MaxConcurrenceScansPerRegion: 1,
+			ScanMachineIntervalInHours:   26,
+			MaxConcurrenceScansPerRegion: 20,
 			SkipFunctionAppsScan:         false,
 			CustomTags:                   map[string]string{"test": "testValue"},
 		},
