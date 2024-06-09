@@ -1,10 +1,11 @@
 package azure_org
 
 import (
+	"fmt"
+	"github.com/dome9/dome9-sdk-go/services/cloudaccounts"
 	"github.com/dome9/dome9-sdk-go/services/cloudaccounts/aws_org"
+	"net/http"
 )
-
-// Define the necessary types
 
 type CloudVendor string
 
@@ -58,6 +59,10 @@ type PostureManagement struct {
 	OnboardingMode aws_org.OnboardingMode `json:"onboardingMode"`
 }
 
+type OnboardingUpdateRequest struct {
+	OrganizationName string `json:"organizationName"`
+}
+
 type OnboardingRequest struct {
 	WorkflowId              string      `json:"workflowId,omitempty"`
 	TenantId                string      `json:"tenantId" validate:"required"`
@@ -92,4 +97,87 @@ type AzureOrganizationOnboardingConfiguration struct {
 	ServerlessConfiguration *ServerlessConfiguration `json:"serverlessConfiguration,omitempty"`
 	CdrConfiguration        *CdrConfiguration        `json:"cdrConfiguration,omitempty"`
 	IsAutoOnboarding        bool                     `json:"isAutoOnboarding"`
+}
+
+type AzureSimplifiedOnboardingExecCmdRequest struct {
+	WorkflowId                  string      `json:"workflowId"`
+	SubscriptionId              string      `json:"subscriptionId,omitempty"`
+	ManagementGroupIdOrTenantId string      `json:"managementGroupIdOrTenantId,omitempty"`
+	UseCloudGuardManagedApp     bool        `json:"useCloudGuardManagedApp" validate:"required"`
+	ValidatePermission          bool        `json:"validatePermission"`
+	AppId                       string      `json:"appId,omitempty"`
+	AppName                     string      `json:"appName,omitempty"`
+	AccountType                 CloudVendor `json:"accountType" validate:"required,oneof=azure azuregov azurechina"`
+	ActiveBlades                Blades      `json:"activeBlades" validate:"required"`
+}
+
+func (service *Service) Create(body OnboardingRequest) (*OrganizationManagementViewModel, *http.Response, error) {
+	v := new(OrganizationManagementViewModel)
+	resp, err := service.Client.NewRequestDo("POST", cloudaccounts.RESTfulServicePathAzureOrgMgmt, nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) UpdateOrganizationManagementAsync(id string, body OnboardingUpdateRequest) (*http.Response, error) {
+	if id == "" {
+		return nil, fmt.Errorf("id parameter must be passed")
+	}
+
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAzureOrgMgmt, id)
+	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (service *Service) Delete(id string) (*http.Response, error) {
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAzureOrgMgmt, id)
+	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (service *Service) Get(id string) (*OrganizationManagementViewModel, *http.Response, error) {
+	if id == "" {
+		return nil, nil, fmt.Errorf("id parameter must be passed")
+	}
+
+	v := new(OrganizationManagementViewModel)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAzureOrgMgmt, id)
+	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GetAll() (*[]OrganizationManagementViewModel, *http.Response, error) {
+	v := new([]OrganizationManagementViewModel)
+	resp, err := service.Client.NewRequestDo("GET", cloudaccounts.RESTfulServicePathAzureOrgMgmt, nil, nil, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
+}
+
+func (service *Service) GenerateOnboardingExecutionCommand(body AzureSimplifiedOnboardingExecCmdRequest) (*string, *http.Response, error) {
+	v := new(string)
+	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulPathAzure, cloudaccounts.RESTfulServicePathAzureOnboardingExecutionCommand)
+
+	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, body, v)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return v, resp, nil
 }
