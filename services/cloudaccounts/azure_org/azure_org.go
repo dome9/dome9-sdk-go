@@ -87,6 +87,7 @@ type OrganizationManagementViewModel struct {
 }
 
 type AzureOrganizationOnboardingConfiguration struct {
+	aws_org.OrganizationOnboardingConfigurationBase
 	AwpConfiguration        *AwpConfiguration        `json:"awpConfiguration,omitempty"`
 	ServerlessConfiguration *ServerlessConfiguration `json:"serverlessConfiguration,omitempty"`
 	CdrConfiguration        *CdrConfiguration        `json:"cdrConfiguration,omitempty"`
