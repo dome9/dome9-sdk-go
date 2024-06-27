@@ -111,7 +111,7 @@ func (service *Service) GetByType(integrationType IntegrationType) (*Integration
 	}
 
 	v := new(IntegrationViewModel)
-	relativeURL := fmt.Sprintf("%s/%s", RESTfulServicePathIntegration, integrationType)
+	relativeURL := fmt.Sprintf("%s?type=%s", RESTfulServicePathIntegration, integrationType)
 	resp, err := service.Client.NewRequestDo("GET", relativeURL, nil, nil, v)
 	if err != nil {
 		return nil, nil, err
@@ -125,8 +125,7 @@ func (service *Service) Update(body IntegrationUpdateRequestModel) (*http.Respon
 		return nil, fmt.Errorf("id parameter must be passed")
 	}
 
-	relativeURL := fmt.Sprintf("%s/%s", RESTfulServicePathIntegration, id)
-	resp, err := service.Client.NewRequestDo("PUT", relativeURL, nil, body, nil)
+	resp, err := service.Client.NewRequestDo("PUT", RESTfulServicePathIntegration, nil, body, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +134,7 @@ func (service *Service) Update(body IntegrationUpdateRequestModel) (*http.Respon
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
-	relativeURL := fmt.Sprintf("%s/%s", cloudaccounts.RESTfulServicePathAzureOrgMgmt, id)
+	relativeURL := fmt.Sprintf("%s/%s", RESTfulServicePathIntegration, id)
 	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
 	if err != nil {
 		return nil, err
