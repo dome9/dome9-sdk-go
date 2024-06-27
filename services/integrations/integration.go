@@ -58,7 +58,7 @@ func (m IntegrationUpdateRequestModel) String() string {
 // IntegrationViewModel struct
 type IntegrationViewModel struct {
 	Id            string          `json:"id" validate:"required"`
-	Name          string          `json:"name" validate:"required,max=100"` // Assuming 100 as the length limit for example
+	Name          string          `json:"name" validate:"required,max=50"` // length limit
 	Type          IntegrationType `json:"type" validate:"required"`
 	CreatedAt     time.Time       `json:"createdAt"`
 	Configuration json.RawMessage `json:"configuration" validate:"required"`
@@ -120,17 +120,18 @@ func (service *Service) GetByType(integrationType IntegrationType) (*Integration
 	return v, resp, nil
 }
 
-func (service *Service) Update(body IntegrationUpdateRequestModel) (*http.Response, error) {
+func (service *Service) Update(body IntegrationUpdateRequestModel) (*IntegrationViewModel, *http.Response, error) {
 	if body.Id == "" {
-		return nil, fmt.Errorf("id parameter must be passed")
+		return nil, nil, fmt.Errorf("id parameter must be passed")
 	}
 
-	resp, err := service.Client.NewRequestDo("PUT", RESTfulServicePathIntegration, nil, body, nil)
+	v := new(IntegrationViewModel)
+	resp, err := service.Client.NewRequestDo("PUT", RESTfulServicePathIntegration, nil, body, v)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return resp, nil
+	return v, resp, nil
 }
 
 func (service *Service) Delete(id string) (*http.Response, error) {
