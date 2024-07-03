@@ -50,7 +50,7 @@ type ReportNotificationIntegrationSettings struct {
 // SingleNotificationIntegrationSettings struct
 type SingleNotificationIntegrationSettings struct {
 	BaseNotificationIntegrationSettings
-	Payload *string `json:"payload"`
+	Payload string `json:"payload"`
 }
 
 // ScheduledNotificationIntegrationSettings struct
@@ -61,9 +61,9 @@ type ScheduledNotificationIntegrationSettings struct {
 
 // BaseNotificationIntegrationSettings struct
 type BaseNotificationIntegrationSettings struct {
-	IntegrationId string                        `json:"integrationId" validate:"required"`
-	OutputType    *NotificationOutputType       `json:"outputType"`
-	Filter        *ComplianceNotificationFilter `json:"filter"`
+	IntegrationId string                       `json:"integrationId" validate:"required"`
+	OutputType    int                          `json:"outputType"`
+	Filter        ComplianceNotificationFilter `json:"filter"`
 }
 
 // NotificationTriggerType enum
@@ -94,8 +94,14 @@ type BaseNotificationViewModel struct {
 // ResponseNotificationViewModel struct
 type ResponseNotificationViewModel struct {
 	BaseNotificationViewModel
-	Id        string    `json:"id" validate:"required"`
-	CreatedAt time.Time `json:"createdAt" validate:"required"`
+	Id                   string                               `json:"id" validate:"required"`
+	CreatedAt            time.Time                            `json:"createdAt" validate:"required"`
+	Name                 string                               `json:"name" validate:"required"`
+	Description          string                               `json:"description"`
+	AlertsConsole        bool                                 `json:"alertsConsole" default:"true"`
+	SendOnEachOccurrence bool                                 `json:"sendOnEachOccurrence"`
+	Origin               string                               `json:"origin" validate:"required"`
+	IntegrationSettings  NotificationIntegrationSettingsModel `json:"integrationSettingsModel" validate:"required"`
 }
 
 // Request models
