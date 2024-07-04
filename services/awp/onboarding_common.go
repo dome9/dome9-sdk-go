@@ -4,13 +4,25 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
 	"github.com/dome9/dome9-sdk-go/dome9/client"
 )
 
 const (
+	ProviderAWS   = "aws"
+	ProviderAzure = "azure"
+)
+
+const (
 	OnboardingResourcePath = "workload/agentless/%s/accounts/%s"
-	ScanModeInAccountSub   = "inAccountSub"
-    ScanModeInAccountHub   = "inAccountHub"
+	EnablePostfix          = "enable"
+	EnableSubPostfix       = "enableSubAccount"
+	EnableHubPostfix       = "enableCentralizedAccount"
+)
+
+const (
+	ScanModeInAccountSub = "inAccountSub"
+	ScanModeInAccountHub = "inAccountHub"
 )
 
 type CreateOptions struct {
