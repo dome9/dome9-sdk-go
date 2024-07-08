@@ -10,7 +10,7 @@ const (
 	RESTfulServicePathNotification = "notification"
 )
 
-// AssessmentFindingOrigin enum
+// Constants
 type AssessmentFindingOrigin int
 
 const (
@@ -35,38 +35,6 @@ const (
 	Incident                    = 11
 )
 
-// NotificationIntegrationSettingsModel struct
-type NotificationIntegrationSettingsModel struct {
-	ReportsIntegrationSettings            []ReportNotificationIntegrationSettings    `json:"reportsIntegrationSettings"`
-	SingleNotificationIntegrationSettings []SingleNotificationIntegrationSettings    `json:"singleNotificationIntegrationSettings"`
-	ScheduledIntegrationSettings          []ScheduledNotificationIntegrationSettings `json:"scheduledIntegrationSettings"`
-}
-
-// ReportNotificationIntegrationSettings struct
-type ReportNotificationIntegrationSettings struct {
-	BaseNotificationIntegrationSettings
-}
-
-// SingleNotificationIntegrationSettings struct
-type SingleNotificationIntegrationSettings struct {
-	BaseNotificationIntegrationSettings
-	Payload string `json:"payload"`
-}
-
-// ScheduledNotificationIntegrationSettings struct
-type ScheduledNotificationIntegrationSettings struct {
-	BaseNotificationIntegrationSettings
-	CronExpression string `json:"cronExpression" validate:"required,cron"`
-}
-
-// BaseNotificationIntegrationSettings struct
-type BaseNotificationIntegrationSettings struct {
-	IntegrationId string                       `json:"integrationId" validate:"required"`
-	OutputType    int                          `json:"outputType"`
-	Filter        ComplianceNotificationFilter `json:"filter"`
-}
-
-// NotificationTriggerType enum
 type NotificationTriggerType int
 
 const (
@@ -75,27 +43,24 @@ const (
 	Scheduled
 )
 
-// NotificationOutputType enum
 type NotificationOutputType int
 
-// ComplianceNotificationFilter struct
-type ComplianceNotificationFilter struct{}
+const (
+	Default NotificationOutputType = iota
+	Detailed
+	Summary
+	FullCsv
+	FullCsvZip
+	ExecutivePlatform
+	JsonFullEntity
+	JsonSimpleEntity
+	PlainText
+	TemplateBased
+	CustomOutputFormat
+)
 
-// BaseNotificationViewModel struct
+// Models
 type BaseNotificationViewModel struct {
-	Name                 string                               `json:"name" validate:"required"`
-	Description          string                               `json:"description"`
-	AlertsConsole        bool                                 `json:"alertsConsole" default:"true"`
-	SendOnEachOccurrence bool                                 `json:"sendOnEachOccurrence"`
-	Origin               AssessmentFindingOrigin              `json:"origin" validate:"required"`
-	IntegrationSettings  NotificationIntegrationSettingsModel `json:"integrationSettingsModel" validate:"required"`
-}
-
-// ResponseNotificationViewModel struct
-type ResponseNotificationViewModel struct {
-	BaseNotificationViewModel
-	Id                   string                               `json:"id" validate:"required"`
-	CreatedAt            time.Time                            `json:"createdAt" validate:"required"`
 	Name                 string                               `json:"name" validate:"required"`
 	Description          string                               `json:"description"`
 	AlertsConsole        bool                                 `json:"alertsConsole" default:"true"`
@@ -104,17 +69,47 @@ type ResponseNotificationViewModel struct {
 	IntegrationSettings  NotificationIntegrationSettingsModel `json:"integrationSettingsModel" validate:"required"`
 }
 
-// Request models
+type NotificationIntegrationSettingsModel struct {
+	ReportsIntegrationSettings            []ReportNotificationIntegrationSettings    `json:"reportsIntegrationSettings"`
+	SingleNotificationIntegrationSettings []SingleNotificationIntegrationSettings    `json:"singleNotificationIntegrationSettings"`
+	ScheduledIntegrationSettings          []ScheduledNotificationIntegrationSettings `json:"scheduledIntegrationSettings"`
+}
 
-// PutNotificationViewModel struct
+type BaseNotificationIntegrationSettings struct {
+	IntegrationId string                       `json:"integrationId" validate:"required"`
+	OutputType    string                       `json:"outputType"`
+	Filter        ComplianceNotificationFilter `json:"filter"`
+}
+
+type SingleNotificationIntegrationSettings struct {
+	BaseNotificationIntegrationSettings
+	Payload string `json:"payload"`
+}
+
+type ReportNotificationIntegrationSettings struct {
+	BaseNotificationIntegrationSettings
+}
+
+type ScheduledNotificationIntegrationSettings struct {
+	BaseNotificationIntegrationSettings
+	CronExpression string `json:"cronExpression" validate:"required,cron"`
+}
+
+type ComplianceNotificationFilter struct{}
+
 type PutNotificationViewModel struct {
 	BaseNotificationViewModel
 	Id string `json:"id" validate:"required"`
 }
 
-// PostNotificationViewModel struct
 type PostNotificationViewModel struct {
 	BaseNotificationViewModel
+}
+
+type ResponseNotificationViewModel struct {
+	BaseNotificationViewModel
+	Id        string    `json:"id" validate:"required"`
+	CreatedAt time.Time `json:"createdAt" validate:"required"`
 }
 
 // APIs
