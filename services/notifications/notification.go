@@ -3,60 +3,11 @@
 import (
 	"fmt"
 	"net/http"
-	"time"
-)
-
-const (
-	RESTfulServicePathNotification = "notification"
 )
 
 // Constants
-type AssessmentFindingOrigin int
-
 const (
-	ComplianceEngine AssessmentFindingOrigin = iota
-	Magellan
-	MagellanAwsGuardDuty        = 191
-	Serverless                  = 2
-	AwsInspector                = 50
-	ServerlessSecurityAnalyzer  = 51
-	ExternalFindingSource       = 100
-	Qualys                      = 101
-	Tenable                     = 102
-	AwsGuardDuty                = 103
-	KubernetesImageScanning     = 104
-	KubernetesRuntimeAssurance  = 105
-	ContainersRuntimeProtection = 106
-	WorkloadChangeMonitoring    = 107
-	ImageAssurance              = 7
-	SourceCodeAssurance         = 8
-	InfrastructureAsCode        = 9
-	CIEM                        = 10
-	Incident                    = 11
-)
-
-type NotificationTriggerType int
-
-const (
-	Report NotificationTriggerType = iota
-	Single
-	Scheduled
-)
-
-type NotificationOutputType int
-
-const (
-	Default NotificationOutputType = iota
-	Detailed
-	Summary
-	FullCsv
-	FullCsvZip
-	ExecutivePlatform
-	JsonFullEntity
-	JsonSimpleEntity
-	PlainText
-	TemplateBased
-	CustomOutputFormat
+	RESTfulServicePathNotification = "notification"
 )
 
 // Models
@@ -76,9 +27,9 @@ type NotificationIntegrationSettingsModel struct {
 }
 
 type BaseNotificationIntegrationSettings struct {
-	IntegrationId string                       `json:"integrationId" validate:"required"`
-	OutputType    string                       `json:"outputType"`
-	Filter        ComplianceNotificationFilter `json:"filter"`
+	IntegrationId string                        `json:"integrationId" validate:"required"`
+	OutputType    string                        `json:"outputType"`
+	Filter        *ComplianceNotificationFilter `json:"filter"`
 }
 
 type SingleNotificationIntegrationSettings struct {
@@ -108,8 +59,7 @@ type PostNotificationViewModel struct {
 
 type ResponseNotificationViewModel struct {
 	BaseNotificationViewModel
-	Id        string    `json:"id" validate:"required"`
-	CreatedAt time.Time `json:"createdAt" validate:"required"`
+	Id string `json:"id" validate:"required"`
 }
 
 // APIs
