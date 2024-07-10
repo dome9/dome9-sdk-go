@@ -11,7 +11,6 @@ const (
 	RESTfulServicePathIntegration = "integration"
 )
 
-// IntegrationType enum
 type IntegrationType int
 
 const (
@@ -32,9 +31,8 @@ const (
 	IntegrationTypeEventArc
 )
 
-// IntegrationPostRequestModel struct
 type IntegrationPostRequestModel struct {
-	Name          string          `json:"name" validate:"required,max=50"` // length limit
+	Name          string          `json:"name" validate:"required"`
 	Type          IntegrationType `json:"type" validate:"required"`
 	Configuration json.RawMessage `json:"configuration" validate:"required"`
 }
@@ -43,10 +41,9 @@ func (m IntegrationPostRequestModel) String() string {
 	return fmt.Sprintf("Name: %s, Type: %d, Configuration: %s", m.Name, m.Type, string(m.Configuration))
 }
 
-// IntegrationUpdateRequestModel struct
 type IntegrationUpdateRequestModel struct {
 	Id            string          `json:"id" validate:"required"`
-	Name          string          `json:"name" validate:"required,max=50"` // length limit
+	Name          string          `json:"name" validate:"required"`
 	Type          IntegrationType `json:"type" validate:"required"`
 	Configuration json.RawMessage `json:"configuration" validate:"required"`
 }
@@ -55,10 +52,9 @@ func (m IntegrationUpdateRequestModel) String() string {
 	return fmt.Sprintf("Id: %s, Name: %s, Type: %d, Configuration: %s", m.Id, m.Name, m.Type, string(m.Configuration))
 }
 
-// IntegrationViewModel struct
 type IntegrationViewModel struct {
 	Id            string          `json:"id" validate:"required"`
-	Name          string          `json:"name" validate:"required,max=50"` // length limit
+	Name          string          `json:"name" validate:"required"`
 	Type          IntegrationType `json:"type" validate:"required"`
 	CreatedAt     time.Time       `json:"createdAt"`
 	Configuration json.RawMessage `json:"configuration" validate:"required"`
