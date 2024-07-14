@@ -4,36 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 const (
 	RESTfulServicePathIntegration = "integration"
 )
 
-type IntegrationType int
-
-const (
-	IntegrationTypeSNS IntegrationType = iota + 1
-	IntegrationTypeEmail
-	IntegrationTypePagerDuty
-	IntegrationTypeAwsSecurityHub
-	IntegrationTypeAzureDefender
-	IntegrationTypeGcpSecurityCommandCenter
-	IntegrationTypeWebhook
-	IntegrationTypeServiceNow
-	IntegrationTypeSplunk
-	IntegrationTypeJira
-	IntegrationTypeSumoLogic
-	IntegrationTypeQRadar
-	IntegrationTypeSlack
-	IntegrationTypeTeams
-	IntegrationTypeEventArc
-)
-
 type IntegrationPostRequestModel struct {
 	Name          string          `json:"name" validate:"required"`
-	Type          IntegrationType `json:"type" validate:"required"`
+	Type          string          `json:"type" validate:"required"`
 	Configuration json.RawMessage `json:"configuration" validate:"required"`
 }
 
@@ -44,7 +23,7 @@ func (m IntegrationPostRequestModel) String() string {
 type IntegrationUpdateRequestModel struct {
 	Id            string          `json:"id" validate:"required"`
 	Name          string          `json:"name" validate:"required"`
-	Type          IntegrationType `json:"type" validate:"required"`
+	Type          string          `json:"type" validate:"required"`
 	Configuration json.RawMessage `json:"configuration" validate:"required"`
 }
 
@@ -55,8 +34,8 @@ func (m IntegrationUpdateRequestModel) String() string {
 type IntegrationViewModel struct {
 	Id            string          `json:"id" validate:"required"`
 	Name          string          `json:"name" validate:"required"`
-	Type          IntegrationType `json:"type" validate:"required"`
-	CreatedAt     time.Time       `json:"createdAt"`
+	Type          string          `json:"type" validate:"required"`
+	CreatedAt     string          `json:"createdAt"`
 	Configuration json.RawMessage `json:"configuration" validate:"required"`
 }
 
@@ -101,8 +80,8 @@ func (service *Service) GetById(id string) (*IntegrationViewModel, *http.Respons
 	return v, resp, nil
 }
 
-func (service *Service) GetByType(integrationType IntegrationType) (*IntegrationViewModel, *http.Response, error) {
-	if integrationType == 0 {
+func (service *Service) GetByType(integrationType string) (*IntegrationViewModel, *http.Response, error) {
+	if integrationType == "" {
 		return nil, nil, fmt.Errorf("integrationType parameter must be passed")
 	}
 
