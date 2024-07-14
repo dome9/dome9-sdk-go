@@ -4,31 +4,29 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 const (
 	RESTfulServicePathIntegration = "integration"
 )
 
-type IntegrationType int
+type IntegrationType string
 
 const (
-	IntegrationTypeSNS IntegrationType = iota + 1
-	IntegrationTypeEmail
-	IntegrationTypePagerDuty
-	IntegrationTypeAwsSecurityHub
-	IntegrationTypeAzureDefender
-	IntegrationTypeGcpSecurityCommandCenter
-	IntegrationTypeWebhook
-	IntegrationTypeServiceNow
-	IntegrationTypeSplunk
-	IntegrationTypeJira
-	IntegrationTypeSumoLogic
-	IntegrationTypeQRadar
-	IntegrationTypeSlack
-	IntegrationTypeTeams
-	IntegrationTypeEventArc
+	IntegrationTypeSNS                      IntegrationType = "SNS"
+	IntegrationTypeEmail                    IntegrationType = "Email"
+	IntegrationTypePagerDuty                IntegrationType = "PagerDuty"
+	IntegrationTypeAwsSecurityHub           IntegrationType = "AwsSecurityHub"
+	IntegrationTypeAzureDefender            IntegrationType = "AzureDefender"
+	IntegrationTypeGcpSecurityCommandCenter IntegrationType = "GcpSecurityCommandCenter"
+	IntegrationTypeWebhook                  IntegrationType = "Webhook"
+	IntegrationTypeServiceNow               IntegrationType = "ServiceNow"
+	IntegrationTypeSplunk                   IntegrationType = "Splunk"
+	IntegrationTypeJira                     IntegrationType = "Jira"
+	IntegrationTypeSumoLogic                IntegrationType = "SumoLogic"
+	IntegrationTypeQRadar                   IntegrationType = "QRadar"
+	IntegrationTypeSlack                    IntegrationType = "Slack"
+	IntegrationTypeTeams                    IntegrationType = "Teams"
 )
 
 type IntegrationPostRequestModel struct {
@@ -56,7 +54,7 @@ type IntegrationViewModel struct {
 	Id            string          `json:"id" validate:"required"`
 	Name          string          `json:"name" validate:"required"`
 	Type          IntegrationType `json:"type" validate:"required"`
-	CreatedAt     time.Time       `json:"createdAt"`
+	CreatedAt     string          `json:"createdAt"`
 	Configuration json.RawMessage `json:"configuration" validate:"required"`
 }
 
@@ -101,8 +99,8 @@ func (service *Service) GetById(id string) (*IntegrationViewModel, *http.Respons
 	return v, resp, nil
 }
 
-func (service *Service) GetByType(integrationType IntegrationType) (*IntegrationViewModel, *http.Response, error) {
-	if integrationType == 0 {
+func (service *Service) GetByType(integrationType string) (*IntegrationViewModel, *http.Response, error) {
+	if integrationType == "" {
 		return nil, nil, fmt.Errorf("integrationType parameter must be passed")
 	}
 
