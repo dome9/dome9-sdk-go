@@ -61,7 +61,8 @@ const (
 	//admission-control
 	RESTfulPathK8SAdmissionControl = "admissionControl"
 	//image-assurance
-	RESTfulPathK8SImageAssurance = "imageAssurance"
+	RESTfulPathK8SImageAssurance            = "imageAssurance"
+	RESTfulPathK8SImageAccessRuntimeMonitor = "imageAssurance/imageAccessRuntimeMonitor"
 	//threat-intelligence
 	RESTfulPathK8SThreatIntelligence = "threatIntelligence"
 )
