@@ -187,9 +187,9 @@ func (service *Service) ForceDelete(id string) (*http.Response, error) {
 	var resp *http.Response
 	var err error
 
-	for i := 1; i < 3; i++ {
+	for i := 1; i <= 3; i++ {
 		resp, err = service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
-		if err == nil || resp == nil || resp.StatusCode <= 400 || resp.StatusCode >= 500 {
+		if err == nil || resp == nil || resp.StatusCode <= 400 || resp.StatusCode >= 500 || i == 3 {
 			break
 		}
 		time.Sleep(time.Duration(i) * 2 * time.Second)
