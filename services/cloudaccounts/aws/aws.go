@@ -184,11 +184,15 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 
 func (service *Service) ForceDelete(id string) (*http.Response, error) {
 	relativeURL := fmt.Sprintf("%s/%s/%s", cloudaccounts.RESTfulPathAWS, id, cloudaccounts.DeleteForce)
-	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
+	var resp *http.Response
+	var err error
 
-	if err != nil {
-		time.Sleep(2 * time.Second)
+	for i := 0; i < 3; i++ {
 		resp, err = service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
+		if err == nil || resp == nil || resp.StatusCode < 400 || resp.StatusCode >= 500 {
+			break
+		}
+		time.Sleep(time.Duration(i) * 2 * time.Second)
 	}
 
 	if err != nil {
