@@ -187,6 +187,11 @@ func (service *Service) ForceDelete(id string) (*http.Response, error) {
 	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
 
 	if err != nil {
+		time.Sleep(2 * time.Second)
+		resp, err = service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
+	}
+
+	if err != nil {
 		return nil, err
 	}
 
