@@ -25,6 +25,11 @@ const (
 	ScanModeInAccountHub = "inAccountHub"
 )
 
+const (
+	maxRetries    = 3
+	retryInterval = time.Second * 5
+)
+
 type CreateOptions struct {
 	ShouldCreatePolicy string `url:"shouldCreatePolicy"`
 }
@@ -61,53 +66,48 @@ type GetAWPOnboardingResponse struct {
 
 // Common functionality
 
-func retryRequest(f func() (*http.Response, error), maxRetries int, retryInterval time.Duration) (*http.Response, error) {
+func retryableRequest(f func() (*http.Response, error)) (*http.Response, error) {
 	var resp *http.Response
 	var err error
-
+	var lastStatusCode int
 
 	for i := 0; i < maxRetries; i++ {
 		resp, err = f()
 		if err == nil {
-	
 			return resp, nil
+		}
+
+		if resp != nil {
+			lastStatusCode = resp.StatusCode
 		}
 
 		if resp != nil && (resp.StatusCode >= 400 && resp.StatusCode < 500) {
 			time.Sleep(retryInterval)
 		} else {
-		
-			return resp, err
+			break
 		}
 	}
 
-	return nil, fmt.Errorf("request failed after %d attempts: %w", maxRetries, err)
+	return nil, fmt.Errorf("request failed after %d attempts with status code %d: %w", maxRetries, lastStatusCode, err)
 }
 
-
 func CreateAWPOnboarding(client *client.Client, req interface{}, path string, queryParams CreateOptions) (*http.Response, error) {
-	maxRetries := 3
-	retryInterval := time.Second * 5
-
 	f := func() (*http.Response, error) {
 		return client.NewRequestDo("POST", path, queryParams, req, nil)
 	}
 
-	return retryRequest(f, maxRetries, retryInterval)
+	return retryableRequest(f)
 }
-
 
 func GetAWPOnboarding(client *client.Client, cloudProvider string, id string) (*GetAWPOnboardingResponse, *http.Response, error) {
 	v := new(GetAWPOnboardingResponse)
 	path := fmt.Sprintf(OnboardingResourcePath, cloudProvider, id)
-	maxRetries := 3
-	retryInterval := time.Second * 5
 
 	f := func() (*http.Response, error) {
 		return client.NewRequestDo("GET", path, nil, nil, v)
 	}
 
-	resp, err := retryRequest(f, maxRetries, retryInterval)
+	resp, err := retryableRequest(f)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -115,28 +115,22 @@ func GetAWPOnboarding(client *client.Client, cloudProvider string, id string) (*
 	return v, resp, nil
 }
 
-
 func DeleteAWPOnboarding(client *client.Client, cloudProvider string, id string, queryParams DeleteOptions) (*http.Response, error) {
 	path := fmt.Sprintf(OnboardingResourcePath, cloudProvider, id)
-	maxRetries := 3
-	retryInterval := time.Second * 5
 
 	f := func() (*http.Response, error) {
 		return client.NewRequestDo("DELETE", path, queryParams, nil, nil)
 	}
 
-	return retryRequest(f, maxRetries, retryInterval)
+	return retryableRequest(f)
 }
-
 
 func UpdateAWPSettings(client *client.Client, cloudProvider string, id string, req AgentlessAccountSettings) (*http.Response, error) {
 	path := fmt.Sprintf(OnboardingResourcePath, cloudProvider, id)
-	maxRetries := 3
-	retryInterval := time.Second * 5
 
 	f := func() (*http.Response, error) {
 		return client.NewRequestDo("PATCH", fmt.Sprintf("%s/settings", path), nil, req, nil)
 	}
 
-	return retryRequest(f, maxRetries, retryInterval)
+	return retryableRequest(f)
 }
