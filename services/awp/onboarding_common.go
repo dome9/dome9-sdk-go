@@ -61,7 +61,7 @@ type GetAWPOnboardingResponse struct {
 // Common functionality
 
 func CreateAWPOnboarding(client *client.Client, req interface{}, path string, queryParams CreateOptions) (*http.Response, error) {
-	resp, err = client.NewRequestDoRetry("POST", path, queryParams, req, nil, shouldRetry)
+	resp, err := client.NewRequestDoRetry("POST", path, queryParams, req, nil, shouldRetry)
 	if err != nil {
 		return nil, err
 	}
