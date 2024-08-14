@@ -50,6 +50,7 @@ func (client *Client) NewRequestDoRetryWithOptions(method, url string, options, 
 		}
 		// If status code is 429 (API throttling), set the retrySleepBetweenSecs to 10 and maxRetries to fit 5 minutes of retries
 		if resp.StatusCode == http.StatusTooManyRequests {
+			i = 0
 			retrySleepBetweenSecs = 10
 			maxRetries = (5 * 60) / retrySleepBetweenSecs
 		}
