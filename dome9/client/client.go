@@ -61,6 +61,11 @@ func (client *Client) NewRequestDoRetryWithOptions(method, url string, options, 
 }
 
 func (client *Client) NewRequestDoRetry(method, url string, options, body, v interface{}, shouldRetry func(*http.Response) bool) (*http.Response, error) {
+	if shouldRetry == nil {
+		shouldRetry = func(resp *http.Response) bool {
+			return resp != nil && resp.StatusCode >= 400 && resp.StatusCode < 600
+		}
+	}
 	return client.NewRequestDoRetryWithOptions(method, url, options, body, v, 3, 5, shouldRetry)
 }
 
