@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 const (
@@ -95,14 +94,8 @@ func (service *Service) GetById(id string) (*IntegrationViewModel, *http.Respons
 
 	v := new(IntegrationViewModel)
 	relativeURL := fmt.Sprintf("%s/%s", RESTfulServicePathIntegration, id)
-
-	for i := 1; i <= 3; i++ {
-		resp, err = service.Client.NewRequestDoRetry("GET", relativeURL, nil, nil, v, nil)
-		if err == nil || resp == nil || resp.StatusCode <= 400 || resp.StatusCode >= 500 || i == 3 {
-			break
-		}
-		time.Sleep(time.Duration(i) * 2 * time.Second)
-	}
+	
+	resp, err = service.Client.NewRequestDoRetry("GET", relativeURL, nil, nil, v, nil)
 
 	if err != nil {
 		return nil, nil, err
@@ -145,12 +138,9 @@ func (service *Service) Delete(id string) (*http.Response, error) {
 	var resp *http.Response
 	var err error
 
-	for i := 1; i <= 3; i++ {
-		resp, err = service.Client.NewRequestDoRetry("DELETE", relativeURL, nil, nil, nil, nil)
-		if err == nil || resp == nil || resp.StatusCode <= 400 || resp.StatusCode >= 500 || i == 3 {
-			break
-		}
-		time.Sleep(time.Duration(i) * 2 * time.Second)
+	resp, err = service.Client.NewRequestDoRetry("DELETE", relativeURL, nil, nil, nil, nil)
+	if err != nil {
+		return nil, err
 	}
 
 	return resp, nil
