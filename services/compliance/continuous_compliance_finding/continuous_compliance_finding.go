@@ -129,7 +129,7 @@ type ContinuousComplianceFindingResponse struct {
 func (service *Service) Search(body *ContinuousComplianceFindingRequest) (*ContinuousComplianceFindingResponse, *http.Response, error) {
 	v := new(ContinuousComplianceFindingResponse)
 	relativeURL := fmt.Sprintf("%s/%s", continuousComplianceFindingPath, searchFindingPath)
-	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, body, v)
+	resp, err := service.Client.NewRequestDoRetry("POST", relativeURL, nil, body, v, nil)
 	if err != nil {
 		return nil, nil, err
 	}
