@@ -44,6 +44,7 @@ func main() {
 			ScanMachineIntervalInHours:   4,
 			MaxConcurrenceScansPerRegion: 1,
 			SkipFunctionAppsScan:         true,
+			InAccountScannerVPC:          "InAccountScannerVPC", // can be "ManagedByAWP" or "ManagedByCustomer"
 			CustomTags:                   map[string]string{"test": "testValue"},
 		},
 	}
