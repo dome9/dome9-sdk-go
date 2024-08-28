@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"github.com/dome9/dome9-sdk-go/dome9"
 	"github.com/dome9/dome9-sdk-go/services/awp"
-	"github.com/dome9/dome9-sdk-go/services/awp/aws_onboarding"
+	awponboarding "github.com/dome9/dome9-sdk-go/services/awp"
+	awpawsonboarding "github.com/dome9/dome9-sdk-go/services/awp/aws_onboarding"
 	"github.com/dome9/dome9-sdk-go/services/cloudaccounts"
+	"github.com/dome9/dome9-sdk-go/services/cloudaccounts/aws"
 )
 
 func main() {
 	// Pass accessID, secretKey, rawUrl, or set environment variables
 	config, _ := dome9.NewConfig("Access-ID", "Secret-Key", "https://api.dome9.com/v2/")
-	srv := awp_aws_onboarding.New(config)
-
+	srv := awpawsonboarding.New(config)
+	dome9AwsService := aws.New(config)
 	// Get awp aws onboarding data
 	appAwsOnboardingDataResponse, _, err := srv.GetOnboardingData()
 	if err != nil {
@@ -24,34 +26,36 @@ func main() {
 
 	// Get cloud account ID
 	getCloudAccountQueryParams := cloudaccounts.QueryParameters{ID: "AWS External ID or Cloudguard Account ID"}
-	cloudAccountresp, _, err := d9Client.cloudaccountAWS.Get(&getCloudAccountQueryParams)
+	cloudAccountresp, _, err := dome9AwsService.Get(&getCloudAccountQueryParams)
 	if err != nil {
-		return err
+		panic(err)
 	}
 	cloudAccountId := cloudAccountresp.ID
 
 	fmt.Printf("Cloud Account ID: %s\n", cloudAccountId)
 
+	scanMode := "ScanMode"
+	
 	// Define the request
-	awpAwsOnboardingRequest := awp_aws_onboarding.CreateAWPOnboardingRequestAw{
+	awpAwsOnboardingRequest := awpawsonboarding.CreateAWPOnboardingRequestAws{
 		CrossAccountRoleName:       "Cross-Account-Role-Name",
 		CrossAccountRoleExternalId: "Cross-Account-Role-External-Id",
-		ScanMode:                   "ScanMode", // can be "inAccount", "saas", inAccountHub, inAccountSub
+		ScanMode:                   scanMode, // can be "inAccount", "saas", inAccountHub, inAccountSub
 		IsTerraform:                true,
 		// following settings available for inAccount and saas scan modes
-		AgentlessAccountSettings: &awp_aws_onboarding.AgentlessAccountSettings{
+		AgentlessAccountSettings: &awp_onboarding.AgentlessAccountSettings{
 			DisabledRegions:              []string{"eu-west-3"},
 			ScanMachineIntervalInHours:   4,
 			MaxConcurrenceScansPerRegion: 1,
 			SkipFunctionAppsScan:         true,
-			InAccountScannerVPC:          "InAccountScannerVPC", // can be "ManagedByAWP" or "ManagedByCustomer"
+			InAccountScannerVPC:          "ManagedByAWP",
 			CustomTags:                   map[string]string{"test": "testValue"},
 		},
 	}
 
 	// Create AWP AWS Onboarding
 
-	options := awp_onboarding.CreateOptions{
+	options := awponboarding.CreateOptions{
 		ShouldCreatePolicy: "true",
 	}
 
@@ -63,7 +67,7 @@ func main() {
 
 	fmt.Printf("Onboarding AWP AWS Account with for type: %T\n Content: %+v", awpAwsOnboardingResponse, awpAwsOnboardingResponse)
 
-	getAwpOnboardingDataResponse, _, err := srv.GetAWPOnboarding("aws", cloudAccountId)
+	getAwpOnboardingDataResponse, _, err := srv.GetAWPOnboarding(cloudAccountId)
 
 	if err != nil {
 		panic(err)
@@ -72,7 +76,7 @@ func main() {
 	fmt.Printf("Get AWP Onbording account configuration response type: %T\n Content: %+v", getAwpOnboardingDataResponse, getAwpOnboardingDataResponse)
 
 	// Define the new settings
-	newSettings := awp_aws_onboarding.AgentlessAccountSettings{
+	newSettings := awp_onboarding.AgentlessAccountSettings{
 		DisabledRegions:              []string{"us-east-1", "us-west-1", "ap-northeast-1", "ap-southeast-2"},
 		ScanMachineIntervalInHours:   10,
 		MaxConcurrenceScansPerRegion: 6,
@@ -82,7 +86,7 @@ func main() {
 	}
 
 	// Update AWP AWS Onboarding settings
-	updateResponse, err := srv.UpdateAWPSettings(cloudAccountId, newSettings)
+	updateResponse, err := srv.UpdateAWPSettings(cloudAccountId, scanMode, newSettings)
 
 	if err != nil {
 		panic(err)
@@ -100,7 +104,7 @@ func main() {
 	fmt.Printf("Get updated AWP Onboarding account configuration response type: %T\n Content: %+v", updatedAwpOnboardingDataResponse, *updatedAwpOnboardingDataResponse.AgentlessAccountSettings)
 
 	// Define the delete options
-	deleteOptions := awp_onboarding.DeleteOptions{
+	deleteOptions := awponboarding.DeleteOptions{
 		ForceDelete: "true",
 	}
 
