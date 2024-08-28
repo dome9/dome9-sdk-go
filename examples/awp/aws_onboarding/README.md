@@ -33,7 +33,7 @@ func main() {
 	fmt.Printf("Cloud Account ID: %s\n", cloudAccountId)
 
 	// Define the request
-	awpAwsOnboardingRequest := awp_aws_onboarding.CreateAWPOnboardingRequestAws{
+	awpAwsOnboardingRequest := awp_aws_onboarding.CreateAWPOnboardingRequestAw{
 		CrossAccountRoleName:       "Cross-Account-Role-Name",
 		CrossAccountRoleExternalId: "Cross-Account-Role-External-Id",
 		ScanMode:                   "ScanMode", // can be "inAccount", "saas", inAccountHub, inAccountSub
@@ -77,6 +77,7 @@ func main() {
 		ScanMachineIntervalInHours:   10,
 		MaxConcurrenceScansPerRegion: 6,
 		SkipFunctionAppsScan:         false,
+		InAccountScannerVPC:          "ManagedByAWP",
 		CustomTags:                   map[string]string{"newTag": "newValue"},
 	}
 
