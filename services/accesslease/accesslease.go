@@ -69,7 +69,7 @@ type AgentsAccessResponse struct {
 
 func (service *Service) Create(body Request) (*http.Response, error) {
 	relativeURL := fmt.Sprintf("%s/%s", accessLease, aws)
-	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, body, nil)
+	resp, err := service.Client.NewRequestDoRetry("POST", relativeURL, nil, body, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func (service *Service) Create(body Request) (*http.Response, error) {
 
 func (service *Service) Get() (*Response, *http.Response, error) {
 	v := new(Response)
-	resp, err := service.Client.NewRequestDo("GET", accessLease, nil, nil, v)
+	resp, err := service.Client.NewRequestDoRetry("GET", accessLease, nil, nil, v, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -89,7 +89,7 @@ func (service *Service) Get() (*Response, *http.Response, error) {
 
 func (service *Service) Delete(id string) (*http.Response, error) {
 	relativeURL := fmt.Sprintf("%s/%s", accessLease, id)
-	resp, err := service.Client.NewRequestDo("DELETE", relativeURL, nil, nil, nil)
+	resp, err := service.Client.NewRequestDoRetry("DELETE", relativeURL, nil, nil, nil, nil)
 
 	if err != nil {
 		return nil, err
