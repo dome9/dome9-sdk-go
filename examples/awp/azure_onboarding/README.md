@@ -41,6 +41,8 @@ func main() {
 			ScanMachineIntervalInHours:   26,
 			MaxConcurrenceScansPerRegion: 20,
 			SkipFunctionAppsScan:         false,
+			InAccountScannerVPC:          "ManagedByAWP",
+			SseCmkEncryptedDisksScan:     false,
 			CustomTags:                   map[string]string{"test": "testValue"},
 		},
 	}
@@ -75,6 +77,8 @@ func main() {
 		ScanMachineIntervalInHours:   10,
 		MaxConcurrenceScansPerRegion: 6,
 		SkipFunctionAppsScan:         false,
+		InAccountScannerVPC:          "ManagedByAWP",
+		SseCmkEncryptedDisksScan:     false,
 		CustomTags:                   map[string]string{"newTag": "newValue"},
 	}
 
