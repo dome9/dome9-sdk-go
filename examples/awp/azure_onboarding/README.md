@@ -28,10 +28,11 @@ func main() {
 
 	fmt.Printf("Get AWP Azure Onboarding Data response type: %T\n Content: %+v", appAzureOnboardingDataResponse, appAzureOnboardingDataResponse)
 
-
+	scanMode := "ScanMode"
+	
 	// Define the request
 	awpAzureOnboardingRequest := awp_azure_onboarding.CreateAWPOnboardingRequestAzure{
-		ScanMode:                   "ScanMode", // can be "inAccount", inAccountHub, inAccountSub or "saas" 
+		ScanMode:                   scanMode, // can be "inAccount", inAccountHub, inAccountSub or "saas" 
 		IsTerraform:                true,
 		CentralizedCloudAccountId:  "string", // relevant for inAccountSub mode
 		ManagementGroupId:          "string", // relevant for inAccountHub mode
@@ -78,7 +79,7 @@ func main() {
 	}
 
 	// Update AWP Azure Onboarding settings
-	updateResponse, err := srv.UpdateAWPSettings(cloudAccountId, newSettings)
+	updateResponse, err := srv.UpdateAWPSettings(cloudAccountId, scanMode, newSettings)
 
 	if err != nil {
 		panic(err)
