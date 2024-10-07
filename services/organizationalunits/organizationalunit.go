@@ -35,8 +35,8 @@ type OUResponse struct {
 		IsParentRoot                      bool      `json:"isParentRoot"`
 		PathStr                           string    `json:"pathStr"`
 	} `json:"item"`
-	ParentID string        `json:"parentId"`
-	Children []interface{} `json:"children"`
+	ParentID string       `json:"parentId"`
+	Children []OUResponse `json:"children"`
 }
 
 func (service *Service) Get(ouId string) (*OUResponse, *http.Response, error) {
