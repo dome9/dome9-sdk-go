@@ -47,8 +47,8 @@ func main() {
 			DisabledRegions:              []string{"eu-west-3"},
 			ScanMachineIntervalInHours:   4,
 			MaxConcurrenceScansPerRegion: 1,
-			SkipFunctionAppsScan:         true,
 			InAccountScannerVPC:          "ManagedByAWP",
+			ScanAWSLicensedImages:        false,
 			CustomTags:                   map[string]string{"test": "testValue"},
 		},
 	}
@@ -80,8 +80,8 @@ func main() {
 		DisabledRegions:              []string{"us-east-1", "us-west-1", "ap-northeast-1", "ap-southeast-2"},
 		ScanMachineIntervalInHours:   10,
 		MaxConcurrenceScansPerRegion: 6,
-		SkipFunctionAppsScan:         false,
 		InAccountScannerVPC:          "ManagedByAWP",
+		ScanAWSLicensedImages:        false,
 		CustomTags:                   map[string]string{"newTag": "newValue"},
 	}
 
