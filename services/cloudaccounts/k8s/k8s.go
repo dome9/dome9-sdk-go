@@ -13,23 +13,24 @@ type CloudAccountRequest struct {
 }
 
 type CloudAccountResponse struct {
-	ID                              string    `json:"id"` //The k8s cluster ID
-	Name                            string    `json:"name"`
-	CreationDate                    time.Time `json:"creationDate"`
-	Vendor                          string    `json:"vendor"`
-	OrganizationalUnitID            string    `json:"organizationalUnitId,omitempty"`
-	OrganizationalUnitPath          string    `json:"organizationalUnitPath,omitempty"`
-	OrganizationalUnitName          string    `json:"organizationalUnitName,omitempty"`
-	ClusterVersion                  string    `json:"clusterVersion"`
-	RuntimeProtectionEnabled        bool      `json:"runtimeProtectionEnabled"`
-	RuntimeProtectionNetwork        bool      `json:"runtimeProtectionNetwork"`
-	RuntimeProtectionProfiling      bool      `json:"runtimeProtectionProfiling"`
-	RuntimeProtectionFileReputation bool      `json:"runtimeProtectionFileReputation"`
-	AdmissionControlEnabled         bool      `json:"admissionControlEnabled"`
-	AdmissionControlFailOpen        bool      `json:"admissionControlFailOpen"`
-	ImageAssuranceEnabled           bool      `json:"imageAssuranceEnabled"`
-	ThreatIntelligenceEnabled       bool      `json:"threatIntelligenceEnabled"`
-	Description                     string    `json:"description"`
+	ID                               string    `json:"id"` //The k8s cluster ID
+	Name                             string    `json:"name"`
+	CreationDate                     time.Time `json:"creationDate"`
+	Vendor                           string    `json:"vendor"`
+	OrganizationalUnitID             string    `json:"organizationalUnitId,omitempty"`
+	OrganizationalUnitPath           string    `json:"organizationalUnitPath,omitempty"`
+	OrganizationalUnitName           string    `json:"organizationalUnitName,omitempty"`
+	ClusterVersion                   string    `json:"clusterVersion"`
+	RuntimeProtectionEnabled         bool      `json:"runtimeProtectionEnabled"`
+	RuntimeProtectionNetwork         bool      `json:"runtimeProtectionNetwork"`
+	RuntimeProtectionProfiling       bool      `json:"runtimeProtectionProfiling"`
+	RuntimeProtectionFileReputation  bool      `json:"runtimeProtectionFileReputation"`
+	AdmissionControlEnabled          bool      `json:"admissionControlEnabled"`
+	AdmissionControlFailOpen         bool      `json:"admissionControlFailOpen"`
+	ImageAssuranceEnabled            bool      `json:"imageAssuranceEnabled"`
+	ImageAccessRuntimeMonitorEnabled bool      `json:"imageAccessRuntimeMonitorEnabled"`
+	ThreatIntelligenceEnabled        bool      `json:"threatIntelligenceEnabled"`
+	Description                      string    `json:"description"`
 }
 
 type CloudAccountUpdateNameRequest struct {
@@ -51,6 +52,11 @@ type AdmissionControlEnableRequest struct {
 }
 
 type ImageAssuranceEnableRequest struct {
+	CloudAccountId string `json:"cloudAccountId"`
+	Enabled        bool   `json:"enabled"`
+}
+
+type ImageAccessRuntimeMonitorEnableRequest struct {
 	CloudAccountId string `json:"cloudAccountId"`
 	Enabled        bool   `json:"enabled"`
 }
@@ -155,6 +161,16 @@ func (service *Service) EnableAdmissionControl(body AdmissionControlEnableReques
 func (service *Service) EnableImageAssurance(body ImageAssuranceEnableRequest) (*http.Response, error) {
 	relativeURL := fmt.Sprintf("%s/%s/%s/%s", cloudaccounts.RESTfulPathK8S, body.CloudAccountId, cloudaccounts.RESTfulPathK8SImageAssurance, GetEnableDisablePath(body.Enabled))
 	resp, err := service.Client.NewRequestDoRetry("POST", relativeURL, nil, body, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (service *Service) EnableImageAccessRuntimeMonitor(body ImageAccessRuntimeMonitorEnableRequest) (*http.Response, error) {
+	relativeURL := fmt.Sprintf("%s/%s/%s/%s", cloudaccounts.RESTfulPathK8S, body.CloudAccountId, cloudaccounts.RESTfulPathK8SImageAccessRuntimeMonitor, GetEnableDisablePath(body.Enabled))
+	resp, err := service.Client.NewRequestDo("POST", relativeURL, nil, body, nil)
 	if err != nil {
 		return nil, err
 	}
